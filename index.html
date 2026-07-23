@@ -1,23 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt" class="dark scroll-smooth">
+<html lang="pt" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel da Rosa Amaral - Designer Gráfico, Diretor de Arte, Branding, SEO & AEO</title>
     <meta name="description" content="Há mais de 25 anos a desenvolver projetos de branding, identidade visual, design gráfico, design editorial, publicidade, SEO, AEO e Google Ads para empresas e instituições.">
     <meta name="author" content="Daniel da Rosa Amaral">
+    <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
     <!-- Favicon PNG -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
     <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://danielrosaamaral.github.io/">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Daniel da Rosa Amaral",
+      "jobTitle": ["Designer Gráfico", "Diretor de Arte", "Especialista em Branding", "Consultor SEO & AEO"],
+      "description": "Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.",
+      "url": "https://danielrosaamaral.github.io/",
+      "sameAs": [
+        "https://www.linkedin.com/in/daniel-da-rosa-amaral/"
+      ],
+      "knowsAbout": [
+        "Design Gráfico",
+        "Direção de Arte",
+        "Branding & Identidade Visual",
+        "Design Editorial",
+        "Publicidade",
+        "SEO (Search Engine Optimization)",
+        "AEO (Answer Engine Optimization)",
+        "Google Ads",
+        "Web Design & UX/UI",
+        "Comunicação Corporativa"
+      ]
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4X7D309RVX');
+    </script>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chatbase Config & Script -->
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "4Xp1KrkvShDv2af8eykrm",
+            domain: "www.chatbase.co"
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
 
     <style>
         :root {
@@ -27,8 +76,14 @@
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .animate-reveal {
@@ -40,13 +95,16 @@
         .delay-2 { animation-delay: 160ms; }
         .delay-3 { animation-delay: 240ms; }
         .delay-4 { animation-delay: 320ms; }
+        .delay-5 { animation-delay: 400ms; }
+        .delay-6 { animation-delay: 480ms; }
+        .delay-7 { animation-delay: 560ms; }
 
         @keyframes shimmerElectric {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
         .shimmer-electric {
-            background: linear-gradient(90deg, rgb(0, 17, 255) 0%, rgb(120, 160, 255) 50%, rgb(0, 17, 255) 100%);
+            background: linear-gradient(90deg, rgb(0, 17, 255) 0%, rgb(100, 140, 255) 50%, rgb(0, 17, 255) 100%);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
@@ -57,7 +115,7 @@
         @keyframes electricPulse {
             0%, 100% {
                 border-color: var(--electric-blue-dark);
-                color: rgb(140, 170, 255);
+                color: rgb(120, 150, 255);
                 box-shadow: 0 0 8px rgba(0, 17, 255, 0.2);
             }
             50% {
@@ -77,6 +135,20 @@
             border-color: var(--electric-blue-pure);
             color: #000000;
             box-shadow: 0 0 30px rgba(0, 17, 255, 0.9);
+        }
+
+        @keyframes waveHand {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-14deg); }
+            40% { transform: rotate(12deg); }
+            60% { transform: rotate(-10deg); }
+            80% { transform: rotate(8deg); }
+        }
+
+        .wave-emoji {
+            display: inline-block;
+            transform-origin: 70% 70%;
+            animation: waveHand 2.2s infinite;
         }
 
         .interactive-link {
@@ -99,484 +171,309 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
+        .interactive-link:hover {
+            color: rgb(100, 140, 255);
+        }
 
-        /* RENDERING PIXEL PERFECT ZX SPECTRUM */
-        #gameCanvas {
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            width: 100%;
-            max-width: 580px;
-            height: auto;
-            aspect-ratio: 4 / 3;
+        .brand-item {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .brand-item.dimmed {
+            opacity: 0.15;
+            filter: grayscale(100%);
+        }
+        .brand-item.highlighted {
+            opacity: 1;
+            color: #ffffff;
+            font-weight: 400;
+        }
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        .filter-btn.active {
+            border-color: rgb(0, 17, 255);
+            color: #ffffff;
+            background-color: rgba(0, 17, 255, 0.12);
         }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO (CHUCKIE EGG RETRO GATE) -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col items-center justify-center p-3 sm:p-6 transition-opacity duration-700">
-        <div class="max-w-2xl w-full text-center space-y-3">
+    <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
+        <div class="max-w-2xl w-full">
             
-            <span class="inline-block px-3 py-0.5 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
-                Age / Seniority Check
-            </span>
+            <!-- Avatar Video + Callout -->
+            <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
+                <button 
+                    onclick="triggerChat()" 
+                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" 
+                    aria-label="Abrir conversa">
+                    <video 
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
+                        autoplay loop muted playsinline 
+                        class="object-cover w-full h-full pointer-events-none transition-filter duration-300 group-hover:brightness-110">
+                    </video>
+                </button>
 
-            <h2 class="text-sm sm:text-base font-mono text-white tracking-tight">
-                "Disclaimer: If you don't recognize this game, it's probably because you're younger than me."
-            </h2>
-
-            <!-- CANVAS CHUCKIE EGG SPECTRUM -->
-            <div class="flex flex-col items-center my-1 relative w-full">
-                <canvas id="gameCanvas" width="256" height="192" class="border-2 border-[rgb(0,17,255)]/50 rounded shadow-[0_0_35px_rgba(0,17,255,0.25)] bg-[#000000]"></canvas>
-            </div>
-
-            <!-- CONTROLOS & BYPASS -->
-            <div class="flex flex-col items-center gap-2">
-                <p class="text-xs text-neutral-400 font-mono">
-                    <span class="text-[rgb(0,17,255)] font-bold">SETAS / WASD:</span> Mover & Subir Escadas | <span class="text-[rgb(0,17,255)] font-bold">ESPAÇO:</span> Saltar
-                </p>
-
-                <!-- Mobile Controls -->
-                <div class="flex sm:hidden gap-1.5 pt-1">
-                    <button id="btn-left" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">←</button>
-                    <button id="btn-up" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">↑</button>
-                    <button id="btn-down" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">↓</button>
-                    <button id="btn-right" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">→</button>
-                    <button id="btn-jump" class="bg-[rgb(0,17,255)] text-white px-4 py-1.5 rounded text-xs font-mono font-bold">SALTO</button>
-                </div>
-
-                <button onclick="unlockSite('bypass')" class="text-xs text-neutral-500 hover:text-[rgb(0,17,255)] underline font-mono tracking-wide cursor-pointer transition-colors mt-1">
-                    Saltar desafio e aceder diretamente ao site →
+                <button 
+                    onclick="triggerChat()" 
+                    class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
+                    
+                    <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
+                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
+                    </span>
+                    
+                    <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
+                        Clica em mim para começar.
+                    </span>
                 </button>
             </div>
 
-        </div>
-    </div>
-
-    <!-- SITE PRINCIPAL (ESTRUTURA COMPLETA INTEGRADA) -->
-    <div id="main-site" class="opacity-0 transition-opacity duration-1000 min-h-screen flex flex-col justify-between">
-        
-        <!-- HEADER / NAVEGAÇÃO -->
-        <header class="w-full max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-            <span class="text-xs font-mono tracking-widest text-neutral-500 uppercase">
+            <!-- Título & Subtítulo Principal -->
+            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
                 Daniel da Rosa Amaral
-            </span>
-            <nav class="hidden sm:flex gap-6 text-sm font-light text-neutral-400">
-                <a href="#sobre" class="hover:text-white transition-colors">Sobre</a>
-                <a href="#servicos" class="hover:text-white transition-colors">Serviços</a>
-                <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
-            </nav>
-        </header>
-
-        <!-- HERO SECTION -->
-        <main class="w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex-grow flex items-center">
-            <div class="max-w-3xl">
-                <h1 class="text-4xl md:text-6xl lg:text-7xl mb-6 font-extralight tracking-tight leading-tight animate-reveal delay-1">
-                    Daniel da Rosa Amaral
-                </h1>
-                <p class="shimmer-electric text-xl md:text-3xl mb-8 font-light animate-reveal delay-2">
+            </h1>
+            <div>
+                <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2 inline-block cursor-default leading-relaxed tracking-normal">
                     Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
                 </p>
-                <div class="space-y-6 font-light text-base md:text-xl leading-relaxed animate-reveal delay-3 text-neutral-300/90 max-w-2xl">
-                    <p>
-                        Há mais de 25 anos a desenvolver projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
-                    </p>
+            </div>
+
+            <!-- Conteúdo Introdutório -->
+            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
+                <p>
+                    Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
+                </p>
+                <p>
+                    Há mais de 25 anos que ajudo marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital através do design, da estratégia e da otimização para motores de busca e Inteligência Artificial.
+                </p>
+            </div>
+
+            <!-- Especialidades -->
+            <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-8 animate-reveal delay-4">
+                <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
+                    Especialidades
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-10 text-base text-neutral-400">
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Design Gráfico
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direção de arte.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Branding & Identidade Visual
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitetura de marca e comunicação visual.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Design Editorial
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Publicidade
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            SEO, AEO & Google Ads
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            SEO técnico, SEO on-page, arquitetura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Web Design
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Arquitetura de informação, wireframes, UX, UI, layouts para websites, landing pages e direção de arte para projetos digitais.
+                        </p>
+                    </div>
                 </div>
-                <div class="mt-10 animate-reveal delay-4 flex flex-wrap gap-4 items-center">
-                    <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
-                       target="_blank" 
-                       class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base rounded font-medium transition-all">
-                        Ver Portfólio Completo (PDF)
+            </div>
+
+            <!-- Marcas & Instituições -->
+            <div id="brands-section" class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
+                        Marcas & Instituições
+                    </h2>
+                </div>
+                
+                <p class="text-sm text-neutral-400 font-extralight mb-3">
+                    Projetos e colaborações desenvolvidos ao longo do percurso profissional:
+                </p>
+
+                <!-- Filtros -->
+                <div class="flex flex-wrap gap-2 mb-6 text-xs font-light">
+                    <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
+                    <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
+                    <button onclick="filterBrands('health', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Saúde & Pharma</button>
+                    <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
+                    <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
+                </div>
+                
+                <div id="brands-container" class="flex flex-wrap items-center gap-x-2 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span><span class="bullet-sep text-neutral-600">•</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
+                </div>
+            </div>
+
+            <!-- CTA Portfólio -->
+            <div class="mt-16 animate-reveal delay-6">
+                <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
+                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-98">
+                    Ver Portfólio Completo
+                </a>
+            </div>
+
+            <!-- Contactos -->
+            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
+                <div class="flex items-center gap-3">
+                    <a href="mailto:daniel.rosa.amaral@gmail.com" 
+                       onclick="trackContact('email')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        daniel.rosa.amaral@gmail.com
                     </a>
-                    <a href="#contacto" class="px-6 py-3.5 text-base font-light text-neutral-400 hover:text-white transition-colors border border-transparent hover:border-neutral-800 rounded">
-                        Iniciar Projeto →
+                    <button onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')" class="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded bg-neutral-900 border border-neutral-800">Copiar</button>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="tel:+351919958423" 
+                       onclick="trackContact('phone')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        +351 919 958 423
                     </a>
+                    <button onclick="copyToClipboard('+351919958423', this, 'phone')" class="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded bg-neutral-900 border border-neutral-800">Copiar</button>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
                 </div>
+
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   onclick="trackContact('linkedin')"
+                   class="interactive-link text-neutral-300 transition-colors w-max">
+                    linkedin.com/in/daniel-da-rosa-amaral
+                </a>
             </div>
-        </main>
 
-        <!-- SECÇÃO SOBRE -->
-        <section id="sobre" class="w-full max-w-6xl mx-auto px-6 py-16 border-t border-neutral-900">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h2 class="text-xs font-mono uppercase tracking-widest text-[rgb(0,17,255)]">Experiência</h2>
-                    <p class="text-2xl font-light text-white mt-2">+25 Anos de Percurso</p>
-                </div>
-                <div class="md:col-span-2 space-y-4 text-neutral-400 font-light leading-relaxed">
-                    <p>
-                        Especializado em transformar marcas através de rigor estético e posicionamento estratégico. Da conceção de identidades visuais institucionais à otimização para motores de busca e motores de resposta por inteligência artificial (SEO/AEO).
-                    </p>
-                </div>
-            </div>
-        </section>
+        </div>
+    </main>
 
-        <!-- SECÇÃO SERVIÇOS -->
-        <section id="servicos" class="w-full max-w-6xl mx-auto px-6 py-16 border-t border-neutral-900">
-            <h2 class="text-xs font-mono uppercase tracking-widest text-[rgb(0,17,255)] mb-8">Áreas de Atuação</h2>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
-                    <h3 class="text-white text-lg font-medium mb-2">Branding & Design</h3>
-                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Identidade visual, manuais de marca, design editorial, print e estacionário corporativo.</p>
-                </div>
-                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
-                    <h3 class="text-white text-lg font-medium mb-2">Direção de Arte</h3>
-                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Conceção de campanhas publicitárias, comunicação institucional e suporte visual estratégico.</p>
-                </div>
-                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
-                    <h3 class="text-white text-lg font-medium mb-2">SEO & AEO</h3>
-                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Otimização orgânica para motores de busca e otimização para respostas generativas de IA.</p>
-                </div>
-                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
-                    <h3 class="text-white text-lg font-medium mb-2">Google Ads & Digital</h3>
-                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Gestão de campanhas de pesquisa e captação de leads qualificadas.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER / CONTACTO -->
-        <footer id="contacto" class="w-full max-w-6xl mx-auto px-6 py-12 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 font-mono">
-            <p>© Daniel da Rosa Amaral. Oeiras, Portugal.</p>
-            <div class="flex gap-6 mt-4 sm:mt-0">
-                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral-32696515/" target="_blank" class="interactive-link hover:text-white transition-colors">LinkedIn</a>
-                <a href="mailto:daniel.amaral@mgra.pt" class="interactive-link hover:text-white transition-colors">Email</a>
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- MOTOR REPLICADO ZX SPECTRUM NATIVO -->
+    <!-- Scripts de Interatividade -->
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = 256;
-        canvas.height = 192;
-
-        let score = 150;
-        let bonus = 840;
-        let time = 818;
-        let lives = 4;
-        let isGameOver = false;
-        let animFrame;
-        let tickCounter = 0;
-
-        const COLORS = {
-            BLACK: '#000000',
-            CYAN: '#00FFFF',
-            MAGENTA: '#FF00FF',
-            YELLOW: '#FFFF00',
-            GREEN: '#00FF00',
-            WHITE: '#FFFFFF'
-        };
-
-        // JOGADOR (HARRY)
-        const player = {
-            x: 90, y: 136, w: 8, h: 12,
-            vx: 0, vy: 0,
-            speed: 1.2, climbSpeed: 1.0, jumpForce: -3.8, gravity: 0.22,
-            grounded: false, isClimbing: false,
-            dir: 'right'
-        };
-
-        // PLATAFORMAS (SPECTRUM)
-        const platforms = [
-            { x: 0, y: 180, w: 256, h: 4 },
-            { x: 0, y: 152, w: 90, h: 4 },
-            { x: 106, y: 152, w: 150, h: 4 },
-            { x: 26, y: 124, w: 64, h: 4 },
-            { x: 116, y: 124, w: 50, h: 4 },
-            { x: 180, y: 124, w: 76, h: 4 },
-            { x: 0, y: 96, w: 90, h: 4 },
-            { x: 116, y: 96, w: 40, h: 4 },
-            { x: 170, y: 104, w: 30, h: 4 },
-            { x: 204, y: 96, w: 52, h: 4 },
-            { x: 64, y: 68, w: 60, h: 4 },
-            { x: 138, y: 68, w: 50, h: 4 },
-            { x: 230, y: 68, w: 26, h: 4 }
-        ];
-
-        // ESCADAS
-        const ladders = [
-            { x: 92, y: 48, h: 132 },
-            { x: 40, y: 124, h: 28 },
-            { x: 142, y: 152, h: 28 },
-            { x: 206, y: 152, h: 28 }
-        ];
-
-        // COLECCIONÁVEIS (OVOS AMARELOS & MILHO MAGENTA)
-        let eggs = [
-            { x: 74, y: 60 }, { x: 168, y: 60 }, { x: 244, y: 60 },
-            { x: 54, y: 88 }, { x: 130, y: 88 }, { x: 220, y: 88 },
-            { x: 28, y: 116 }, { x: 120, y: 144 }, { x: 232, y: 144 },
-            { x: 16, y: 144 }, { x: 54, y: 172 }, { x: 230, y: 172 }
-        ];
-
-        let cornPiles = [
-            { x: 150, y: 60 }, { x: 148, y: 88 }, 
-            { x: 198, y: 96 }, { x: 66, y: 144 }, { x: 168, y: 172 }
-        ];
-
-        // INIMIGO (AVESTRUZ/PATO CYAN)
-        let ducks = [
-            { x: 84, y: 102, w: 10, h: 14, vx: 0.6, minX: 10, maxX: 88, dir: 'left' }
-        ];
-
-        let keys = {};
-        window.addEventListener('keydown', e => keys[e.code] = true);
-        window.addEventListener('keyup', e => keys[e.code] = false);
-
-        const bindTouch = (id, key) => {
-            const btn = document.getElementById(id);
-            if(!btn) return;
-            btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
-            btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
-        };
-        bindTouch('btn-left', 'ArrowLeft');
-        bindTouch('btn-right', 'ArrowRight');
-        bindTouch('btn-up', 'ArrowUp');
-        bindTouch('btn-down', 'ArrowDown');
-        bindTouch('btn-jump', 'Space');
-
-        function checkOnLadder() {
-            return ladders.find(l => 
-                player.x + player.w / 2 >= l.x - 2 && 
-                player.x + player.w / 2 <= l.x + 10 && 
-                player.y + player.h >= l.y && 
-                player.y <= l.y + l.h
-            );
+        function triggerChat() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
+            }
+            if (window.chatbase && typeof window.chatbase === 'function') {
+                window.chatbase('open');
+            } else {
+                window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
+            }
         }
 
-        function updatePhysics() {
-            if (isGameOver) return;
-            tickCounter++;
+        function filterBrands(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
 
-            const activeLadder = checkOnLadder();
-
-            if (activeLadder && (keys['ArrowUp'] || keys['KeyW'] || keys['ArrowDown'] || keys['KeyS'])) {
-                player.isClimbing = true;
-                player.vx = 0;
-            }
-
-            if (player.isClimbing) {
-                player.vy = 0;
-                if (keys['ArrowUp'] || keys['KeyW']) player.vy = -player.climbSpeed;
-                if (keys['ArrowDown'] || keys['KeyS']) player.vy = player.climbSpeed;
-
-                if (keys['ArrowLeft'] || keys['KeyA']) player.x -= 0.5;
-                if (keys['ArrowRight'] || keys['KeyD']) player.x += 0.5;
-
-                if (!activeLadder) player.isClimbing = false;
-            } else {
-                if (keys['ArrowRight'] || keys['KeyD']) { player.vx = player.speed; player.dir = 'right'; }
-                else if (keys['ArrowLeft'] || keys['KeyA']) { player.vx = -player.speed; player.dir = 'left'; }
-                else player.vx = 0;
-
-                if ((keys['Space']) && player.grounded) {
-                    player.vy = player.jumpForce;
-                    player.grounded = false;
+            const items = document.querySelectorAll('.brand-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.classList.remove('dimmed');
+                    if (category !== 'all') {
+                        item.classList.add('highlighted');
+                    } else {
+                        item.classList.remove('highlighted');
+                    }
+                } else {
+                    item.classList.add('dimmed');
+                    item.classList.remove('highlighted');
                 }
+            });
 
-                player.vy += player.gravity;
+            if (typeof gtag === 'function') {
+                gtag('event', 'filter_brands', {'event_category': 'Engagement', 'event_label': category});
             }
+        }
 
-            player.x += player.vx;
-            player.y += player.vy;
-
-            // Colisão com Plataformas
-            player.grounded = false;
-            if (!player.isClimbing) {
-                platforms.forEach(p => {
-                    if (player.x < p.x + p.w && player.x + player.w > p.x &&
-                        player.y + player.h >= p.y && player.y + player.h <= p.y + p.h + player.vy + 1) {
-                        player.grounded = true;
-                        player.vy = 0;
-                        player.y = p.y - player.h;
+        function copyToClipboard(text, element, label) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const feedback = element.nextElementSibling;
+                    if (feedback && feedback.classList.contains('copy-feedback')) {
+                        feedback.innerText = '✓ Copiado';
+                        feedback.style.opacity = '1';
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                        }, 2000);
                     }
                 });
             }
-
-            // Inimigos
-            ducks.forEach(d => {
-                d.x += d.vx;
-                if (d.x <= d.minX || d.x + d.w >= d.maxX) d.vx *= -1;
-
-                if (player.x < d.x + d.w && player.x + player.w > d.x &&
-                    player.y < d.y + d.h && player.y + player.h > d.y) {
-                    isGameOver = true;
-                    setTimeout(resetGame, 1000);
-                }
-            });
-
-            // Apanhar Ovos
-            eggs.forEach((item, index) => {
-                if (player.x < item.x + 8 && player.x + player.w > item.x &&
-                    player.y < item.y + 8 && player.y + player.h > item.y) {
-                    eggs.splice(index, 1);
-                    score += 100;
-                    if (eggs.length === 0) unlockSite('completed');
-                }
-            });
-
-            // Apanhar Milho
-            cornPiles.forEach((item, index) => {
-                if (player.x < item.x + 8 && player.x + player.w > item.x &&
-                    player.y < item.y + 8 && player.y + player.h > item.y) {
-                    cornPiles.splice(index, 1);
-                    score += 50;
-                }
-            });
-
-            if (tickCounter % 30 === 0 && time > 0) time--;
+            trackContact(label + '_copy');
         }
 
-        function resetGame() {
-            player.x = 90; player.y = 136; player.vx = 0; player.vy = 0;
-            player.isClimbing = false;
-            isGameOver = false;
-        }
-
-        // RENDERING SPECTRUM EXACTO
-        function drawHUD() {
-            ctx.fillStyle = COLORS.MAGENTA;
-            ctx.font = '8px monospace';
-            ctx.fillText('SCORE', 2, 10);
-            ctx.fillStyle = COLORS.WHITE;
-            ctx.fillText(String(score).padStart(6, '0'), 40, 10);
-
-            ctx.fillStyle = COLORS.YELLOW;
-            for(let i = 0; i < lives; i++) {
-                ctx.fillRect(40 + (i * 8), 12, 6, 2);
+        function trackContact(label) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_contact', {'event_category': 'Contact', 'event_label': label});
             }
-
-            ctx.fillStyle = COLORS.MAGENTA;
-            ctx.fillText(`PLAYER 1  LEVEL  01  BONUS 0${bonus}  TIME ${time}`, 2, 22);
-        }
-
-        function drawCage() {
-            ctx.strokeStyle = COLORS.YELLOW;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(20, 34, 12, Math.PI, 0);
-            ctx.lineTo(32, 50);
-            ctx.lineTo(8, 50);
-            ctx.closePath();
-            ctx.stroke();
-
-            for(let x = 12; x <= 28; x += 4) {
-                ctx.beginPath(); ctx.moveTo(x, 26); ctx.lineTo(x, 50); ctx.stroke();
-            }
-
-            ctx.fillStyle = COLORS.YELLOW;
-            ctx.fillRect(14, 36, 12, 8);
-            ctx.fillRect(20, 30, 8, 6);
-            ctx.fillRect(26, 32, 4, 2);
-        }
-
-        function drawPlatforms() {
-            ctx.fillStyle = COLORS.GREEN;
-            platforms.forEach(p => {
-                ctx.fillRect(p.x, p.y, p.w, 1);
-                for(let x = p.x; x < p.x + p.w; x += 4) {
-                    ctx.fillRect(x, p.y + 2, 2, 1);
-                }
-            });
-        }
-
-        function drawLadders() {
-            ctx.fillStyle = COLORS.MAGENTA;
-            ladders.forEach(l => {
-                ctx.fillRect(l.x, l.y, 1, l.h);
-                ctx.fillRect(l.x + 8, l.y, 1, l.h);
-                for(let y = l.y; y < l.y + l.h; y += 4) {
-                    ctx.fillRect(l.x, y, 9, 1);
-                }
-            });
-        }
-
-        function drawCollectibles() {
-            ctx.fillStyle = COLORS.YELLOW;
-            eggs.forEach(e => {
-                ctx.beginPath();
-                ctx.arc(e.x + 3, e.y + 3, 3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillRect(e.x + 1, e.y + 1, 2, 2);
-            });
-
-            ctx.fillStyle = COLORS.MAGENTA;
-            cornPiles.forEach(c => {
-                ctx.beginPath();
-                ctx.moveTo(c.x + 4, c.y);
-                ctx.lineTo(c.x, c.y + 6);
-                ctx.lineTo(c.x + 8, c.y + 6);
-                ctx.closePath();
-                ctx.fill();
-            });
-        }
-
-        function drawEntities() {
-            // Avestruz/Pato Cyan
-            ducks.forEach(d => {
-                ctx.fillStyle = COLORS.CYAN;
-                ctx.fillRect(d.x + 4, d.y + 4, 6, 8);
-                ctx.fillRect(d.x + 2, d.y, 4, 6);
-                ctx.fillRect(d.x, d.y, 4, 2);
-                ctx.fillRect(d.x + 4, d.y + 12, 2, 2);
-                ctx.fillRect(d.x + 8, d.y + 12, 2, 2);
-            });
-
-            // Harry
-            if (!isGameOver) {
-                ctx.fillStyle = COLORS.CYAN;
-                if (player.isClimbing) {
-                    ctx.fillRect(player.x, player.y, player.w, player.h);
-                } else {
-                    ctx.fillStyle = COLORS.YELLOW;
-                    ctx.fillRect(player.x + 1, player.y + 1, 6, 4);
-                    ctx.fillRect(player.x, player.y + 5, 8, 5);
-                    ctx.fillRect(player.x + 1, player.y + 10, 2, 2);
-                    ctx.fillRect(player.x + 5, player.y + 10, 2, 2);
-                }
-            }
-        }
-
-        function drawRender() {
-            ctx.fillStyle = COLORS.BLACK;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            drawHUD();
-            drawCage();
-            drawPlatforms();
-            drawLadders();
-            drawCollectibles();
-            drawEntities();
-        }
-
-        function gameLoop() {
-            updatePhysics();
-            drawRender();
-            animFrame = requestAnimationFrame(gameLoop);
-        }
-
-        function unlockSite(reason) {
-            cancelAnimationFrame(animFrame);
-            localStorage.setItem('game_unlocked', 'true');
-
-            const overlay = document.getElementById('game-overlay');
-            const mainSite = document.getElementById('main-site');
-
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                mainSite.classList.remove('opacity-0');
-            }, 700);
-        }
-
-        if (localStorage.getItem('game_unlocked') === 'true') {
-            document.getElementById('game-overlay').style.display = 'none';
-            document.getElementById('main-site').classList.remove('opacity-0');
-        } else {
-            gameLoop();
         }
     </script>
+
 </body>
 </html>
