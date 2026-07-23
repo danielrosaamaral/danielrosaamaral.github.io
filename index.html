@@ -8,19 +8,19 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-    <!-- Favicon PNG (Fundo Transparente) -->
+    <!-- Favicon PNG -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
 
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
     <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://danielrosaamaral.github.io/">
 
-    <!-- Schema.org JSON-LD para AEO & Motores de Pesquisa Sintéticos -->
+    <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -196,11 +196,55 @@
             color: #ffffff;
             background-color: rgba(0, 17, 255, 0.12);
         }
+
+        /* Canvas retro rendering */
+        #gameCanvas {
+            image-rendering: pixelated;
+        }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
+    <!-- OVERLAY DO JOGO (AGE / EXPERIENCE GATE) -->
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center justify-center p-4 sm:p-6 transition-opacity duration-700">
+        <div class="max-w-xl w-full text-center space-y-4">
+            
+            <span class="inline-block px-3 py-1 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
+                Age / Seniority Check
+            </span>
+
+            <h2 class="text-xl sm:text-2xl font-mono text-white tracking-tight leading-snug">
+                "Disclaimer: If you don't recognize this game, it's probably because you're younger than me."
+            </h2>
+            
+            <p class="text-xs sm:text-sm text-neutral-400 font-mono">
+                Apanha o ovo dourado no topo para provar os teus reflexos da era 8-bit e entrar no site.
+                <br><span class="text-neutral-500">[Controlo: Setas ← → para andar | Espaço / Seta ↑ para saltar]</span>
+            </p>
+
+            <!-- CANVAS DO CHUCKIE EGG -->
+            <div class="flex justify-center my-4">
+                <canvas id="gameCanvas" width="400" height="280" class="border-2 border-[rgb(0,17,255)]/40 rounded-lg shadow-[0_0_30px_rgba(0,17,255,0.15)] bg-black max-w-full"></canvas>
+            </div>
+
+            <!-- OPÇÕES MOBILE / CONTROLO NO ECRÃ & BYPASS -->
+            <div class="flex flex-col items-center gap-3">
+                <div class="flex sm:hidden gap-2 my-1">
+                    <button id="btn-left" class="bg-neutral-800 border border-neutral-700 px-5 py-2 rounded text-xs font-mono">← Esquerda</button>
+                    <button id="btn-jump" class="bg-[rgb(0,17,255)]/80 text-white px-5 py-2 rounded text-xs font-mono">Saltar</button>
+                    <button id="btn-right" class="bg-neutral-800 border border-neutral-700 px-5 py-2 rounded text-xs font-mono">Direita →</button>
+                </div>
+
+                <button onclick="unlockSite('bypass')" class="text-xs text-neutral-500 hover:text-[rgb(0,17,255)] underline font-mono tracking-wide cursor-pointer transition-colors">
+                    Não tenho paciência para jogos. Avançar diretamente →
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SITE PRINCIPAL (INICIALMENTE BLOQUEADO / OCULTO) -->
+    <main id="main-site" class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8 opacity-0 transition-opacity duration-1000">
         <div class="max-w-2xl w-full">
             
             <!-- Avatar Video + Callout -->
@@ -414,8 +458,130 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade -->
+    <!-- MOTOR DO JOGO CHUCKIE EGG & SCRIPTS DO SITE -->
     <script>
+        // --- LOGICA DO JOGO RETRO ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let player = { x: 20, y: 230, w: 14, h: 18, vx: 0, vy: 0, grounded: false };
+        let egg = { x: 360, y: 35, w: 12, h: 14, collected: false };
+        
+        // Plataformas estilo Chuckie Egg (com escadas visuais)
+        let platforms = [
+            { x: 0, y: 260, w: 400, h: 20 },   // Chão
+            { x: 0, y: 190, w: 280, h: 10 },   // Nível 1
+            { x: 120, y: 120, w: 280, h: 10 },  // Nível 2
+            { x: 320, y: 55, w: 80, h: 10 }     // Topo (Ovo)
+        ];
+
+        let keys = {};
+
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+
+        // Suporte a controlos mobile
+        document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
+        document.getElementById('btn-left').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowLeft'] = false; });
+        document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
+        document.getElementById('btn-right').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowRight'] = false; });
+        document.getElementById('btn-jump').addEventListener('touchstart', (e) => { e.preventDefault(); keys['Space'] = true; setTimeout(() => keys['Space'] = false, 150); });
+
+        function updateGame() {
+            if (keys['ArrowRight'] || keys['KeyD']) player.vx = 2.2;
+            else if (keys['ArrowLeft'] || keys['KeyA']) player.vx = -2.2;
+            else player.vx = 0;
+
+            if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.grounded) {
+                player.vy = -6.2;
+                player.grounded = false;
+            }
+
+            player.vy += 0.28; // Gravidade
+            player.x += player.vx;
+            player.y += player.vy;
+
+            // Colisão com plataformas
+            player.grounded = false;
+            platforms.forEach(p => {
+                if (player.x < p.x + p.w && player.x + player.w > p.x &&
+                    player.y + player.h > p.y && player.y + player.h < p.y + p.h + player.vy) {
+                    player.grounded = true;
+                    player.vy = 0;
+                    player.y = p.y - player.h;
+                }
+            });
+
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+            // Vitória
+            if (!egg.collected &&
+                player.x < egg.x + egg.w && player.x + player.w > egg.x &&
+                player.y < egg.y + egg.h && player.y + player.h > egg.y) {
+                egg.collected = true;
+                unlockSite('completed');
+            }
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Plataformas estilo ZX Spectrum (azul elétrico)
+            ctx.fillStyle = 'rgb(0, 17, 255)';
+            platforms.forEach(p => ctx.fillRect(p.x, p.y, p.w, p.h));
+
+            // Personagem (amarelo retro)
+            ctx.fillStyle = '#facc15';
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+
+            // Olho do galo/personagem
+            ctx.fillStyle = '#000';
+            ctx.fillRect(player.x + (player.vx >= 0 ? 9 : 2), player.y + 3, 3, 3);
+
+            // Ovo Dourado Objetivo
+            if (!egg.collected) {
+                ctx.fillStyle = '#fbbf24';
+                ctx.beginPath();
+                ctx.ellipse(egg.x + 6, egg.y + 7, 6, 7, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        let animationFrame;
+        function gameLoop() {
+            updateGame();
+            drawGame();
+            animationFrame = requestAnimationFrame(gameLoop);
+        }
+
+        function unlockSite(reason) {
+            cancelAnimationFrame(animationFrame);
+            localStorage.setItem('game_unlocked', 'true');
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'game_unlocked', {'event_category': 'Engagement', 'event_label': reason});
+            }
+
+            const overlay = document.getElementById('game-overlay');
+            const mainSite = document.getElementById('main-site');
+
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                mainSite.classList.remove('opacity-0');
+            }, 700);
+        }
+
+        // Verificação de acesso prévio
+        if (localStorage.getItem('game_unlocked') === 'true') {
+            document.getElementById('game-overlay').style.display = 'none';
+            document.getElementById('main-site').classList.remove('opacity-0');
+        } else {
+            gameLoop();
+        }
+
+        // --- SCRIPTS DO SITE PRINCIPAL ---
         function triggerChat() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
