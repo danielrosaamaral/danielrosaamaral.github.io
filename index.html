@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt" class="dark">
+<html lang="pt" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,15 +41,13 @@
         .delay-3 { animation-delay: 240ms; }
         .delay-4 { animation-delay: 320ms; }
         .delay-5 { animation-delay: 400ms; }
-        .delay-6 { animation-delay: 480ms; }
-        .delay-7 { animation-delay: 560ms; }
 
         @keyframes shimmerElectric {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
         .shimmer-electric {
-            background: linear-gradient(90deg, rgb(0, 17, 255) 0%, rgb(100, 140, 255) 50%, rgb(0, 17, 255) 100%);
+            background: linear-gradient(90deg, rgb(0, 17, 255) 0%, rgb(120, 160, 255) 50%, rgb(0, 17, 255) 100%);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
@@ -60,7 +58,7 @@
         @keyframes electricPulse {
             0%, 100% {
                 border-color: var(--electric-blue-dark);
-                color: rgb(120, 150, 255);
+                color: rgb(140, 170, 255);
                 box-shadow: 0 0 8px rgba(0, 17, 255, 0.2);
             }
             50% {
@@ -103,7 +101,6 @@
             transform-origin: bottom left;
         }
 
-        /* Canvas retro rendering */
         #gameCanvas {
             image-rendering: pixelated;
         }
@@ -113,13 +110,13 @@
 
     <!-- OVERLAY DO JOGO (CHUCKIE EGG RETRO GATE) -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col items-center justify-center p-3 sm:p-6 transition-opacity duration-700">
-        <div class="max-w-2xl w-full text-center space-y-2">
+        <div class="max-w-2xl w-full text-center space-y-3">
             
             <span class="inline-block px-3 py-0.5 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
                 Age / Seniority Check
             </span>
 
-            <h2 class="text-base sm:text-lg font-mono text-white tracking-tight">
+            <h2 class="text-sm sm:text-base font-mono text-white tracking-tight">
                 "Disclaimer: If you don't recognize this game, it's probably because you're younger than me."
             </h2>
 
@@ -151,77 +148,139 @@
         </div>
     </div>
 
-    <!-- SITE PRINCIPAL -->
-    <main id="main-site" class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 opacity-0 transition-opacity duration-1000">
-        <div class="max-w-2xl w-full">
-            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1">
+    <!-- SITE PRINCIPAL (ESTRUTURA COMPLETA) -->
+    <div id="main-site" class="opacity-0 transition-opacity duration-1000 min-h-screen flex flex-col justify-between">
+        
+        <!-- HEADER / NAVEGAÇÃO -->
+        <header class="w-full max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
+            <span class="text-xs font-mono tracking-widest text-neutral-500 uppercase">
                 Daniel da Rosa Amaral
-            </h1>
-            <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2">
-                Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
-            </p>
-            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90">
-                <p>
-                    Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
-                </p>
-            </div>
-            <div class="mt-10 animate-reveal delay-6">
-                <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
-                   target="_blank" 
-                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base rounded font-medium">
-                    Ver Portfólio Completo
-                </a>
-            </div>
-        </div>
-    </main>
+            </span>
+            <nav class="hidden sm:flex gap-6 text-sm font-light text-neutral-400">
+                <a href="#sobre" class="hover:text-white transition-colors">Sobre</a>
+                <a href="#servicos" class="hover:text-white transition-colors">Serviços</a>
+                <a href="#portfolio" class="hover:text-white transition-colors">Portfólio</a>
+                <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+            </nav>
+        </header>
 
-    <!-- MOTOR DO JOGO CHUCKIE EGG LEVEL 1 -->
+        <!-- HERO SECTION -->
+        <main class="w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex-grow flex items-center">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl mb-6 font-extralight tracking-tight leading-tight animate-reveal delay-1">
+                    Daniel da Rosa Amaral
+                </h1>
+                <p class="shimmer-electric text-xl md:text-3xl mb-8 font-light animate-reveal delay-2">
+                    Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
+                </p>
+                <div class="space-y-6 font-light text-base md:text-xl leading-relaxed animate-reveal delay-3 text-neutral-300/90 max-w-2xl">
+                    <p>
+                        Há mais de 25 anos a desenvolver projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
+                    </p>
+                </div>
+                <div class="mt-10 animate-reveal delay-4 flex flex-wrap gap-4 items-center">
+                    <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
+                       target="_blank" 
+                       class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base rounded font-medium transition-all">
+                        Ver Portfólio Completo (PDF)
+                    </a>
+                    <a href="#contacto" class="px-6 py-3.5 text-base font-light text-neutral-400 hover:text-white transition-colors border border-transparent hover:border-neutral-800 rounded">
+                        Iniciar Projeto →
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- SECÇÃO SOBRE / EXPERIÊNCIA -->
+        <section id="sobre" class="w-full max-w-6xl mx-auto px-6 py-16 border-t border-neutral-900">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h2 class="text-xs font-mono uppercase tracking-widest text-[rgb(0,17,255)]">Experiência</h2>
+                    <p class="text-2xl font-light text-white mt-2">+25 Anos de Percurso</p>
+                </div>
+                <div class="md:col-span-2 space-y-4 text-neutral-400 font-light leading-relaxed">
+                    <p>
+                        Especializado em transformar marcas através de rigor estético e posicionamento estratégico. Da conceção de identidades visuais institucionais à otimização para motores de busca e motores de resposta por inteligência artificial (SEO/AEO).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO SERVIÇOS -->
+        <section id="servicos" class="w-full max-w-6xl mx-auto px-6 py-16 border-t border-neutral-900">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-[rgb(0,17,255)] mb-8">Áreas de Atuação</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
+                    <h3 class="text-white text-lg font-medium mb-2">Branding & Design</h3>
+                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Identidade visual, manuais de marca, design editorial, print e estacionário corporativo.</p>
+                </div>
+                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
+                    <h3 class="text-white text-lg font-medium mb-2">Direção de Arte</h3>
+                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Conceção de campanhas publicitárias, comunicação institucional e suporte visual estratégico.</p>
+                </div>
+                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
+                    <h3 class="text-white text-lg font-medium mb-2">SEO & AEO</h3>
+                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Otimização orgânica para motores de busca e otimização para respostas generativas de IA.</p>
+                </div>
+                <div class="p-6 bg-neutral-950 border border-neutral-900 rounded">
+                    <h3 class="text-white text-lg font-medium mb-2">Google Ads & Digital</h3>
+                    <p class="text-xs text-neutral-400 font-light leading-relaxed">Gestão de campanhas de pesquisa e captação de leads qualificadas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER / CONTACTO -->
+        <footer id="contacto" class="w-full max-w-6xl mx-auto px-6 py-12 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 font-mono">
+            <p>© Daniel da Rosa Amaral. Oeiras, Portugal.</p>
+            <div class="flex gap-6 mt-4 sm:mt-0">
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral-32696515/" target="_blank" class="interactive-link hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:daniel.amaral@mgra.pt" class="interactive-link hover:text-white transition-colors">Email</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MOTOR DO JOGO CHUCKIE EGG (PIXEL PERFECT + ESCADAS OPERACIONAIS) -->
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // VARIÁVEIS DE JOGO
         let score = 0;
         let bonus = 840;
         let timeLeft = 818;
         let isGameOver = false;
+        let animFrame;
 
-        // JOGADOR (HARRY)
-        let player = {
-            x: 180, y: 295, w: 12, h: 16,
+        // SPRITES PIXEL ART DETALHADOS (Grelha 8x8 e 12x12)
+        const player = {
+            x: 180, y: 294, w: 12, h: 16,
             vx: 0, vy: 0,
-            speed: 2.2,
-            climbSpeed: 1.8,
-            jumpForce: -5.5,
-            gravity: 0.28,
-            grounded: false,
-            isClimbing: false
+            speed: 2.2, climbSpeed: 1.8, jumpForce: -5.4, gravity: 0.28,
+            grounded: false, isClimbing: false,
+            dir: 'right', frame: 0, frameTimer: 0
         };
 
-        // PLATAFORMAS (Réplica da Imagem)
         const platforms = [
-            { x: 0, y: 380, w: 512, h: 8 },    // Chão base
-            { x: 0, y: 310, w: 512, h: 8 },    // Nível 1 completo
-            { x: 60, y: 245, w: 200, h: 8 },   // Nível 2 esquerdo
-            { x: 230, y: 245, w: 220, h: 8 },  // Nível 2 direito
-            { x: 80, y: 180, w: 130, h: 8 },   // Nível 3 esquerdo
-            { x: 230, y: 180, w: 80, h: 8 },    // Nível 3 meio
-            { x: 330, y: 195, w: 60, h: 8 },   // Nível 3 degrau 1
-            { x: 380, y: 180, w: 60, h: 8 },   // Nível 3 degrau 2
-            { x: 120, y: 115, w: 140, h: 8 },  // Nível 4 esquerdo
-            { x: 280, y: 115, w: 80, h: 8 },   // Nível 4 meio
-            { x: 450, y: 115, w: 62, h: 8 }    // Nível 4 direito
+            { x: 0, y: 380, w: 512, h: 8 },
+            { x: 0, y: 310, w: 512, h: 8 },
+            { x: 60, y: 245, w: 200, h: 8 },
+            { x: 230, y: 245, w: 220, h: 8 },
+            { x: 80, y: 180, w: 130, h: 8 },
+            { x: 230, y: 180, w: 80, h: 8 },
+            { x: 330, y: 195, w: 60, h: 8 },
+            { x: 380, y: 180, w: 60, h: 8 },
+            { x: 120, y: 115, w: 140, h: 8 },
+            { x: 280, y: 115, w: 80, h: 8 },
+            { x: 450, y: 115, w: 62, h: 8 }
         ];
 
-        // ESCADAS OPERACIONAIS
         const ladders = [
-            { x: 80, y: 245, h: 65 },    // Escada inferior esquerda
-            { x: 184, y: 90, h: 220 },   // Escada grande central (atravessa do Nível 1 ao Topo)
-            { x: 284, y: 310, h: 70 },   // Escada inferior meio-direita
-            { x: 412, y: 310, h: 70 }    // Escada inferior extrema-direita
+            { x: 80, y: 245, h: 65 },
+            { x: 184, y: 90, h: 220 },
+            { x: 284, y: 310, h: 70 },
+            { x: 412, y: 310, h: 70 }
         ];
 
-        // OVOS & MILHO (Mapeamento da imagem)
         let collectibles = [
             { x: 30, y: 295, type: 'egg' },
             { x: 110, y: 295, type: 'corn' },
@@ -236,18 +295,15 @@
             { x: 340, y: 365, type: 'corn' }
         ];
 
-        // INIMIGOS (PÁSSAROS / DUCKS)
         let ducks = [
-            { x: 160, y: 228, w: 14, h: 16, vx: 1.1, minX: 60, maxX: 250 },
-            { x: 340, y: 294, w: 14, h: 16, vx: -1.3, minX: 280, maxX: 490 }
+            { x: 160, y: 228, w: 14, h: 16, vx: 1.1, minX: 60, maxX: 250, dir: 'right' },
+            { x: 340, y: 294, w: 14, h: 16, vx: -1.3, minX: 280, maxX: 490, dir: 'left' }
         ];
 
-        // CONTROLO DE TECLAS
         let keys = {};
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
-        // Controlos Mobile
         const bindTouch = (id, key) => {
             const btn = document.getElementById(id);
             if(!btn) return;
@@ -262,8 +318,8 @@
 
         function checkOnLadder() {
             return ladders.find(l => 
-                player.x + player.w / 2 >= l.x - 4 && 
-                player.x + player.w / 2 <= l.x + 16 && 
+                player.x + player.w / 2 >= l.x - 3 && 
+                player.x + player.w / 2 <= l.x + 15 && 
                 player.y + player.h >= l.y && 
                 player.y <= l.y + l.h
             );
@@ -274,7 +330,6 @@
 
             const activeLadder = checkOnLadder();
 
-            // Lógica de Subida de Escadas
             if (activeLadder && (keys['ArrowUp'] || keys['KeyW'] || keys['ArrowDown'] || keys['KeyS'])) {
                 player.isClimbing = true;
                 player.vx = 0;
@@ -288,29 +343,23 @@
                 if (keys['ArrowLeft'] || keys['KeyA']) player.x -= 1;
                 if (keys['ArrowRight'] || keys['KeyD']) player.x += 1;
 
-                if (!activeLadder) {
-                    player.isClimbing = false;
-                }
+                if (!activeLadder) player.isClimbing = false;
             } else {
-                // Movimento Horizontal Padrão
-                if (keys['ArrowRight'] || keys['KeyD']) player.vx = player.speed;
-                else if (keys['ArrowLeft'] || keys['KeyA']) player.vx = -player.speed;
+                if (keys['ArrowRight'] || keys['KeyD']) { player.vx = player.speed; player.dir = 'right'; }
+                else if (keys['ArrowLeft'] || keys['KeyA']) { player.vx = -player.speed; player.dir = 'left'; }
                 else player.vx = 0;
 
-                // Salto
                 if ((keys['Space']) && player.grounded) {
                     player.vy = player.jumpForce;
                     player.grounded = false;
                 }
 
-                // Gravidade
                 player.vy += player.gravity;
             }
 
             player.x += player.vx;
             player.y += player.vy;
 
-            // Colisão com Plataformas (Apenas se não estiver a subir escada)
             player.grounded = false;
             if (!player.isClimbing) {
                 platforms.forEach(p => {
@@ -323,12 +372,11 @@
                 });
             }
 
-            // Mover Inimigos
             ducks.forEach(d => {
                 d.x += d.vx;
-                if (d.x <= d.minX || d.x + d.w >= d.maxX) d.vx *= -1;
+                if (d.x <= d.minX) { d.vx *= -1; d.dir = 'right'; }
+                if (d.x + d.w >= d.maxX) { d.vx *= -1; d.dir = 'left'; }
 
-                // Colisão de Game Over
                 if (player.x < d.x + d.w && player.x + player.w > d.x &&
                     player.y < d.y + d.h && player.y + player.h > d.y) {
                     isGameOver = true;
@@ -336,7 +384,6 @@
                 }
             });
 
-            // Recolher Ovos / Milho
             collectibles.forEach((item, index) => {
                 if (player.x < item.x + 12 && player.x + player.w > item.x &&
                     player.y < item.y + 12 && player.y + player.h > item.y) {
@@ -348,43 +395,43 @@
                 }
             });
 
-            // Timer
             if (Math.random() < 0.05 && timeLeft > 0) timeLeft--;
         }
 
         function resetGame() {
-            player.x = 180; player.y = 295; player.vx = 0; player.vy = 0;
+            player.x = 180; player.y = 294; player.vx = 0; player.vy = 0;
             player.isClimbing = false;
             isGameOver = false;
         }
 
+        // RENDERIZAÇÃO DETALHADA DOS SPRITES
         function drawRender() {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. DESENHAR HUD (Topo estilo ZX Spectrum)
+            // HUD
             ctx.fillStyle = 'rgb(0, 17, 255)';
-            ctx.font = '12px monospace';
+            ctx.font = 'bold 12px monospace';
             ctx.fillText(`SCORE  ${String(score).padStart(6, '0')}`, 10, 20);
             ctx.fillText(`PLAYER 1  LEVEL 01`, 10, 38);
             ctx.fillText(`BONUS ${String(bonus).padStart(4, '0')}`, 280, 38);
             ctx.fillText(`TIME ${timeLeft}`, 400, 38);
 
-            // 2. DESENHAR GAIOLA DO PATO GIGANTE (Topo Esquerdo - Amarelo Neon)
+            // GAIOLA DETALHADA DO PATO GIGANTE (Amarelo Neon)
             ctx.strokeStyle = '#facc15';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(45, 75, 25, Math.PI, 0); // Cúpula
+            ctx.arc(45, 75, 24, Math.PI, 0);
             ctx.stroke();
-            ctx.strokeRect(20, 75, 50, 40); // Corpo da gaiola
-            for (let x = 28; x < 70; x += 8) { // Grades
-                ctx.beginPath(); ctx.moveTo(x, 75); ctx.lineTo(x, 115); ctx.stroke();
+            ctx.strokeRect(21, 75, 48, 38);
+            for (let x = 27; x < 68; x += 8) {
+                ctx.beginPath(); ctx.moveTo(x, 75); ctx.lineTo(x, 113); ctx.stroke();
             }
-            // Pato na gaiola
+            // Pato Gigante na gaiola
             ctx.fillStyle = '#facc15';
-            ctx.fillRect(38, 88, 14, 14);
+            ctx.fillRect(36, 85, 18, 16); ctx.fillRect(48, 80, 8, 8); // Cabeça/Bico
 
-            // 3. DESENHAR ESCADAS (Azul Elétrico Pure)
+            // ESCADAS (Azul Elétrico Pure)
             ctx.strokeStyle = 'rgb(0, 17, 255)';
             ctx.lineWidth = 2;
             ladders.forEach(l => {
@@ -397,7 +444,7 @@
                 }
             });
 
-            // 4. DESENHAR PLATAFORMAS (Padrão tracejado Azul Elétrico)
+            // PLATAFORMAS (Tracejado Retrô em Azul)
             ctx.fillStyle = 'rgb(0, 17, 255)';
             platforms.forEach(p => {
                 for (let x = p.x; x < p.x + p.w; x += 8) {
@@ -405,42 +452,57 @@
                 }
             });
 
-            // 5. DESENHAR COLECCIONÁVEIS (Ovos & Milho em Amarelo)
+            // OVOS & MILHO DETALHADOS
             collectibles.forEach(item => {
                 ctx.fillStyle = '#facc15';
                 if (item.type === 'egg') {
                     ctx.beginPath();
-                    ctx.ellipse(item.x + 5, item.y + 6, 5, 6, 0, 0, Math.PI * 2);
+                    ctx.ellipse(item.x + 5, item.y + 6, 5, 7, 0, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.fillStyle = '#fef08a'; ctx.fillRect(item.x + 3, item.y + 3, 2, 2); // Brilho no ovo
                 } else {
-                    // Monte de milho
-                    ctx.beginPath();
-                    ctx.moveTo(item.x, item.y + 8);
-                    ctx.lineTo(item.x + 6, item.y + 1);
-                    ctx.lineTo(item.x + 12, item.y + 8);
-                    ctx.fill();
+                    // Monte de Milho com textura
+                    ctx.fillRect(item.x + 2, item.y + 6, 8, 3);
+                    ctx.fillRect(item.x + 4, item.y + 3, 4, 3);
+                    ctx.fillRect(item.x + 5, item.y + 1, 2, 2);
                 }
             });
 
-            // 6. DESENHAR INIMIGOS (Pássaros Patrulheiros)
-            ctx.fillStyle = '#facc15';
+            // PATOS PATRULHEIROS DETALHADOS (Com Bico e Olho)
             ducks.forEach(d => {
-                ctx.fillRect(d.x, d.y, d.w, d.h);
-                // Pescoço longo
-                ctx.fillRect(d.vx > 0 ? d.x + 10 : d.x - 2, d.y - 5, 4, 8);
+                ctx.fillStyle = '#facc15';
+                ctx.fillRect(d.x, d.y + 4, 14, 12); // Corpo
+                ctx.fillRect(d.dir === 'right' ? d.x + 8 : d.x - 2, d.y - 2, 8, 8); // Cabeça
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(d.dir === 'right' ? d.x + 12 : d.x, d.y, 2, 2); // Olho
+                ctx.fillStyle = '#f97316';
+                ctx.fillRect(d.dir === 'right' ? d.x + 14 : d.x - 5, d.y + 2, 4, 3); // Bico
             });
 
-            // 7. DESENHAR JOGADOR (Cyan / Azul Claro 8-bit)
+            // JOGADOR (HARRY) - SPRITE COM DIREÇÃO E MODO ESCADA
             if (!isGameOver) {
-                ctx.fillStyle = '#22d3ee';
-                ctx.fillRect(player.x, player.y, player.w, player.h);
+                ctx.fillStyle = '#22d3ee'; // Cyan Retro
+                if (player.isClimbing) {
+                    // Sprite de costas (Subir escada)
+                    ctx.fillRect(player.x, player.y, player.w, player.h);
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(player.x + 3, player.y + 4, 2, 8);
+                    ctx.fillRect(player.x + 7, player.y + 4, 2, 8);
+                } else {
+                    // Sprite virado para a esquerda/direita
+                    ctx.fillRect(player.x, player.y, player.w, player.h);
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(player.dir === 'right' ? player.x + 8 : player.x + 2, player.y + 3, 2, 3); // Olho
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(player.x + 2, player.y + 13, 3, 3);
+                    ctx.fillRect(player.x + 7, player.y + 13, 3, 3); // Pés
+                }
             } else {
                 ctx.fillStyle = '#ef4444';
                 ctx.fillRect(player.x - 2, player.y - 2, player.w + 4, player.h + 4);
             }
         }
 
-        let animFrame;
         function gameLoop() {
             updatePhysics();
             drawRender();
