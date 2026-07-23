@@ -205,45 +205,51 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO (AGE / EXPERIENCE GATE) -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center justify-center p-4 sm:p-6 transition-opacity duration-700">
-        <div class="max-w-xl w-full text-center space-y-4">
+    <!-- OVERLAY DO JOGO (CHUCKIE EGG RETRO GATE) -->
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col items-center justify-center p-4 sm:p-6 transition-opacity duration-700">
+        <div class="max-w-xl w-full text-center space-y-3">
             
             <span class="inline-block px-3 py-1 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
                 Age / Seniority Check
             </span>
 
-            <h2 class="text-xl sm:text-2xl font-mono text-white tracking-tight leading-snug">
+            <h2 class="text-lg sm:text-xl font-mono text-white tracking-tight leading-snug">
                 "Disclaimer: If you don't recognize this game, it's probably because you're younger than me."
             </h2>
             
-            <p class="text-xs sm:text-sm text-neutral-400 font-mono">
-                Apanha o ovo dourado no topo para provar os teus reflexos da era 8-bit e entrar no site.
-                <br><span class="text-neutral-500">[Controlo: Setas ← → para andar | Espaço / Seta ↑ para saltar]</span>
+            <p class="text-xs text-neutral-400 font-mono">
+                Recolhe os <span class="text-amber-400 font-bold">3 ovos</span> e evita as patrulhas para abrir a porta no topo.
+                <br><span class="text-neutral-500">[Setas ← → / A D para mover | Espaço / W / ↑ para saltar]</span>
             </p>
 
-            <!-- CANVAS DO CHUCKIE EGG -->
-            <div class="flex justify-center my-4">
-                <canvas id="gameCanvas" width="400" height="280" class="border-2 border-[rgb(0,17,255)]/40 rounded-lg shadow-[0_0_30px_rgba(0,17,255,0.15)] bg-black max-w-full"></canvas>
+            <!-- CANVAS CHUCKIE EGG -->
+            <div class="flex flex-col items-center my-2 relative">
+                <canvas id="gameCanvas" width="440" height="300" class="border-2 border-[rgb(0,17,255)]/50 rounded-lg shadow-[0_0_35px_rgba(0,17,255,0.2)] bg-[#050505] max-w-full"></canvas>
+                
+                <!-- Status Bar do Jogo -->
+                <div class="w-full max-w-[440px] flex justify-between items-center px-2 pt-1.5 font-mono text-xs text-neutral-400">
+                    <div>OVOS: <span id="egg-count" class="text-amber-400 font-bold">0 / 3</span></div>
+                    <div id="game-status" class="text-xs text-[rgb(0,17,255)] font-bold">NÍVEL 1</div>
+                </div>
             </div>
 
-            <!-- OPÇÕES MOBILE / CONTROLO NO ECRÃ & BYPASS -->
-            <div class="flex flex-col items-center gap-3">
-                <div class="flex sm:hidden gap-2 my-1">
-                    <button id="btn-left" class="bg-neutral-800 border border-neutral-700 px-5 py-2 rounded text-xs font-mono">← Esquerda</button>
-                    <button id="btn-jump" class="bg-[rgb(0,17,255)]/80 text-white px-5 py-2 rounded text-xs font-mono">Saltar</button>
-                    <button id="btn-right" class="bg-neutral-800 border border-neutral-700 px-5 py-2 rounded text-xs font-mono">Direita →</button>
+            <!-- CONTROLOS MOBILE & BYPASS -->
+            <div class="flex flex-col items-center gap-2 pt-1">
+                <div class="flex sm:hidden gap-2">
+                    <button id="btn-left" class="bg-neutral-900 border border-neutral-700 px-4 py-2 rounded text-xs font-mono active:bg-[rgb(0,17,255)]/30">←</button>
+                    <button id="btn-jump" class="bg-[rgb(0,17,255)] text-white px-6 py-2 rounded text-xs font-mono font-bold">SALTO</button>
+                    <button id="btn-right" class="bg-neutral-900 border border-neutral-700 px-4 py-2 rounded text-xs font-mono active:bg-[rgb(0,17,255)]/30">→</button>
                 </div>
 
-                <button onclick="unlockSite('bypass')" class="text-xs text-neutral-500 hover:text-[rgb(0,17,255)] underline font-mono tracking-wide cursor-pointer transition-colors">
-                    Não tenho paciência para jogos. Avançar diretamente →
+                <button onclick="unlockSite('bypass')" class="text-xs text-neutral-500 hover:text-[rgb(0,17,255)] underline font-mono tracking-wide cursor-pointer transition-colors mt-1">
+                    Saltar desafio e aceder diretamente ao site →
                 </button>
             </div>
 
         </div>
     </div>
 
-    <!-- SITE PRINCIPAL (INICIALMENTE BLOQUEADO / OCULTO) -->
+    <!-- SITE PRINCIPAL (INICIALMENTE OCULTO) -->
     <main id="main-site" class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8 opacity-0 transition-opacity duration-1000">
         <div class="max-w-2xl w-full">
             
@@ -458,50 +464,116 @@
         </div>
     </main>
 
-    <!-- MOTOR DO JOGO CHUCKIE EGG & SCRIPTS DO SITE -->
+    <!-- MOTOR DO JOGO CHUCKIE EGG (8-BIT PREMIUM) & SCRIPTS -->
     <script>
-        // --- LOGICA DO JOGO RETRO ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const eggCountElem = document.getElementById('egg-count');
+        const gameStatusElem = document.getElementById('game-status');
 
-        let player = { x: 20, y: 230, w: 14, h: 18, vx: 0, vy: 0, grounded: false };
-        let egg = { x: 360, y: 35, w: 12, h: 14, collected: false };
-        
-        // Plataformas estilo Chuckie Egg (com escadas visuais)
-        let platforms = [
-            { x: 0, y: 260, w: 400, h: 20 },   // Chão
-            { x: 0, y: 190, w: 280, h: 10 },   // Nível 1
-            { x: 120, y: 120, w: 280, h: 10 },  // Nível 2
-            { x: 320, y: 55, w: 80, h: 10 }     // Topo (Ovo)
+        // FÍSICA COM INÉRCIA & ACELERAÇÃO
+        let player = {
+            x: 20, y: 250, w: 14, h: 18,
+            vx: 0, vy: 0,
+            accel: 0.35, friction: 0.82, maxSpeed: 2.8,
+            jumpForce: -6.4, gravity: 0.3, grounded: false
+        };
+
+        let isGameOver = false;
+        let isVictorious = false;
+
+        // ESTRUTURA DO NÍVEL CHUCKIE EGG
+        const platforms = [
+            { x: 0, y: 280, w: 440, h: 12 },   // Chão
+            { x: 0, y: 215, w: 300, h: 8 },    // Pl. 1
+            { x: 140, y: 150, w: 300, h: 8 },   // Pl. 2
+            { x: 0, y: 85, w: 320, h: 8 }      // Pl. 3 Topo
+        ];
+
+        const ladders = [
+            { x: 260, y: 215, h: 65 },
+            { x: 160, y: 150, h: 65 },
+            { x: 80, y: 85, h: 65 }
+        ];
+
+        let eggs = [
+            { x: 220, y: 198, w: 10, h: 12, collected: false },
+            { x: 380, y: 133, w: 10, h: 12, collected: false },
+            { x: 30, y: 68, w: 10, h: 12, collected: false }
+        ];
+
+        let exitDoor = { x: 390, y: 45, w: 20, h: 40, open: false };
+
+        // INIMIGOS (PATOS PATRULHEIROS)
+        let ducks = [
+            { x: 100, y: 198, w: 14, h: 15, vx: 1.2, minX: 10, maxX: 280 },
+            { x: 280, y: 133, w: 14, h: 15, vx: -1.4, minX: 150, maxX: 420 },
+            { x: 150, y: 68, w: 14, h: 15, vx: 1.6, minX: 10, maxX: 300 }
         ];
 
         let keys = {};
-
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
-        // Suporte a controlos mobile
+        // Controlos Mobile
         document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
         document.getElementById('btn-left').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowLeft'] = false; });
         document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
         document.getElementById('btn-right').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowRight'] = false; });
         document.getElementById('btn-jump').addEventListener('touchstart', (e) => { e.preventDefault(); keys['Space'] = true; setTimeout(() => keys['Space'] = false, 150); });
 
-        function updateGame() {
-            if (keys['ArrowRight'] || keys['KeyD']) player.vx = 2.2;
-            else if (keys['ArrowLeft'] || keys['KeyA']) player.vx = -2.2;
-            else player.vx = 0;
+        function resetGame() {
+            player.x = 20; player.y = 250; player.vx = 0; player.vy = 0;
+            eggs.forEach(e => e.collected = false);
+            exitDoor.open = false;
+            isGameOver = false;
+            isVictorious = false;
+            gameStatusElem.innerText = "NÍVEL 1";
+            gameStatusElem.className = "text-xs text-[rgb(0,17,255)] font-bold";
+            updateEggUI();
+        }
 
+        function triggerGameOver() {
+            isGameOver = true;
+            gameStatusElem.innerText = "GAME OVER";
+            gameStatusElem.className = "text-xs text-red-500 font-bold animate-pulse";
+            setTimeout(resetGame, 1400);
+        }
+
+        function updateEggUI() {
+            const collected = eggs.filter(e => e.collected).length;
+            eggCountElem.innerText = `${collected} / ${eggs.length}`;
+            if (collected === eggs.length) {
+                exitDoor.open = true;
+                gameStatusElem.innerText = "PORTA ABERTA!";
+                gameStatusElem.className = "text-xs text-green-400 font-bold";
+            }
+        }
+
+        function updatePhysics() {
+            if (isGameOver || isVictorious) return;
+
+            // Inércia Horizontal
+            if (keys['ArrowRight'] || keys['KeyD']) {
+                if (player.vx < player.maxSpeed) player.vx += player.accel;
+            } else if (keys['ArrowLeft'] || keys['KeyA']) {
+                if (player.vx > -player.maxSpeed) player.vx -= player.accel;
+            } else {
+                player.vx *= player.friction;
+            }
+
+            // Salto
             if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.grounded) {
-                player.vy = -6.2;
+                player.vy = player.jumpForce;
                 player.grounded = false;
             }
 
-            player.vy += 0.28; // Gravidade
+            // Gravidade
+            player.vy += player.gravity;
             player.x += player.vx;
             player.y += player.vy;
 
-            // Colisão com plataformas
+            // Colisão com Plataformas
             player.grounded = false;
             platforms.forEach(p => {
                 if (player.x < p.x + p.w && player.x + player.w > p.x &&
@@ -512,51 +584,115 @@
                 }
             });
 
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+            // Limites da Janela
+            if (player.x < 0) { player.x = 0; player.vx = 0; }
+            if (player.x + player.w > canvas.width) { player.x = canvas.width - player.w; player.vx = 0; }
 
-            // Vitória
-            if (!egg.collected &&
-                player.x < egg.x + egg.w && player.x + player.w > egg.x &&
-                player.y < egg.y + egg.h && player.y + player.h > egg.y) {
-                egg.collected = true;
+            // Mover e verificar Inimigos (Patos)
+            ducks.forEach(d => {
+                d.x += d.vx;
+                if (d.x <= d.minX || d.x + d.w >= d.maxX) d.vx *= -1;
+
+                // Colisão do jogador com pato (Game Over)
+                if (player.x < d.x + d.w && player.x + player.w > d.x &&
+                    player.y < d.y + d.h && player.y + player.h > d.y) {
+                    triggerGameOver();
+                }
+            });
+
+            // Recolher Ovos
+            eggs.forEach(e => {
+                if (!e.collected &&
+                    player.x < e.x + e.w && player.x + player.w > e.x &&
+                    player.y < e.y + e.h && player.y + player.h > e.y) {
+                    e.collected = true;
+                    updateEggUI();
+                }
+            });
+
+            // Porta de Saída (Vitória)
+            if (exitDoor.open &&
+                player.x < exitDoor.x + exitDoor.w && player.x + player.w > exitDoor.x &&
+                player.y < exitDoor.y + exitDoor.h && player.y + player.h > exitDoor.y) {
+                isVictorious = true;
                 unlockSite('completed');
             }
         }
 
-        function drawGame() {
+        function drawRender() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Plataformas estilo ZX Spectrum (azul elétrico)
+            // Escadas (Linhas estilo ZX Spectrum)
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ladders.forEach(l => {
+                ctx.beginPath();
+                ctx.moveTo(l.x, l.y);
+                ctx.lineTo(l.x, l.y + l.h);
+                ctx.moveTo(l.x + 12, l.y);
+                ctx.lineTo(l.x + 12, l.y + l.h);
+                ctx.stroke();
+                // Degraus
+                for (let i = 0; i < l.h; i += 8) {
+                    ctx.beginPath();
+                    ctx.moveTo(l.x, l.y + i);
+                    ctx.lineTo(l.x + 12, l.y + i);
+                    ctx.stroke();
+                }
+            });
+
+            // Plataformas em Azul Elétrico
             ctx.fillStyle = 'rgb(0, 17, 255)';
             platforms.forEach(p => ctx.fillRect(p.x, p.y, p.w, p.h));
 
-            // Personagem (amarelo retro)
-            ctx.fillStyle = '#facc15';
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-
-            // Olho do galo/personagem
+            // Porta de Saída
+            ctx.fillStyle = exitDoor.open ? '#22c55e' : '#404040';
+            ctx.fillRect(exitDoor.x, exitDoor.y, exitDoor.w, exitDoor.h);
             ctx.fillStyle = '#000';
-            ctx.fillRect(player.x + (player.vx >= 0 ? 9 : 2), player.y + 3, 3, 3);
+            ctx.fillRect(exitDoor.x + 3, exitDoor.y + 3, exitDoor.w - 6, exitDoor.h - 6);
 
-            // Ovo Dourado Objetivo
-            if (!egg.collected) {
-                ctx.fillStyle = '#fbbf24';
-                ctx.beginPath();
-                ctx.ellipse(egg.x + 6, egg.y + 7, 6, 7, 0, 0, Math.PI * 2);
-                ctx.fill();
+            // Ovos Dourados
+            eggs.forEach(e => {
+                if (!e.collected) {
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.beginPath();
+                    ctx.ellipse(e.x + 5, e.y + 6, 5, 6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // Inimigos (Patos Patrulheiros Retro)
+            ducks.forEach(d => {
+                ctx.fillStyle = '#ef4444'; // Vermelho perigo
+                ctx.fillRect(d.x, d.y + 4, d.w, d.h - 4);
+                // Bico do Pato
+                ctx.fillStyle = '#f97316';
+                ctx.fillRect(d.vx > 0 ? d.x + d.w : d.x - 4, d.y + 6, 4, 4);
+            });
+
+            // Jogador (Hen-House Harry em tom Amarelo 8-bit)
+            if (!isGameOver) {
+                ctx.fillStyle = '#facc15';
+                ctx.fillRect(player.x, player.y, player.w, player.h);
+                // Olho
+                ctx.fillStyle = '#000';
+                ctx.fillRect(player.x + (player.vx >= 0 ? 9 : 2), player.y + 3, 3, 3);
+            } else {
+                // Efeito Game Over / Flash
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(player.x - 2, player.y - 2, player.w + 4, player.h + 4);
             }
         }
 
-        let animationFrame;
+        let animFrame;
         function gameLoop() {
-            updateGame();
-            drawGame();
-            animationFrame = requestAnimationFrame(gameLoop);
+            updatePhysics();
+            drawRender();
+            animFrame = requestAnimationFrame(gameLoop);
         }
 
         function unlockSite(reason) {
-            cancelAnimationFrame(animationFrame);
+            cancelAnimationFrame(animFrame);
             localStorage.setItem('game_unlocked', 'true');
 
             if (typeof gtag === 'function') {
