@@ -75,7 +75,7 @@
             animation: shimmerElectric 5s linear infinite;
         }
 
-        /* Animação de Pulsação do Botão (Azul Escuro <-> Azul Elétrico rgb(0, 17, 255)) */
+        /* Animação de Pulsação do Botão */
         @keyframes electricPulse {
             0%, 100% {
                 border-color: var(--electric-blue-dark);
@@ -101,7 +101,22 @@
             box-shadow: 0 0 30px rgba(0, 17, 255, 0.9);
         }
 
-        /* Sublinhado Animado em Azul Elétrico */
+        /* Animação do Emoji a Acenar */
+        @keyframes waveHand {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-14deg); }
+            40% { transform: rotate(12deg); }
+            60% { transform: rotate(-10deg); }
+            80% { transform: rotate(8deg); }
+        }
+
+        .wave-emoji {
+            display: inline-block;
+            transform-origin: 70% 70%;
+            animation: waveHand 2.2s infinite;
+        }
+
+        /* Sublinhado Animado */
         .interactive-link {
             position: relative;
             display: inline-block;
@@ -132,17 +147,27 @@
     <main class="min-h-screen flex items-center justify-center p-[30px]">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video -->
+            <!-- Avatar Video + Pill Callout -->
             <div class="flex flex-col items-start mb-8 animate-reveal">
+                <!-- Avatar Circular -->
                 <button 
                     onclick="triggerChat()" 
-                    class="rounded-full overflow-hidden w-[180px] h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl" 
+                    class="rounded-full overflow-hidden w-[180px] h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl mb-3 group" 
                     aria-label="Abrir clone digital">
                     <video 
                         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
                         autoplay loop muted playsinline 
-                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 hover:brightness-110">
+                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
                     </video>
+                </button>
+
+                <!-- Balão de Chamada com Emoji Animado -->
+                <button 
+                    onclick="triggerChat()" 
+                    class="bg-[rgb(0,17,255)] hover:bg-[rgb(30,45,255)] text-white text-sm md:text-base font-medium px-5 py-2.5 rounded-full shadow-lg shadow-[rgba(0,17,255,0.35)] transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-2 focus:outline-none">
+                    <span>Olá</span>
+                    <span class="wave-emoji">👋</span>
+                    <span>Vamos conversar? Clica em mim para começar.</span>
                 </button>
             </div>
 
