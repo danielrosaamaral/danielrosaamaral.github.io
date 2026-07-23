@@ -271,7 +271,7 @@
     <main class="min-h-screen flex items-center justify-center p-[30px] my-8">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video + Pill Callout (Corrigido: Linha Única + Texto Maior) -->
+            <!-- Avatar Video + Pill Callout (2 Linhas) -->
             <div class="flex flex-col items-start mb-8 md:mb-10 animate-reveal">
                 <button 
                     onclick="triggerChat()" 
@@ -286,9 +286,9 @@
 
                 <button 
                     onclick="triggerChat()" 
-                    class="bg-[rgb(0,17,255)] hover:bg-[rgb(30,45,255)] text-white text-sm sm:text-base font-medium px-5 py-3 sm:px-6 sm:py-3.5 rounded-full shadow-lg shadow-[rgba(0,17,255,0.35)] transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-2 focus:outline-none select-none w-max max-w-full whitespace-nowrap overflow-hidden">
-                    <span>Olá <span class="wave-emoji">👋</span></span>
-                    <span>Vamos conversar? Clica em mim para começar.</span>
+                    class="bg-[rgb(0,17,255)] hover:bg-[rgb(30,45,255)] text-white px-5 py-3.5 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl shadow-lg shadow-[rgba(0,17,255,0.35)] transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none select-none w-auto max-w-full">
+                    <span class="text-base sm:text-lg font-medium tracking-wide">Olá <span class="wave-emoji">👋</span> Vamos conversar?</span>
+                    <span class="text-xs sm:text-sm font-normal text-blue-100 opacity-90 mt-0.5">clica em mim para começar.</span>
                 </button>
             </div>
 
