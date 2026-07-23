@@ -8,10 +8,11 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-    <!-- Favicon Animado (GIF) & Fallbacks -->
-    <link rel="icon" type="image/gif" href="favicon.gif">
-    <link rel="shortcut icon" type="image/gif" href="favicon.gif">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon.gif">
+    <!-- Favicon PNG (Fundo Transparente) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
@@ -42,101 +43,6 @@
         "Google Ads",
         "Web Design & UX/UI",
         "Comunicação Corporativa"
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Especialidades & Serviços de Design",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Design Gráfico & Comunicação Corporativa",
-              "description": "Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direção de arte."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Branding & Identidade Visual",
-              "description": "Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitetura de marca e comunicação visual."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Design Editorial",
-              "description": "Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Publicidade & Ativação de Marca",
-              "description": "Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "SEO, AEO & Google Ads",
-              "description": "SEO técnico, SEO on-page, arquitetura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Web Design & Direção de Arte Digital",
-              "description": "Arquitetura de informação, wireframes, UX, UI, layouts para websites, landing pages e direção de arte para projetos digitais."
-            }
-          }
-        ]
-      },
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "Portfolio",
-          "recognizedBy": [
-            {"@type": "Organization", "name": "ALD Automotive"},
-            {"@type": "Organization", "name": "APCE"},
-            {"@type": "Organization", "name": "Bayer"},
-            {"@type": "Organization", "name": "Bolodoce"},
-            {"@type": "Organization", "name": "Câmara de Comércio"},
-            {"@type": "Organization", "name": "Cruzfer"},
-            {"@type": "Organization", "name": "EMEL"},
-            {"@type": "Organization", "name": "EPUL"},
-            {"@type": "Organization", "name": "European Association for Internal Communication"},
-            {"@type": "Organization", "name": "Exdoo"},
-            {"@type": "Organization", "name": "Fresenius Medical Care"},
-            {"@type": "Organization", "name": "Galp Energia"},
-            {"@type": "Organization", "name": "Gelpeixe"},
-            {"@type": "Organization", "name": "Grupo E.T.E."},
-            {"@type": "Organization", "name": "Il Pizzaiollo"},
-            {"@type": "Organization", "name": "Câmara Municipal de Lisboa"},
-            {"@type": "Organization", "name": "Lisbon Partners"},
-            {"@type": "Organization", "name": "Metro de Lisboa"},
-            {"@type": "Organization", "name": "Metrocom"},
-            {"@type": "Organization", "name": "MOBI.E"},
-            {"@type": "Organization", "name": "Nestlé"},
-            {"@type": "Organization", "name": "Novartis"},
-            {"@type": "Organization", "name": "Os Mosqueteiros"},
-            {"@type": "Organization", "name": "OTLIS"},
-            {"@type": "Organization", "name": "Santa Casa da Misericórdia"},
-            {"@type": "Organization", "name": "Sara Lee"},
-            {"@type": "Organization", "name": "Shiseido"},
-            {"@type": "Organization", "name": "Teleperformance"},
-            {"@type": "Organization", "name": "Transinsular"},
-            {"@type": "Organization", "name": "Vitra"},
-            {"@type": "Organization", "name": "Zapp Mobile"},
-            {"@type": "Organization", "name": "Refrige"},
-            {"@type": "Organization", "name": "24 Sete"}
-          ]
-        }
       ]
     }
     </script>
@@ -270,7 +176,6 @@
             color: rgb(100, 140, 255);
         }
 
-        /* Estilos do Filtro de Marcas Refinados */
         .brand-item {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -298,7 +203,7 @@
     <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video + Pill Callout com Espaçamento Ajustado -->
+            <!-- Avatar Video + Callout -->
             <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
                 <button 
                     onclick="triggerChat()" 
@@ -325,7 +230,7 @@
                 </button>
             </div>
 
-            <!-- Título & Subtítulo Principal com Métrica Tipográfica Otimizada -->
+            <!-- Título & Subtítulo Principal -->
             <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
                 Daniel da Rosa Amaral
             </h1>
@@ -335,7 +240,7 @@
                 </p>
             </div>
 
-            <!-- Bio / Texto Introdutório -->
+            <!-- Conteúdo Introdutório -->
             <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
                 <p>
                     Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
@@ -408,7 +313,7 @@
                 </div>
             </div>
 
-            <!-- Bloco de Marcas / Clientes com Filtro Interativo -->
+            <!-- Marcas & Instituições -->
             <div id="brands-section" class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
@@ -420,7 +325,7 @@
                     Projetos e colaborações desenvolvidos ao longo do percurso profissional:
                 </p>
 
-                <!-- Filtros Dinâmicos -->
+                <!-- Filtros -->
                 <div class="flex flex-wrap gap-2 mb-6 text-xs font-light">
                     <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
                     <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
@@ -466,20 +371,18 @@
                 </div>
             </div>
 
-            <!-- Botão Ver Portfólio com Margem Ampliada -->
+            <!-- CTA Portfólio -->
             <div class="mt-16 animate-reveal delay-6">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
                    onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
-                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium 
-                          transition-all duration-300 ease-out 
-                          hover:-translate-y-0.5 active:translate-y-0 active:scale-98">
+                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-98">
                     Ver Portfólio Completo
                 </a>
             </div>
 
-            <!-- Contactos Interativos com Click-to-Copy -->
+            <!-- Contactos -->
             <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
                 <div class="flex items-center gap-3">
                     <a href="mailto:daniel.rosa.amaral@gmail.com" 
@@ -511,7 +414,7 @@
         </div>
     </main>
 
-    <!-- Scripts de Lógica -->
+    <!-- Scripts de Interatividade -->
     <script>
         function triggerChat() {
             if (typeof gtag === 'function') {
@@ -524,7 +427,6 @@
             }
         }
 
-        // Filtro Interativo de Marcas
         function filterBrands(category, btnElement) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -549,7 +451,6 @@
             }
         }
 
-        // Click-to-Copy Inteligente com Feedback
         function copyToClipboard(text, element, label) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text);
