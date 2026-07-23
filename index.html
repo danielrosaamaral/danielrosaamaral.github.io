@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel da Rosa Amaral - Designer</title>
     <meta name="description" content="25 anos dedicados a identidades autênticas e quejandos. Soluções estratégicas e tácticas para empresas e pessoas.">
-    
+    <meta name="author" content="Daniel da Rosa Amaral">
+    <meta name="keywords" content="Designer, Neuromarketing, SEO, AEO, Inteligência Artificial, Branding">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Chatbase Script -->
+    <!-- Chatbase Config & Script -->
     <script>
         window.embeddedChatbotConfig = {
             chatbotId: "4Xp1KrkvShDv2af8eykrm",
@@ -19,11 +21,16 @@
     <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
 
     <style>
-        /* Entrada Fluida */
+        /* Curva de Animação de Alta Precisão */
+        :root {
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Animação de Revelação de Conteúdo */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
@@ -31,43 +38,59 @@
             }
         }
 
-        .animate-fade {
+        .animate-reveal {
             opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
         }
 
-        .delay-1 { animation-delay: 100ms; }
-        .delay-2 { animation-delay: 200ms; }
-        .delay-3 { animation-delay: 300ms; }
-        .delay-4 { animation-delay: 400ms; }
+        /* Stagger Delays */
+        .delay-1 { animation-delay: 80ms; }
+        .delay-2 { animation-delay: 160ms; }
+        .delay-3 { animation-delay: 240ms; }
+        .delay-4 { animation-delay: 320ms; }
+        .delay-5 { animation-delay: 400ms; }
 
-        /* Animação do Ring */
-        @keyframes subtlePulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 0.2; }
+        /* Animação do Ring Reativo do Avatar */
+        @keyframes haloPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.06); opacity: 0.2; }
         }
-        .animate-ring {
-            animation: subtlePulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .animate-halo {
+            animation: haloPulse 3.5s ease-in-out infinite;
         }
 
-        /* Hover Sublinhado Animado */
-        .hover-link {
+        /* Efeito Shimmer no Texto do Cargo */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #3b82f6 0%, #93c5fd 50%, #3b82f6 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 6s linear infinite;
+        }
+
+        /* Sublinhado Animado Otimizado */
+        .interactive-link {
             position: relative;
-            width: fit-content;
+            display: inline-block;
         }
-        .hover-link::after {
+        .interactive-link::after {
             content: '';
             position: absolute;
             width: 100%;
             transform: scaleX(0);
             height: 1px;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             background-color: #3b82f6;
             transform-origin: bottom right;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.35s var(--ease-out-expo);
         }
-        .hover-link:hover::after {
+        .interactive-link:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
@@ -78,61 +101,79 @@
     <main class="min-h-screen flex items-center justify-center p-[30px]">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video / Trigger do Chat -->
-            <div class="flex flex-col items-start mb-8 animate-fade">
-                <div class="relative">
-                    <div class="absolute inset-0 rounded-full border-[2px] border-blue-500 animate-ring pointer-events-none"></div>
-                    <button class="relative rounded-full overflow-hidden w-[180px] h-[180px] transition-transform duration-500 hover:scale-[1.02] focus:outline-none" aria-label="Open chat">
+            <!-- Avatar Video / Trigger direto do Chat -->
+            <div class="flex flex-col items-start mb-8 animate-reveal">
+                <div class="relative group">
+                    <div class="absolute inset-0 rounded-full border-[2px] border-blue-500 animate-halo group-hover:border-blue-400 group-hover:scale-110 transition-all duration-500 pointer-events-none"></div>
+                    <button 
+                        onclick="if (window.chatbase) { window.chatbase('open'); } else { console.log('Chatbase a carregar...'); }" 
+                        class="relative rounded-full overflow-hidden w-[180px] h-[180px] transition-all duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl hover:shadow-blue-500/10" 
+                        aria-label="Abrir clone digital">
                         <video 
                             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
                             autoplay loop muted playsinline 
-                            class="object-cover w-full h-full rotate-180">
+                            class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
                         </video>
                     </button>
                 </div>
             </div>
 
-            <!-- Cabeçalho -->
-            <h1 class="text-4xl md:text-5xl mb-2 font-thin tracking-wide leading-7 animate-fade delay-1">Daniel da Rosa Amaral</h1>
-            <p class="text-blue-500 text-xl md:text-2xl mb-8 font-light animate-fade delay-2">Designer</p>
+            <!-- Título & Função Dinâmicos -->
+            <h1 class="text-4xl md:text-5xl mb-2 font-thin tracking-wide leading-7 animate-reveal delay-1 transition-transform duration-300 hover:translate-x-1 cursor-default inline-block">
+                Daniel da Rosa Amaral
+            </h1>
+            <div>
+                <p class="shimmer-text text-xl md:text-2xl mb-8 font-light animate-reveal delay-2 inline-block cursor-default">
+                    Designer
+                </p>
+            </div>
 
-            <!-- Bio / Detalhes -->
-            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-fade delay-3">
-                <p>Nem sempre estou por aqui, uma seca eu sei, mas o meu clone digital está.<br/>Não te preocupes, ele dá o recado ; )</p>
+            <!-- Bio / Detalhes com Animação de Entrada -->
+            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3">
+                <p class="transition-colors duration-300 hover:text-white">
+                    Nem sempre estou por aqui, uma seca eu sei, mas o meu clone digital está.<br/>
+                    Não te preocupes, ele dá o recado ; )
+                </p>
                 
-                <div>
-                    <p class="font-medium text-white">Experiência:</p>
-                    <p class="font-thin text-neutral-400">25 anos dedicados a identidades autênticas e quejandos.</p>
+                <div class="group cursor-default">
+                    <p class="font-medium text-white group-hover:text-blue-400 transition-colors duration-300">Experiência:</p>
+                    <p class="font-thin text-neutral-400 group-hover:text-neutral-200 transition-colors duration-300">25 anos dedicados a identidades autênticas e quejandos.</p>
                 </div>
                 
-                <div>
-                    <p class="font-medium text-white">Função:</p>
-                    <p class="text-neutral-400">Soluções estratégicas e tácticas para empresas e pessoas.</p>
+                <div class="group cursor-default">
+                    <p class="font-medium text-white group-hover:text-blue-400 transition-colors duration-300">Função:</p>
+                    <p class="text-neutral-400 group-hover:text-neutral-200 transition-colors duration-300">Soluções estratégicas e tácticas para empresas e pessoas.</p>
                 </div>
                 
-                <div>
-                    <p class="font-medium text-white">Interesses:</p>
-                    <p class="text-neutral-400">Neuromarketing, SEO/AEO, Inteligência Artificial, conhecimento prosaico e tudo o que seja útil.</p>
+                <div class="group cursor-default">
+                    <p class="font-medium text-white group-hover:text-blue-400 transition-colors duration-300">Interesses:</p>
+                    <p class="text-neutral-400 group-hover:text-neutral-200 transition-colors duration-300">Neuromarketing, SEO/AEO, Inteligência Artificial, conhecimento prosaico e tudo o que seja útil.</p>
                 </div>
             </div>
 
-            <!-- Botão PDF -->
-            <div class="mt-8 animate-fade delay-4">
+            <!-- Botão PDF com Elevação 3D Tátil -->
+            <div class="mt-8 animate-reveal delay-4">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
                    class="inline-block border-2 border-blue-500 text-blue-500 px-6 py-2 rounded font-medium 
                           transition-all duration-300 ease-out 
-                          hover:bg-blue-500 hover:text-black hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/20 active:translate-y-0">
+                          hover:bg-blue-500 hover:text-black hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/25 active:translate-y-0 active:scale-98">
                     pdf
                 </a>
             </div>
 
-            <!-- Contactos -->
-            <div class="mt-6 flex flex-col gap-2 font-light text-base animate-fade delay-4">
-                <a href="mailto:daniel.rosa.amaral@gmail.com" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">daniel.rosa.amaral@gmail.com</a>
-                <a href="tel:+351919958423" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">+351 919 958 423</a>
-                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" target="_blank" rel="noopener noreferrer" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">linkedin.com/in/daniel-da-rosa-amaral</a>
+            <!-- Contactos Interativos -->
+            <div class="mt-6 flex flex-col gap-2 font-light text-base animate-reveal delay-5">
+                <a href="mailto:daniel.rosa.amaral@gmail.com" class="interactive-link text-neutral-300 hover:text-blue-400 transition-colors w-max">
+                    daniel.rosa.amaral@gmail.com
+                </a>
+                <a href="tel:+351919958423" class="interactive-link text-neutral-300 hover:text-blue-400 transition-colors w-max">
+                    +351 919 958 423
+                </a>
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" target="_blank" rel="noopener noreferrer" class="interactive-link text-neutral-300 hover:text-blue-400 transition-colors w-max">
+                    linkedin.com/in/daniel-da-rosa-amaral
+                </a>
             </div>
 
         </div>
