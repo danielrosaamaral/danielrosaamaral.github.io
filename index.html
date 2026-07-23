@@ -516,7 +516,7 @@
 
         function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
-            document.getElementById('game-screen').classList.remove('flex');
+            document.getElementById('game-screen').classList.remove('hidden'); // Correção aplicada
             document.getElementById('game-screen').classList.add('flex');
             initChuckieEgg();
         }
