@@ -8,19 +8,19 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-    <!-- Favicon PNG -->
+    <!-- Favicon PNG (Fundo Transparente) -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
     <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://danielrosaamaral.github.io/">
 
-    <!-- Schema.org JSON-LD -->
+    <!-- Schema.org JSON-LD para AEO & Motores de Pesquisa Sintéticos -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -53,6 +53,7 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
       gtag('config', 'G-4X7D309RVX');
     </script>
 
@@ -211,7 +212,7 @@
                     <video 
                         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
                         autoplay loop muted playsinline 
-                        class="object-cover w-full h-full pointer-events-none transition-filter duration-300 group-hover:brightness-110">
+                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
                     </video>
                 </button>
 
@@ -333,87 +334,45 @@
                     <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
                 </div>
                 
-                <div id="brands-container" class="flex flex-wrap items-center gap-x-2 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span><span class="bullet-sep text-neutral-600">•</span>
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span><span class="bullet-sep text-neutral-600">•</span>
+                <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span> •
                     <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
                 </div>
             </div>
 
-            <!-- Minijogo Integrado: Alinhamento Perfeito -->
-            <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
-                        Minijogo • Alinhamento & Simetria
-                    </h2>
-                </div>
-                <p class="text-sm text-neutral-400 font-extralight">
-                    Teste a precisão do seu olho clínico de Diretor de Arte. Ajuste o cursor para centrar a linha-guia milimetricamente no eixo central.
-                </p>
-
-                <div class="bg-neutral-900/80 border border-neutral-800 rounded-xl p-6 relative overflow-hidden backdrop-blur-md">
-                    <div class="flex justify-between items-center mb-4 text-xs font-mono text-neutral-400">
-                        <span>Precisão: <strong id="game-score" class="text-white">0%</strong></span>
-                        <span id="game-status" class="text-[rgb(0,17,255)]">Ajuste o slider abaixo</span>
-                    </div>
-
-                    <!-- Área visual do jogo -->
-                    <div class="h-28 bg-black/50 rounded-lg relative flex items-center justify-center border border-neutral-800/80 overflow-hidden">
-                        <!-- Alvo central (Eixo perfeito) -->
-                        <div class="absolute w-[2px] h-full bg-[rgb(0,17,255)]/40 z-0"></div>
-                        
-                        <!-- Elemento móvel guiado pelo utilizador -->
-                        <div id="game-bar" class="absolute w-12 h-16 border-2 border-white/80 bg-white/10 rounded transition-all duration-75 flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-                            <span class="text-[10px] font-mono text-white">LOGO</span>
-                        </div>
-                    </div>
-
-                    <!-- Controlos -->
-                    <div class="mt-6 space-y-4">
-                        <input type="range" id="game-slider" min="0" max="100" value="25" 
-                            class="w-full accent-[rgb(0,17,255)] bg-neutral-800 rounded-lg appearance-none cursor-pointer h-2"
-                            oninput="updateGame(this.value)">
-                        
-                        <div class="flex justify-between items-center">
-                            <button onclick="resetGame()" class="text-xs text-neutral-400 hover:text-white transition-colors underline cursor-pointer">Reiniciar Desafio</button>
-                            <span id="game-feedback" class="text-xs font-medium text-neutral-300"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- CTA Portfólio -->
-            <div class="mt-16 animate-reveal delay-7">
+            <div class="mt-16 animate-reveal delay-6">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -424,31 +383,29 @@
             </div>
 
             <!-- Contactos -->
-            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal">
+            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
                 <div class="flex items-center gap-3">
                     <a href="mailto:daniel.rosa.amaral@gmail.com" 
-                       onclick="trackContact('email')"
+                       onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')"
                        class="interactive-link text-neutral-300 transition-colors w-max">
                         daniel.rosa.amaral@gmail.com
                     </a>
-                    <button onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')" class="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded bg-neutral-900 border border-neutral-800">Copiar</button>
                     <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
                 </div>
 
                 <div class="flex items-center gap-3">
                     <a href="tel:+351919958423" 
-                       onclick="trackContact('phone')"
+                       onclick="copyToClipboard('+351919958423', this, 'phone')"
                        class="interactive-link text-neutral-300 transition-colors w-max">
                         +351 919 958 423
                     </a>
-                    <button onclick="copyToClipboard('+351919958423', this, 'phone')" class="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded bg-neutral-900 border border-neutral-800">Copiar</button>
                     <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
                 </div>
 
                 <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   onclick="trackContact('linkedin')"
+                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'linkedin'});}"
                    class="interactive-link text-neutral-300 transition-colors w-max">
                     linkedin.com/in/daniel-da-rosa-amaral
                 </a>
@@ -457,67 +414,13 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade & Jogo -->
+    <!-- Scripts de Interatividade -->
     <script>
-        let targetPosition = 50; // Posição exata do alvo central (%)
-
-        function initGame() {
-            targetPosition = Math.floor(Math.random() * 60) + 20; // Alvo aleatório entre 20% e 80%
-            const slider = document.getElementById('game-slider');
-            slider.value = Math.floor(Math.random() * 90) + 5;
-            updateGame(slider.value);
-        }
-
-        function updateGame(val) {
-            const bar = document.getElementById('game-bar');
-            const scoreEl = document.getElementById('game-score');
-            const feedbackEl = document.getElementById('game-feedback');
-            const statusEl = document.getElementById('game-status');
-
-            // Mapeia o valor do slider (0-100%) para a posição horizontal do elemento
-            bar.style.left = `calc(${val}% - 24px)`;
-
-            // Cálculo da precisão com base na distância ao alvo central
-            const distance = Math.abs(val - targetPosition);
-            let precision = Math.max(0, Math.round(100 - (distance * 2)));
-            
-            scoreEl.innerText = precision + '%';
-
-            if (precision === 100) {
-                statusEl.innerText = 'Perfeição Absoluta!';
-                feedbackEl.innerText = '🏆 Olho clínico de Diretor de Arte certificado!';
-                feedbackEl.className = 'text-xs font-medium text-[rgb(0,17,255)]';
-                bar.style.borderColor = 'rgb(0,17,255)';
-                bar.style.backgroundColor = 'rgba(0,17,255,0.2)';
-            } else if (precision >= 90) {
-                statusEl.innerText = 'Excelente Alinhamento';
-                feedbackEl.innerText = 'Quase perfeito, ajuste milimétrico.';
-                feedbackEl.className = 'text-xs font-medium text-emerald-400';
-                bar.style.borderColor = 'rgba(255,255,255,0.8)';
-                bar.style.backgroundColor = 'rgba(255,255,255,0.1)';
-            } else {
-                statusEl.innerText = 'Ajuste em curso...';
-                feedbackEl.innerText = 'Desalinhado.';
-                feedbackEl.className = 'text-xs font-medium text-neutral-400';
-                bar.style.borderColor = 'rgba(255,255,255,0.8)';
-                bar.style.backgroundColor = 'rgba(255,255,255,0.1)';
-            }
-        }
-
-        function resetGame() {
-            initGame();
-        }
-
-        // Inicializar minijogo ao carregar a página
-        window.addEventListener('DOMContentLoaded', () => {
-            initGame();
-        });
-
         function triggerChat() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
             }
-            if (window.chatbase && typeof window.chatbase === 'function') {
+            if (typeof window.chatbase === 'function') {
                 window.chatbase('open');
             } else {
                 window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
@@ -550,21 +453,16 @@
 
         function copyToClipboard(text, element, label) {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    const feedback = element.nextElementSibling;
-                    if (feedback && feedback.classList.contains('copy-feedback')) {
-                        feedback.innerText = '✓ Copiado';
-                        feedback.style.opacity = '1';
-                        setTimeout(() => {
-                            feedback.style.opacity = '0';
-                        }, 2000);
-                    }
-                });
+                navigator.clipboard.writeText(text);
+                const feedback = element.nextElementSibling;
+                if (feedback && feedback.classList.contains('copy-feedback')) {
+                    feedback.innerText = '✓ Copiado';
+                    feedback.style.opacity = '1';
+                    setTimeout(() => {
+                        feedback.style.opacity = '0';
+                    }, 2000);
+                }
             }
-            trackContact(label + '_copy');
-        }
-
-        function trackContact(label) {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_contact', {'event_category': 'Contact', 'event_label': label});
             }
