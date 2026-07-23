@@ -402,7 +402,7 @@
                 </div>
             </div>
 
-            <!-- Bloco de Marcas / Clientes com Filtro Interativo (Proof of Work) -->
+            <!-- Bloco de Marcas / Clientes com Filtro Interativo -->
             <div id="brands-section" class="mt-12 pt-10 border-t border-neutral-800/80 space-y-5 animate-reveal delay-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <h2 class="text-[rgb(0,17,255)] font-medium text-sm md:text-base tracking-widest uppercase">
@@ -505,12 +505,9 @@
         </div>
     </main>
 
-    <!-- Scripts de Lógica das Melhorias Funcionais -->
+    <!-- Scripts de Lógica -->
     <script>
-        let chatTriggered = false;
-
         function triggerChat() {
-            chatTriggered = true;
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
             }
@@ -521,22 +518,7 @@
             }
         }
 
-        // 1. Auto-Trigger do Chat (Scroll / Time-based)
-        window.addEventListener('scroll', function() {
-            if (chatTriggered) return;
-            const scrollPercent = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
-            if (scrollPercent > 0.55) {
-                triggerChat();
-            }
-        });
-
-        setTimeout(function() {
-            if (!chatTriggered) {
-                triggerChat();
-            }
-        }, 18000); // Trigger após 18s se não tiver havido interação
-
-        // 2. Filtro Interativo de Marcas (Proof of Work)
+        // Filtro Interativo de Marcas
         function filterBrands(category, btnElement) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -561,7 +543,7 @@
             }
         }
 
-        // 3. Click-to-Copy Inteligente com Feedback
+        // Click-to-Copy Inteligente com Feedback
         function copyToClipboard(text, element, label) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text);
