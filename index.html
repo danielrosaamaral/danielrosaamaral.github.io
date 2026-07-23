@@ -5,24 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel da Rosa Amaral - Designer</title>
     <meta name="description" content="25 anos dedicados a identidades autênticas e quejandos. Soluções estratégicas e tácticas para empresas e pessoas.">
-    <meta name="author" content="Daniel da Rosa Amaral">
-    <meta name="keywords" content="Designer, Neuromarketing, SEO, AEO, Inteligência Artificial, Branding">
-
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'portfolio-background': '#0d0d0d',
-                        'portfolio-foreground': '#e5e5e5',
-                        'portfolio-primary': '#3b82f6', // Ajuste a cor exata do destaque
-                    }
-                }
-            }
-        }
-    </script>
 
     <!-- Chatbase Script -->
     <script>
@@ -34,26 +19,70 @@
     <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
 
     <style>
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 0.4; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+        /* Entrada Fluida */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .animate-pulse-ring {
-            animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+        .animate-fade {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 100ms; }
+        .delay-2 { animation-delay: 200ms; }
+        .delay-3 { animation-delay: 300ms; }
+        .delay-4 { animation-delay: 400ms; }
+
+        /* Animação do Ring */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.2; }
+        }
+        .animate-ring {
+            animation: subtlePulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Hover Sublinhado Animado */
+        .hover-link {
+            position: relative;
+            width: fit-content;
+        }
+        .hover-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #3b82f6;
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
     </style>
 </head>
-<body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased">
+<body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-blue-500 selection:text-black">
 
     <main class="min-h-screen flex items-center justify-center p-[30px]">
         <div class="max-w-2xl w-full">
             
             <!-- Avatar Video / Trigger do Chat -->
-            <div class="flex flex-col items-start mb-8">
+            <div class="flex flex-col items-start mb-8 animate-fade">
                 <div class="relative">
-                    <div class="absolute inset-0 rounded-full border-[2px] border-blue-500 animate-pulse-ring pointer-events-none"></div>
-                    <button class="relative rounded-full overflow-hidden w-[180px] h-[180px] hover:opacity-80 transition-opacity focus:outline-none" aria-label="Open chat">
+                    <div class="absolute inset-0 rounded-full border-[2px] border-blue-500 animate-ring pointer-events-none"></div>
+                    <button class="relative rounded-full overflow-hidden w-[180px] h-[180px] transition-transform duration-500 hover:scale-[1.02] focus:outline-none" aria-label="Open chat">
                         <video 
                             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
                             autoplay loop muted playsinline 
@@ -64,44 +93,46 @@
             </div>
 
             <!-- Cabeçalho -->
-            <h1 class="text-4xl md:text-5xl mb-2 font-thin tracking-wide leading-7">Daniel da Rosa Amaral</h1>
-            <p class="text-blue-500 text-xl md:text-2xl mb-8 font-light">Designer</p>
+            <h1 class="text-4xl md:text-5xl mb-2 font-thin tracking-wide leading-7 animate-fade delay-1">Daniel da Rosa Amaral</h1>
+            <p class="text-blue-500 text-xl md:text-2xl mb-8 font-light animate-fade delay-2">Designer</p>
 
             <!-- Bio / Detalhes -->
-            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed">
+            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-fade delay-3">
                 <p>Nem sempre estou por aqui, uma seca eu sei, mas o meu clone digital está.<br/>Não te preocupes, ele dá o recado ; )</p>
                 
                 <div>
-                    <p class="font-medium">Experiência:</p>
-                    <p class="font-thin">25 anos dedicados a identidades autênticas e quejandos.</p>
+                    <p class="font-medium text-white">Experiência:</p>
+                    <p class="font-thin text-neutral-400">25 anos dedicados a identidades autênticas e quejandos.</p>
                 </div>
                 
                 <div>
-                    <p class="font-medium">Função:</p>
-                    <p>Soluções estratégicas e tácticas para empresas e pessoas.</p>
+                    <p class="font-medium text-white">Função:</p>
+                    <p class="text-neutral-400">Soluções estratégicas e tácticas para empresas e pessoas.</p>
                 </div>
                 
                 <div>
-                    <p class="font-medium">Interesses:</p>
-                    <p>Neuromarketing, SEO/AEO, Inteligência Artificial, conhecimento prosaico e tudo o que seja útil.</p>
+                    <p class="font-medium text-white">Interesses:</p>
+                    <p class="text-neutral-400">Neuromarketing, SEO/AEO, Inteligência Artificial, conhecimento prosaico e tudo o que seja útil.</p>
                 </div>
             </div>
 
             <!-- Botão PDF -->
-            <div class="mt-8">
+            <div class="mt-8 animate-fade delay-4">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="inline-block border-2 border-blue-500 text-blue-500 px-6 py-2 rounded font-medium hover:bg-blue-500 hover:text-black transition-colors">
+                   class="inline-block border-2 border-blue-500 text-blue-500 px-6 py-2 rounded font-medium 
+                          transition-all duration-300 ease-out 
+                          hover:bg-blue-500 hover:text-black hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/20 active:translate-y-0">
                     pdf
                 </a>
             </div>
 
             <!-- Contactos -->
-            <div class="mt-6 flex flex-col gap-2 font-light text-base">
-                <a href="mailto:daniel.rosa.amaral@gmail.com" class="hover:text-blue-500 transition-colors">daniel.rosa.amaral@gmail.com</a>
-                <a href="tel:+351919958423" class="hover:text-blue-500 transition-colors">+351 919 958 423</a>
-                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500 transition-colors">linkedin.com/in/daniel-da-rosa-amaral</a>
+            <div class="mt-6 flex flex-col gap-2 font-light text-base animate-fade delay-4">
+                <a href="mailto:daniel.rosa.amaral@gmail.com" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">daniel.rosa.amaral@gmail.com</a>
+                <a href="tel:+351919958423" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">+351 919 958 423</a>
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" target="_blank" rel="noopener noreferrer" class="hover-link text-neutral-300 hover:text-blue-500 transition-colors">linkedin.com/in/daniel-da-rosa-amaral</a>
             </div>
 
         </div>
