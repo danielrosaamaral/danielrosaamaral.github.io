@@ -196,15 +196,57 @@
             color: #ffffff;
             background-color: rgba(0, 17, 255, 0.12);
         }
+
+        /* Estilos do Modal / Jogo Chuckie Egg Gate */
+        #game-overlay {
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
+
+    <!-- GATE / OVERLAY COM POP-UP E JOGO CHUCKIE EGG -->
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#080808] flex items-center justify-center p-4">
+        <div id="disclaimer-screen" class="max-w-xl w-full bg-neutral-900 border border-neutral-800 p-8 rounded-2xl shadow-2xl text-center space-y-6">
+            <div class="inline-flex p-3 rounded-full bg-[rgb(0,17,255)]/10 text-[rgb(0,17,255)] mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-light text-white tracking-wide">Aviso de Acesso / Disclaimer</h2>
+            <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
+                Please note: if you don't recognize this game, it's probably because you are younger than me.
+            </p>
+            <p class="text-xs text-neutral-400 font-mono">
+                [ Desafio: Apanha todos os ovos no clássico nível 8-bit para desbloquear o portefólio ]
+            </p>
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="startChuckieGame()" class="bg-[rgb(0,17,255)] hover:bg-[rgb(0,17,255)]/80 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(0,17,255,0.4)] cursor-pointer">
+                    Aceitar & Jogar Chuckie Egg
+                </button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="hidden flex-col items-center space-y-4">
+            <div class="flex justify-between w-full max-w-[640px] text-xs md:text-sm font-mono text-neutral-400 px-2">
+                <span>JOGO: CHUCKIE EGG (8-BIT)</span>
+                <span id="game-score" class="text-[rgb(0,17,255)] font-bold">Ovos: 0 / 5</span>
+            </div>
+            <div class="border-2 border-[rgb(0,17,255)]/50 rounded-lg overflow-hidden shadow-[0_0_30px_rgba(0,17,255,0.3)] bg-black">
+                <canvas id="chuckieCanvas" width="640" height="400" class="block"></canvas>
+            </div>
+            <p class="text-xs text-neutral-400 text-center font-mono">
+                Controlos: Setas Esquerda/Direita (Mover) • Seta Cima/Espaço (Saltar/Subir Escadas)
+            </p>
+        </div>
+    </div>
 
     <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
         <div class="max-w-2xl w-full">
             
             <!-- Avatar Video + Callout -->
-            <div class="flex flex-col items-start mb-6 md:mb-8 animate-reveal">
+            <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
                 <button 
                     onclick="triggerChat()" 
                     class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" 
@@ -231,7 +273,7 @@
             </div>
 
             <!-- Título & Subtítulo Principal -->
-            <h1 class="text-4xl md:text-6xl mb-2 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
+            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
                 Daniel da Rosa Amaral
             </h1>
             <div>
@@ -414,7 +456,7 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade -->
+    <!-- Scripts de Interatividade & Jogo Chuckie Egg -->
     <script>
         function triggerChat() {
             if (typeof gtag === 'function') {
@@ -466,6 +508,199 @@
             if (typeof gtag === 'function') {
                 gtag('event', 'click_contact', {'event_category': 'Contact', 'event_label': label});
             }
+        }
+
+        // --- LÓGICA DO JOGO CHUCKIE EGG (GATEWAY) ---
+        let gameInterval = null;
+        const keys = {};
+
+        function startChuckieGame() {
+            document.getElementById('disclaimer-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('flex');
+            document.getElementById('game-screen').classList.add('flex');
+            initChuckieEgg();
+        }
+
+        function initChuckieEgg() {
+            const canvas = document.getElementById('chuckieCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Estado do Jogador
+            let player = {
+                x: 50,
+                y: 330,
+                w: 16,
+                h: 24,
+                vx: 0,
+                vy: 0,
+                speed: 2.5,
+                jumpPower: -8,
+                onGround: false,
+                climbing: false
+            };
+
+            // Plataformas 8-bit
+            const platforms = [
+                {x: 0, y: 360, w: 640, h: 40}, // Chão
+                {x: 40, y: 280, w: 560, h: 12}, // Plataforma 1
+                {x: 80, y: 200, w: 480, h: 12}, // Plataforma 2
+                {x: 40, y: 120, w: 560, h: 12}, // Plataforma 3
+                {x: 200, y: 60, w: 240, h: 12}  // Topo
+            ];
+
+            // Escadas
+            const ladders = [
+                {x: 120, y: 280, w: 20, h: 80},
+                {x: 500, y: 200, w: 20, h: 80},
+                {x: 180, y: 120, w: 20, h: 80},
+                {x: 420, y: 60, w: 20, h: 60}
+            ];
+
+            // Ovos a apanhar (Total: 5)
+            let eggs = [
+                {x: 100, y: 256, w: 12, h: 16, collected: false},
+                {x: 550, y: 176, w: 12, h: 16, collected: false},
+                {x: 220, y: 96, w: 12, h: 16, collected: false},
+                {x: 480, y: 96, w: 12, h: 16, collected: false},
+                {x: 310, y: 36, w: 12, h: 16, collected: false}
+            ];
+
+            window.addEventListener('keydown', e => { keys[e.code] = true; });
+            window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+            function update() {
+                // Verificar escadas
+                let onLadder = false;
+                for (let l of ladders) {
+                    if (player.x + player.w > l.x && player.x < l.x + l.w &&
+                        player.y + player.h >= l.y && player.y <= l.y + l.h) {
+                        onLadder = true;
+                        break;
+                    }
+                }
+
+                if (onLadder) {
+                    if (keys['ArrowUp']) { player.y -= 2; player.vy = 0; player.climbing = true; }
+                    else if (keys['ArrowDown']) { player.y += 2; player.vy = 0; player.climbing = true; }
+                    else { player.climbing = false; }
+                } else {
+                    player.climbing = false;
+                }
+
+                if (!player.climbing) {
+                    // Movimento Horizontal
+                    if (keys['ArrowLeft']) { player.vx = -player.speed; }
+                    else if (keys['ArrowRight']) { player.vx = player.speed; }
+                    else { player.vx = 0; }
+
+                    // Gravidade
+                    player.vy += 0.4;
+                }
+
+                player.x += player.vx;
+                player.y += player.vy;
+
+                // Limites do ecrã
+                if (player.x < 0) player.x = 0;
+                if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+                // Colisão com plataformas
+                player.onGround = false;
+                if (!player.climbing) {
+                    for (let p of platforms) {
+                        if (player.x + player.w > p.x && player.x < p.x + p.w &&
+                            player.y + player.h >= p.y && player.y + player.h <= p.y + 15 && player.vy >= 0) {
+                            player.y = p.y - player.h;
+                            player.vy = 0;
+                            player.onGround = true;
+                        }
+                    }
+                }
+
+                // Salto
+                if (keys['Space'] || keys['ArrowUp']) {
+                    if (player.onGround && !player.climbing) {
+                        player.vy = player.jumpPower;
+                        player.onGround = false;
+                    }
+                }
+
+                // Recolha de Ovos
+                let collectedCount = 0;
+                for (let egg of eggs) {
+                    if (!egg.collected) {
+                        if (player.x < egg.x + egg.w && player.x + player.w > egg.x &&
+                            player.y < egg.y + egg.h && player.y + player.h > egg.y) {
+                            egg.collected = true;
+                        }
+                    } else {
+                        collectedCount++;
+                    }
+                }
+
+                document.getElementById('game-score').innerText = `Ovos: ${collectedCount} / 5`;
+
+                // Condição de Vitória
+                if (collectedCount === 5) {
+                    clearInterval(gameInterval);
+                    document.getElementById('game-score').innerText = "Nível Concluído! A entrar...";
+                    setTimeout(() => {
+                        const overlay = document.getElementById('game-overlay');
+                        overlay.style.opacity = '0';
+                        setTimeout(() => overlay.remove(), 500);
+                    }, 1000);
+                }
+            }
+
+            function draw() {
+                // Limpar fundo retro
+                ctx.fillStyle = '#050505';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Desenhar Plataformas (Estilo 8-bit / blocos)
+                ctx.fillStyle = 'rgb(0, 17, 255)';
+                for (let p of platforms) {
+                    ctx.fillRect(p.x, p.y, p.w, p.h);
+                    ctx.fillStyle = '#000830';
+                    ctx.fillRect(p.x, p.y + 4, p.w, p.h - 8);
+                    ctx.fillStyle = 'rgb(0, 17, 255)';
+                }
+
+                // Desenhar Escadas
+                ctx.fillStyle = '#3344aa';
+                for (let l of ladders) {
+                    ctx.fillRect(l.x + 4, l.y, 4, l.h);
+                    ctx.fillRect(l.x + l.w - 8, l.y, 4, l.h);
+                    for (let sy = l.y; sy < l.y + l.h; sy += 10) {
+                        ctx.fillRect(l.x, sy, l.w, 3);
+                    }
+                }
+
+                // Desenhar Ovos
+                for (let egg of eggs) {
+                    if (!egg.collected) {
+                        ctx.fillStyle = '#ffcc00';
+                        ctx.beginPath();
+                        ctx.ellipse(egg.x + egg.w/2, egg.y + egg.h/2, egg.w/2, egg.h/2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Desenhar Jogador (Sprite 8-bit simplificado)
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(player.x, player.y + 8, player.w, player.h - 8); // Corpo
+                ctx.fillStyle = '#ffaa88';
+                ctx.fillRect(player.x + 2, player.y, 12, 10); // Cabeça
+                ctx.fillStyle = 'rgb(0, 17, 255)';
+                ctx.fillRect(player.x + 2, player.y + 16, 4, 8); // Perna 1
+                ctx.fillRect(player.x + 10, player.y + 16, 4, 8); // Perna 2
+            }
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                update();
+                draw();
+            }, 1000 / 60);
         }
     </script>
 
