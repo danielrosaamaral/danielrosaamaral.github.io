@@ -8,6 +8,15 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer, Neuromarketing, SEO, AEO, Inteligência Artificial, Branding">
 
+    <!-- Google Analytics 4 (GA4) - Substitua 'G-XXXXXXXXXX' pelo seu ID quando configurado -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -43,23 +52,14 @@
             animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
         }
 
-        /* Stagger Delays */
+        /* Delays Escalonados */
         .delay-1 { animation-delay: 80ms; }
         .delay-2 { animation-delay: 160ms; }
         .delay-3 { animation-delay: 240ms; }
         .delay-4 { animation-delay: 320ms; }
         .delay-5 { animation-delay: 400ms; }
 
-        /* Animação do Ring Reativo do Avatar */
-        @keyframes haloPulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.06); opacity: 0.2; }
-        }
-        .animate-halo {
-            animation: haloPulse 3.5s ease-in-out infinite;
-        }
-
-        /* Efeito Shimmer no Texto do Cargo */
+        /* Efeito Shimmer no Texto da Função */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -101,21 +101,18 @@
     <main class="min-h-screen flex items-center justify-center p-[30px]">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video / Trigger direto do Chat -->
+            <!-- Avatar Video (Sem Outline/Anel Animado) -->
             <div class="flex flex-col items-start mb-8 animate-reveal">
-                <div class="relative group">
-                    <div class="absolute inset-0 rounded-full border-[2px] border-blue-500 animate-halo group-hover:border-blue-400 group-hover:scale-110 transition-all duration-500 pointer-events-none"></div>
-                    <button 
-                        onclick="if (window.chatbase) { window.chatbase('open'); } else { console.log('Chatbase a carregar...'); }" 
-                        class="relative rounded-full overflow-hidden w-[180px] h-[180px] transition-all duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl hover:shadow-blue-500/10" 
-                        aria-label="Abrir clone digital">
-                        <video 
-                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
-                            autoplay loop muted playsinline 
-                            class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
-                        </video>
-                    </button>
-                </div>
+                <button 
+                    onclick="triggerChat()" 
+                    class="rounded-full overflow-hidden w-[180px] h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl" 
+                    aria-label="Abrir clone digital">
+                    <video 
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
+                        autoplay loop muted playsinline 
+                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 hover:brightness-110">
+                    </video>
+                </button>
             </div>
 
             <!-- Título & Função Dinâmicos -->
@@ -128,7 +125,7 @@
                 </p>
             </div>
 
-            <!-- Bio / Detalhes com Animação de Entrada -->
+            <!-- Bio / Detalhes -->
             <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3">
                 <p class="transition-colors duration-300 hover:text-white">
                     Nem sempre estou por aqui, uma seca eu sei, mas o meu clone digital está.<br/>
@@ -151,15 +148,16 @@
                 </div>
             </div>
 
-            <!-- Botão PDF com Elevação 3D Tátil -->
+            <!-- Botão Ver Portfólio -->
             <div class="mt-8 animate-reveal delay-4">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
+                   onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
                    class="inline-block border-2 border-blue-500 text-blue-500 px-6 py-2 rounded font-medium 
                           transition-all duration-300 ease-out 
                           hover:bg-blue-500 hover:text-black hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/25 active:translate-y-0 active:scale-98">
-                    pdf
+                    Ver Portfólio
                 </a>
             </div>
 
@@ -178,6 +176,20 @@
 
         </div>
     </main>
+
+    <!-- Script de Trigger Robusto do Chatbase -->
+    <script>
+        function triggerChat() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
+            }
+            if (typeof window.chatbase === 'function') {
+                window.chatbase('open');
+            } else {
+                window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
+            }
+        }
+    </script>
 
 </body>
 </html>
