@@ -264,6 +264,25 @@
         .interactive-link:hover {
             color: rgb(100, 140, 255);
         }
+
+        /* Estilos do Filtro de Marcas */
+        .brand-item {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .brand-item.dimmed {
+            opacity: 0.2;
+            filter: grayscale(100%);
+        }
+        .brand-item.highlighted {
+            opacity: 1;
+            color: #ffffff;
+            font-weight: 400;
+        }
+        .filter-btn.active {
+            border-color: rgb(0, 17, 255);
+            color: #ffffff;
+            background-color: rgba(0, 17, 255, 0.15);
+        }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
@@ -271,11 +290,11 @@
     <main class="min-h-screen flex items-center justify-center p-[30px] my-8">
         <div class="max-w-2xl w-full">
             
-            <!-- Avatar Video + Pill Callout (Estilo Outline com Capitular) -->
+            <!-- Avatar Video + Pill Callout com Indicador de Estado -->
             <div class="flex flex-col items-start mb-8 md:mb-10 animate-reveal">
                 <button 
                     onclick="triggerChat()" 
-                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer shadow-xl mb-3.5 group" 
+                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-xl mb-3.5 group relative" 
                     aria-label="Abrir clone digital">
                     <video 
                         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
@@ -286,9 +305,17 @@
 
                 <button 
                     onclick="triggerChat()" 
-                    class="border border-[rgb(0,17,255)]/70 bg-neutral-900/40 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.15)] hover:shadow-[0_0_25px_rgba(0,17,255,0.3)] transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none select-none w-auto max-w-full backdrop-blur-sm">
-                    <span class="text-base sm:text-lg font-medium tracking-wide text-white">Olá <span class="wave-emoji">👋</span> Vamos conversar?</span>
-                    <span class="text-xs sm:text-sm font-normal text-neutral-300 mt-0.5">Clica em mim para começar.</span>
+                    class="border border-[rgb(0,17,255)]/70 bg-neutral-900/40 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.15)] hover:shadow-[0_0_25px_rgba(0,17,255,0.3)] transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-sm relative group">
+                    
+                    <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
+                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
+                    </span>
+                    
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs sm:text-sm font-normal text-neutral-300">Clica em mim para começar.</span>
+                        <span class="text-[10px] text-[rgb(100,140,255)] font-mono uppercase tracking-wider ml-1 opacity-80">• Clone IA Ativo</span>
+                    </div>
                 </button>
             </div>
 
@@ -375,49 +402,61 @@
                 </div>
             </div>
 
-            <!-- Bloco de Marcas / Clientes Completo -->
-            <div class="mt-12 pt-10 border-t border-neutral-800/80 space-y-5 animate-reveal delay-5">
-                <h2 class="text-[rgb(0,17,255)] font-medium text-sm md:text-base tracking-widest uppercase">
-                    Marcas & Instituições
-                </h2>
-                <p class="text-sm text-neutral-400 font-thin mb-4">
+            <!-- Bloco de Marcas / Clientes com Filtro Interativo (Proof of Work) -->
+            <div id="brands-section" class="mt-12 pt-10 border-t border-neutral-800/80 space-y-5 animate-reveal delay-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <h2 class="text-[rgb(0,17,255)] font-medium text-sm md:text-base tracking-widest uppercase">
+                        Marcas & Instituições
+                    </h2>
+                </div>
+                
+                <p class="text-sm text-neutral-400 font-thin mb-2">
                     Projetos e colaborações desenvolvidos ao longo do percurso profissional:
                 </p>
+
+                <!-- Filtros Dinâmicos -->
+                <div class="flex flex-wrap gap-2 mb-4 text-xs">
+                    <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3 py-1 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
+                    <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3 py-1 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
+                    <button onclick="filterBrands('health', this)" class="filter-btn border border-neutral-800 px-3 py-1 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Saúde & Pharma</button>
+                    <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3 py-1 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
+                    <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3 py-1 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
+                </div>
                 
-                <div class="flex flex-wrap gap-x-3.5 gap-y-2.5 text-sm md:text-base text-neutral-400 font-light leading-relaxed">
-                    <span class="hover:text-white transition-colors cursor-default">ALD Automotive</span> •
-                    <span class="hover:text-white transition-colors cursor-default">APCE</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Bayer</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Bolodoce</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Câmara de Comércio</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Cruzfer</span> •
-                    <span class="hover:text-white transition-colors cursor-default">EMEL</span> •
-                    <span class="hover:text-white transition-colors cursor-default">EPUL</span> •
-                    <span class="hover:text-white transition-colors cursor-default">European Association for Internal Communication</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Exdoo</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Fresenius Medical Care</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Galp Energia</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Gelpeixe</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Grupo E.T.E.</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Il Pizzaiollo</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Câmara Municipal de Lisboa</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Lisbon Partners</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Metro de Lisboa</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Metrocom</span> •
-                    <span class="hover:text-white transition-colors cursor-default">MOBI.E</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Nestlé</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Novartis</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Os Mosqueteiros</span> •
-                    <span class="hover:text-white transition-colors cursor-default">OTLIS</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Santa Casa da Misericórdia</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Sara Lee</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Shiseido</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Teleperformance</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Transinsular</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Vitra</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Zapp Mobile</span> •
-                    <span class="hover:text-white transition-colors cursor-default">Refrige</span> •
-                    <span class="hover:text-white transition-colors cursor-default">24 Sete</span>
+                <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-2.5 text-sm md:text-base text-neutral-400 font-light leading-relaxed">
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
                 </div>
             </div>
 
@@ -434,18 +473,26 @@
                 </a>
             </div>
 
-            <!-- Contactos Interativos -->
+            <!-- Contactos Interativos com Click-to-Copy -->
             <div class="mt-8 flex flex-col gap-3 font-light text-lg animate-reveal delay-7">
-                <a href="mailto:daniel.rosa.amaral@gmail.com" 
-                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'email'});}"
-                   class="interactive-link text-neutral-300 transition-colors w-max">
-                    daniel.rosa.amaral@gmail.com
-                </a>
-                <a href="tel:+351919958423" 
-                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'phone'});}"
-                   class="interactive-link text-neutral-300 transition-colors w-max">
-                    +351 919 958 423
-                </a>
+                <div class="flex items-center gap-3">
+                    <a href="mailto:daniel.rosa.amaral@gmail.com" 
+                       onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        daniel.rosa.amaral@gmail.com
+                    </a>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="tel:+351919958423" 
+                       onclick="copyToClipboard('+351919958423', this, 'phone')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        +351 919 958 423
+                    </a>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
+                </div>
+
                 <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -458,9 +505,12 @@
         </div>
     </main>
 
-    <!-- Script de Trigger do Chatbase -->
+    <!-- Scripts de Lógica das Melhorias Funcionais -->
     <script>
+        let chatTriggered = false;
+
         function triggerChat() {
+            chatTriggered = true;
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
             }
@@ -468,6 +518,64 @@
                 window.chatbase('open');
             } else {
                 window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
+            }
+        }
+
+        // 1. Auto-Trigger do Chat (Scroll / Time-based)
+        window.addEventListener('scroll', function() {
+            if (chatTriggered) return;
+            const scrollPercent = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+            if (scrollPercent > 0.55) {
+                triggerChat();
+            }
+        });
+
+        setTimeout(function() {
+            if (!chatTriggered) {
+                triggerChat();
+            }
+        }, 18000); // Trigger após 18s se não tiver havido interação
+
+        // 2. Filtro Interativo de Marcas (Proof of Work)
+        function filterBrands(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const items = document.querySelectorAll('.brand-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.classList.remove('dimmed');
+                    if (category !== 'all') {
+                        item.classList.add('highlighted');
+                    } else {
+                        item.classList.remove('highlighted');
+                    }
+                } else {
+                    item.classList.add('dimmed');
+                    item.classList.remove('highlighted');
+                }
+            });
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'filter_brands', {'event_category': 'Engagement', 'event_label': category});
+            }
+        }
+
+        // 3. Click-to-Copy Inteligente com Feedback
+        function copyToClipboard(text, element, label) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+                const feedback = element.nextElementSibling;
+                if (feedback && feedback.classList.contains('copy-feedback')) {
+                    feedback.innerText = '✓ Copiado';
+                    feedback.style.opacity = '1';
+                    setTimeout(() => {
+                        feedback.style.opacity = '0';
+                    }, 2000);
+                }
+            }
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_contact', {'event_category': 'Contact', 'event_label': label});
             }
         }
     </script>
