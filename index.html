@@ -370,8 +370,50 @@
                 </div>
             </div>
 
+            <!-- Minijogo Integrado: Alinhamento Perfeito -->
+            <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
+                        Minijogo • Alinhamento & Simetria
+                    </h2>
+                </div>
+                <p class="text-sm text-neutral-400 font-extralight">
+                    Teste a precisão do seu olho clínico de Diretor de Arte. Ajuste o cursor para centrar a linha-guia milimetricamente no eixo central.
+                </p>
+
+                <div class="bg-neutral-900/80 border border-neutral-800 rounded-xl p-6 relative overflow-hidden backdrop-blur-md">
+                    <div class="flex justify-between items-center mb-4 text-xs font-mono text-neutral-400">
+                        <span>Precisão: <strong id="game-score" class="text-white">0%</strong></span>
+                        <span id="game-status" class="text-[rgb(0,17,255)]">Ajuste o slider abaixo</span>
+                    </div>
+
+                    <!-- Área visual do jogo -->
+                    <div class="h-28 bg-black/50 rounded-lg relative flex items-center justify-center border border-neutral-800/80 overflow-hidden">
+                        <!-- Alvo central (Eixo perfeito) -->
+                        <div class="absolute w-[2px] h-full bg-[rgb(0,17,255)]/40 z-0"></div>
+                        
+                        <!-- Elemento móvel guiado pelo utilizador -->
+                        <div id="game-bar" class="absolute w-12 h-16 border-2 border-white/80 bg-white/10 rounded transition-all duration-75 flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                            <span class="text-[10px] font-mono text-white">LOGO</span>
+                        </div>
+                    </div>
+
+                    <!-- Controlos -->
+                    <div class="mt-6 space-y-4">
+                        <input type="range" id="game-slider" min="0" max="100" value="25" 
+                            class="w-full accent-[rgb(0,17,255)] bg-neutral-800 rounded-lg appearance-none cursor-pointer h-2"
+                            oninput="updateGame(this.value)">
+                        
+                        <div class="flex justify-between items-center">
+                            <button onclick="resetGame()" class="text-xs text-neutral-400 hover:text-white transition-colors underline cursor-pointer">Reiniciar Desafio</button>
+                            <span id="game-feedback" class="text-xs font-medium text-neutral-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- CTA Portfólio -->
-            <div class="mt-16 animate-reveal delay-6">
+            <div class="mt-16 animate-reveal delay-7">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -382,7 +424,7 @@
             </div>
 
             <!-- Contactos -->
-            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
+            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal">
                 <div class="flex items-center gap-3">
                     <a href="mailto:daniel.rosa.amaral@gmail.com" 
                        onclick="trackContact('email')"
@@ -415,8 +457,62 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade -->
+    <!-- Scripts de Interatividade & Jogo -->
     <script>
+        let targetPosition = 50; // Posição exata do alvo central (%)
+
+        function initGame() {
+            targetPosition = Math.floor(Math.random() * 60) + 20; // Alvo aleatório entre 20% e 80%
+            const slider = document.getElementById('game-slider');
+            slider.value = Math.floor(Math.random() * 90) + 5;
+            updateGame(slider.value);
+        }
+
+        function updateGame(val) {
+            const bar = document.getElementById('game-bar');
+            const scoreEl = document.getElementById('game-score');
+            const feedbackEl = document.getElementById('game-feedback');
+            const statusEl = document.getElementById('game-status');
+
+            // Mapeia o valor do slider (0-100%) para a posição horizontal do elemento
+            bar.style.left = `calc(${val}% - 24px)`;
+
+            // Cálculo da precisão com base na distância ao alvo central
+            const distance = Math.abs(val - targetPosition);
+            let precision = Math.max(0, Math.round(100 - (distance * 2)));
+            
+            scoreEl.innerText = precision + '%';
+
+            if (precision === 100) {
+                statusEl.innerText = 'Perfeição Absoluta!';
+                feedbackEl.innerText = '🏆 Olho clínico de Diretor de Arte certificado!';
+                feedbackEl.className = 'text-xs font-medium text-[rgb(0,17,255)]';
+                bar.style.borderColor = 'rgb(0,17,255)';
+                bar.style.backgroundColor = 'rgba(0,17,255,0.2)';
+            } else if (precision >= 90) {
+                statusEl.innerText = 'Excelente Alinhamento';
+                feedbackEl.innerText = 'Quase perfeito, ajuste milimétrico.';
+                feedbackEl.className = 'text-xs font-medium text-emerald-400';
+                bar.style.borderColor = 'rgba(255,255,255,0.8)';
+                bar.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            } else {
+                statusEl.innerText = 'Ajuste em curso...';
+                feedbackEl.innerText = 'Desalinhado.';
+                feedbackEl.className = 'text-xs font-medium text-neutral-400';
+                bar.style.borderColor = 'rgba(255,255,255,0.8)';
+                bar.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            }
+        }
+
+        function resetGame() {
+            initGame();
+        }
+
+        // Inicializar minijogo ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            initGame();
+        });
+
         function triggerChat() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
