@@ -6,68 +6,18 @@
     <title>Daniel da Rosa Amaral - Designer Gráfico, Diretor de Arte, Branding, SEO & AEO</title>
     <meta name="description" content="Há mais de 25 anos a desenvolver projetos de branding, identidade visual, design gráfico, design editorial, publicidade, SEO, AEO e Google Ads para empresas e instituições.">
     <meta name="author" content="Daniel da Rosa Amaral">
-    <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
     <!-- Favicon PNG -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
     <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://danielrosaamaral.github.io/">
-
-    <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Daniel da Rosa Amaral",
-      "jobTitle": ["Designer Gráfico", "Diretor de Arte", "Especialista em Branding", "Consultor SEO & AEO"],
-      "description": "Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.",
-      "url": "https://danielrosaamaral.github.io/",
-      "sameAs": [
-        "https://www.linkedin.com/in/daniel-da-rosa-amaral/"
-      ],
-      "knowsAbout": [
-        "Design Gráfico",
-        "Direção de Arte",
-        "Branding & Identidade Visual",
-        "Design Editorial",
-        "Publicidade",
-        "SEO (Search Engine Optimization)",
-        "AEO (Answer Engine Optimization)",
-        "Google Ads",
-        "Web Design & UX/UI",
-        "Comunicação Corporativa"
-      ]
-    }
-    </script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-4X7D309RVX');
-    </script>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Chatbase Config & Script -->
-    <script>
-        window.embeddedChatbotConfig = {
-            chatbotId: "4Xp1KrkvShDv2af8eykrm",
-            domain: "www.chatbase.co"
-        }
-    </script>
-    <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
 
     <style>
         :root {
@@ -77,14 +27,8 @@
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-reveal {
@@ -138,20 +82,6 @@
             box-shadow: 0 0 30px rgba(0, 17, 255, 0.9);
         }
 
-        @keyframes waveHand {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(-14deg); }
-            40% { transform: rotate(12deg); }
-            60% { transform: rotate(-10deg); }
-            80% { transform: rotate(8deg); }
-        }
-
-        .wave-emoji {
-            display: inline-block;
-            transform-origin: 70% 70%;
-            animation: waveHand 2.2s infinite;
-        }
-
         .interactive-link {
             position: relative;
             display: inline-block;
@@ -172,30 +102,6 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-        .interactive-link:hover {
-            color: rgb(100, 140, 255);
-        }
-
-        .brand-item {
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .brand-item.dimmed {
-            opacity: 0.15;
-            filter: grayscale(100%);
-        }
-        .brand-item.highlighted {
-            opacity: 1;
-            color: #ffffff;
-            font-weight: 400;
-        }
-        .filter-btn {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-        .filter-btn.active {
-            border-color: rgb(0, 17, 255);
-            color: #ffffff;
-            background-color: rgba(0, 17, 255, 0.12);
-        }
 
         /* Canvas retro rendering */
         #gameCanvas {
@@ -206,39 +112,35 @@
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
     <!-- OVERLAY DO JOGO (CHUCKIE EGG RETRO GATE) -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col items-center justify-center p-4 sm:p-6 transition-opacity duration-700">
-        <div class="max-w-xl w-full text-center space-y-3">
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col items-center justify-center p-3 sm:p-6 transition-opacity duration-700">
+        <div class="max-w-2xl w-full text-center space-y-2">
             
-            <span class="inline-block px-3 py-1 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
+            <span class="inline-block px-3 py-0.5 bg-[rgb(0,17,255)]/10 border border-[rgb(0,17,255)]/30 rounded-full text-[rgb(0,17,255)] font-mono text-xs uppercase tracking-widest">
                 Age / Seniority Check
             </span>
 
-            <h2 class="text-lg sm:text-xl font-mono text-white tracking-tight leading-snug">
+            <h2 class="text-base sm:text-lg font-mono text-white tracking-tight">
                 "Disclaimer: If you don't recognize this game, it's probably because you're younger than me."
             </h2>
-            
-            <p class="text-xs text-neutral-400 font-mono">
-                Recolhe os <span class="text-amber-400 font-bold">3 ovos</span> e evita as patrulhas para abrir a porta no topo.
-                <br><span class="text-neutral-500">[Setas ← → / A D para mover | Espaço / W / ↑ para saltar]</span>
-            </p>
 
             <!-- CANVAS CHUCKIE EGG -->
-            <div class="flex flex-col items-center my-2 relative">
-                <canvas id="gameCanvas" width="440" height="300" class="border-2 border-[rgb(0,17,255)]/50 rounded-lg shadow-[0_0_35px_rgba(0,17,255,0.2)] bg-[#050505] max-w-full"></canvas>
-                
-                <!-- Status Bar do Jogo -->
-                <div class="w-full max-w-[440px] flex justify-between items-center px-2 pt-1.5 font-mono text-xs text-neutral-400">
-                    <div>OVOS: <span id="egg-count" class="text-amber-400 font-bold">0 / 3</span></div>
-                    <div id="game-status" class="text-xs text-[rgb(0,17,255)] font-bold">NÍVEL 1</div>
-                </div>
+            <div class="flex flex-col items-center my-1 relative">
+                <canvas id="gameCanvas" width="512" height="400" class="border-2 border-[rgb(0,17,255)]/50 rounded shadow-[0_0_35px_rgba(0,17,255,0.25)] bg-[#000000] max-w-full"></canvas>
             </div>
 
-            <!-- CONTROLOS MOBILE & BYPASS -->
-            <div class="flex flex-col items-center gap-2 pt-1">
-                <div class="flex sm:hidden gap-2">
-                    <button id="btn-left" class="bg-neutral-900 border border-neutral-700 px-4 py-2 rounded text-xs font-mono active:bg-[rgb(0,17,255)]/30">←</button>
-                    <button id="btn-jump" class="bg-[rgb(0,17,255)] text-white px-6 py-2 rounded text-xs font-mono font-bold">SALTO</button>
-                    <button id="btn-right" class="bg-neutral-900 border border-neutral-700 px-4 py-2 rounded text-xs font-mono active:bg-[rgb(0,17,255)]/30">→</button>
+            <!-- CONTROLOS & BYPASS -->
+            <div class="flex flex-col items-center gap-2">
+                <p class="text-xs text-neutral-400 font-mono">
+                    <span class="text-[rgb(0,17,255)] font-bold">SETAS / WASD:</span> Mover & Subir Escadas | <span class="text-[rgb(0,17,255)] font-bold">ESPAÇO:</span> Saltar
+                </p>
+
+                <!-- Mobile Controls -->
+                <div class="flex sm:hidden gap-1.5 pt-1">
+                    <button id="btn-left" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">←</button>
+                    <button id="btn-up" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">↑</button>
+                    <button id="btn-down" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">↓</button>
+                    <button id="btn-right" class="bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded text-xs font-mono">→</button>
+                    <button id="btn-jump" class="bg-[rgb(0,17,255)] text-white px-4 py-1.5 rounded text-xs font-mono font-bold">SALTO</button>
                 </div>
 
                 <button onclick="unlockSite('bypass')" class="text-xs text-neutral-500 hover:text-[rgb(0,17,255)] underline font-mono tracking-wide cursor-pointer transition-colors mt-1">
@@ -249,436 +151,290 @@
         </div>
     </div>
 
-    <!-- SITE PRINCIPAL (INICIALMENTE OCULTO) -->
-    <main id="main-site" class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8 opacity-0 transition-opacity duration-1000">
+    <!-- SITE PRINCIPAL -->
+    <main id="main-site" class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 opacity-0 transition-opacity duration-1000">
         <div class="max-w-2xl w-full">
-            
-            <!-- Avatar Video + Callout -->
-            <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
-                <button 
-                    onclick="triggerChat()" 
-                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" 
-                    aria-label="Abrir conversa">
-                    <video 
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
-                        autoplay loop muted playsinline 
-                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
-                    </video>
-                </button>
-
-                <button 
-                    onclick="triggerChat()" 
-                    class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
-                    
-                    <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
-                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
-                    </span>
-                    
-                    <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
-                        Clica em mim para começar.
-                    </span>
-                </button>
-            </div>
-
-            <!-- Título & Subtítulo Principal -->
-            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
+            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1">
                 Daniel da Rosa Amaral
             </h1>
-            <div>
-                <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2 inline-block cursor-default leading-relaxed tracking-normal">
-                    Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
-                </p>
-            </div>
-
-            <!-- Conteúdo Introdutório -->
-            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
+            <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2">
+                Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
+            </p>
+            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90">
                 <p>
                     Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
                 </p>
-                <p>
-                    Há mais de 25 anos que ajudo marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital através do design, da estratégia e da otimização para motores de busca e Inteligência Artificial.
-                </p>
             </div>
-
-            <!-- Especialidades -->
-            <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-8 animate-reveal delay-4">
-                <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
-                    Especialidades
-                </h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-10 text-base text-neutral-400">
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Design Gráfico
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direção de arte.
-                        </p>
-                    </div>
-
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Branding & Identidade Visual
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitetura de marca e comunicação visual.
-                        </p>
-                    </div>
-
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Design Editorial
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais.
-                        </p>
-                    </div>
-
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Publicidade
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual.
-                        </p>
-                    </div>
-
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            SEO, AEO & Google Ads
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            SEO técnico, SEO on-page, arquitetura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico.
-                        </p>
-                    </div>
-
-                    <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Web Design
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Arquitetura de informação, wireframes, UX, UI, layouts para websites, landing pages e direção de arte para projetos digitais.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Marcas & Instituições -->
-            <div id="brands-section" class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
-                        Marcas & Instituições
-                    </h2>
-                </div>
-                
-                <p class="text-sm text-neutral-400 font-extralight mb-3">
-                    Projetos e colaborações desenvolvidos ao longo do percurso profissional:
-                </p>
-
-                <!-- Filtros -->
-                <div class="flex flex-wrap gap-2 mb-6 text-xs font-light">
-                    <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
-                    <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
-                    <button onclick="filterBrands('health', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Saúde & Pharma</button>
-                    <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
-                    <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
-                </div>
-                
-                <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
-                </div>
-            </div>
-
-            <!-- CTA Portfólio -->
-            <div class="mt-16 animate-reveal delay-6">
+            <div class="mt-10 animate-reveal delay-6">
                 <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
                    target="_blank" 
-                   rel="noopener noreferrer" 
-                   onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
-                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-98">
+                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base rounded font-medium">
                     Ver Portfólio Completo
                 </a>
             </div>
-
-            <!-- Contactos -->
-            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
-                <div class="flex items-center gap-3">
-                    <a href="mailto:daniel.rosa.amaral@gmail.com" 
-                       onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')"
-                       class="interactive-link text-neutral-300 transition-colors w-max">
-                        daniel.rosa.amaral@gmail.com
-                    </a>
-                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <a href="tel:+351919958423" 
-                       onclick="copyToClipboard('+351919958423', this, 'phone')"
-                       class="interactive-link text-neutral-300 transition-colors w-max">
-                        +351 919 958 423
-                    </a>
-                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
-                </div>
-
-                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'linkedin'});}"
-                   class="interactive-link text-neutral-300 transition-colors w-max">
-                    linkedin.com/in/daniel-da-rosa-amaral
-                </a>
-            </div>
-
         </div>
     </main>
 
-    <!-- MOTOR DO JOGO CHUCKIE EGG (8-BIT PREMIUM) & SCRIPTS -->
+    <!-- MOTOR DO JOGO CHUCKIE EGG LEVEL 1 -->
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const eggCountElem = document.getElementById('egg-count');
-        const gameStatusElem = document.getElementById('game-status');
 
-        // FÍSICA COM INÉRCIA & ACELERAÇÃO
+        // VARIÁVEIS DE JOGO
+        let score = 0;
+        let bonus = 840;
+        let timeLeft = 818;
+        let isGameOver = false;
+
+        // JOGADOR (HARRY)
         let player = {
-            x: 20, y: 250, w: 14, h: 18,
+            x: 180, y: 295, w: 12, h: 16,
             vx: 0, vy: 0,
-            accel: 0.35, friction: 0.82, maxSpeed: 2.8,
-            jumpForce: -6.4, gravity: 0.3, grounded: false
+            speed: 2.2,
+            climbSpeed: 1.8,
+            jumpForce: -5.5,
+            gravity: 0.28,
+            grounded: false,
+            isClimbing: false
         };
 
-        let isGameOver = false;
-        let isVictorious = false;
-
-        // ESTRUTURA DO NÍVEL CHUCKIE EGG
+        // PLATAFORMAS (Réplica da Imagem)
         const platforms = [
-            { x: 0, y: 280, w: 440, h: 12 },   // Chão
-            { x: 0, y: 215, w: 300, h: 8 },    // Pl. 1
-            { x: 140, y: 150, w: 300, h: 8 },   // Pl. 2
-            { x: 0, y: 85, w: 320, h: 8 }      // Pl. 3 Topo
+            { x: 0, y: 380, w: 512, h: 8 },    // Chão base
+            { x: 0, y: 310, w: 512, h: 8 },    // Nível 1 completo
+            { x: 60, y: 245, w: 200, h: 8 },   // Nível 2 esquerdo
+            { x: 230, y: 245, w: 220, h: 8 },  // Nível 2 direito
+            { x: 80, y: 180, w: 130, h: 8 },   // Nível 3 esquerdo
+            { x: 230, y: 180, w: 80, h: 8 },    // Nível 3 meio
+            { x: 330, y: 195, w: 60, h: 8 },   // Nível 3 degrau 1
+            { x: 380, y: 180, w: 60, h: 8 },   // Nível 3 degrau 2
+            { x: 120, y: 115, w: 140, h: 8 },  // Nível 4 esquerdo
+            { x: 280, y: 115, w: 80, h: 8 },   // Nível 4 meio
+            { x: 450, y: 115, w: 62, h: 8 }    // Nível 4 direito
         ];
 
+        // ESCADAS OPERACIONAIS
         const ladders = [
-            { x: 260, y: 215, h: 65 },
-            { x: 160, y: 150, h: 65 },
-            { x: 80, y: 85, h: 65 }
+            { x: 80, y: 245, h: 65 },    // Escada inferior esquerda
+            { x: 184, y: 90, h: 220 },   // Escada grande central (atravessa do Nível 1 ao Topo)
+            { x: 284, y: 310, h: 70 },   // Escada inferior meio-direita
+            { x: 412, y: 310, h: 70 }    // Escada inferior extrema-direita
         ];
 
-        let eggs = [
-            { x: 220, y: 198, w: 10, h: 12, collected: false },
-            { x: 380, y: 133, w: 10, h: 12, collected: false },
-            { x: 30, y: 68, w: 10, h: 12, collected: false }
+        // OVOS & MILHO (Mapeamento da imagem)
+        let collectibles = [
+            { x: 30, y: 295, type: 'egg' },
+            { x: 110, y: 295, type: 'corn' },
+            { x: 105, y: 230, type: 'egg' },
+            { x: 135, y: 165, type: 'egg' },
+            { x: 260, y: 165, type: 'egg' },
+            { x: 340, y: 95, type: 'corn' },
+            { x: 470, y: 95, type: 'egg' },
+            { x: 400, y: 295, type: 'egg' },
+            { x: 480, y: 295, type: 'egg' },
+            { x: 110, y: 365, type: 'corn' },
+            { x: 340, y: 365, type: 'corn' }
         ];
 
-        let exitDoor = { x: 390, y: 45, w: 20, h: 40, open: false };
-
-        // INIMIGOS (PATOS PATRULHEIROS)
+        // INIMIGOS (PÁSSAROS / DUCKS)
         let ducks = [
-            { x: 100, y: 198, w: 14, h: 15, vx: 1.2, minX: 10, maxX: 280 },
-            { x: 280, y: 133, w: 14, h: 15, vx: -1.4, minX: 150, maxX: 420 },
-            { x: 150, y: 68, w: 14, h: 15, vx: 1.6, minX: 10, maxX: 300 }
+            { x: 160, y: 228, w: 14, h: 16, vx: 1.1, minX: 60, maxX: 250 },
+            { x: 340, y: 294, w: 14, h: 16, vx: -1.3, minX: 280, maxX: 490 }
         ];
 
+        // CONTROLO DE TECLAS
         let keys = {};
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
         // Controlos Mobile
-        document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
-        document.getElementById('btn-left').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowLeft'] = false; });
-        document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
-        document.getElementById('btn-right').addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowRight'] = false; });
-        document.getElementById('btn-jump').addEventListener('touchstart', (e) => { e.preventDefault(); keys['Space'] = true; setTimeout(() => keys['Space'] = false, 150); });
+        const bindTouch = (id, key) => {
+            const btn = document.getElementById(id);
+            if(!btn) return;
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
+            btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
+        };
+        bindTouch('btn-left', 'ArrowLeft');
+        bindTouch('btn-right', 'ArrowRight');
+        bindTouch('btn-up', 'ArrowUp');
+        bindTouch('btn-down', 'ArrowDown');
+        bindTouch('btn-jump', 'Space');
 
-        function resetGame() {
-            player.x = 20; player.y = 250; player.vx = 0; player.vy = 0;
-            eggs.forEach(e => e.collected = false);
-            exitDoor.open = false;
-            isGameOver = false;
-            isVictorious = false;
-            gameStatusElem.innerText = "NÍVEL 1";
-            gameStatusElem.className = "text-xs text-[rgb(0,17,255)] font-bold";
-            updateEggUI();
-        }
-
-        function triggerGameOver() {
-            isGameOver = true;
-            gameStatusElem.innerText = "GAME OVER";
-            gameStatusElem.className = "text-xs text-red-500 font-bold animate-pulse";
-            setTimeout(resetGame, 1400);
-        }
-
-        function updateEggUI() {
-            const collected = eggs.filter(e => e.collected).length;
-            eggCountElem.innerText = `${collected} / ${eggs.length}`;
-            if (collected === eggs.length) {
-                exitDoor.open = true;
-                gameStatusElem.innerText = "PORTA ABERTA!";
-                gameStatusElem.className = "text-xs text-green-400 font-bold";
-            }
+        function checkOnLadder() {
+            return ladders.find(l => 
+                player.x + player.w / 2 >= l.x - 4 && 
+                player.x + player.w / 2 <= l.x + 16 && 
+                player.y + player.h >= l.y && 
+                player.y <= l.y + l.h
+            );
         }
 
         function updatePhysics() {
-            if (isGameOver || isVictorious) return;
+            if (isGameOver) return;
 
-            // Inércia Horizontal
-            if (keys['ArrowRight'] || keys['KeyD']) {
-                if (player.vx < player.maxSpeed) player.vx += player.accel;
-            } else if (keys['ArrowLeft'] || keys['KeyA']) {
-                if (player.vx > -player.maxSpeed) player.vx -= player.accel;
+            const activeLadder = checkOnLadder();
+
+            // Lógica de Subida de Escadas
+            if (activeLadder && (keys['ArrowUp'] || keys['KeyW'] || keys['ArrowDown'] || keys['KeyS'])) {
+                player.isClimbing = true;
+                player.vx = 0;
+            }
+
+            if (player.isClimbing) {
+                player.vy = 0;
+                if (keys['ArrowUp'] || keys['KeyW']) player.vy = -player.climbSpeed;
+                if (keys['ArrowDown'] || keys['KeyS']) player.vy = player.climbSpeed;
+
+                if (keys['ArrowLeft'] || keys['KeyA']) player.x -= 1;
+                if (keys['ArrowRight'] || keys['KeyD']) player.x += 1;
+
+                if (!activeLadder) {
+                    player.isClimbing = false;
+                }
             } else {
-                player.vx *= player.friction;
+                // Movimento Horizontal Padrão
+                if (keys['ArrowRight'] || keys['KeyD']) player.vx = player.speed;
+                else if (keys['ArrowLeft'] || keys['KeyA']) player.vx = -player.speed;
+                else player.vx = 0;
+
+                // Salto
+                if ((keys['Space']) && player.grounded) {
+                    player.vy = player.jumpForce;
+                    player.grounded = false;
+                }
+
+                // Gravidade
+                player.vy += player.gravity;
             }
 
-            // Salto
-            if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.grounded) {
-                player.vy = player.jumpForce;
-                player.grounded = false;
-            }
-
-            // Gravidade
-            player.vy += player.gravity;
             player.x += player.vx;
             player.y += player.vy;
 
-            // Colisão com Plataformas
+            // Colisão com Plataformas (Apenas se não estiver a subir escada)
             player.grounded = false;
-            platforms.forEach(p => {
-                if (player.x < p.x + p.w && player.x + player.w > p.x &&
-                    player.y + player.h > p.y && player.y + player.h < p.y + p.h + player.vy) {
-                    player.grounded = true;
-                    player.vy = 0;
-                    player.y = p.y - player.h;
-                }
-            });
+            if (!player.isClimbing) {
+                platforms.forEach(p => {
+                    if (player.x < p.x + p.w && player.x + player.w > p.x &&
+                        player.y + player.h >= p.y && player.y + player.h <= p.y + p.h + player.vy) {
+                        player.grounded = true;
+                        player.vy = 0;
+                        player.y = p.y - player.h;
+                    }
+                });
+            }
 
-            // Limites da Janela
-            if (player.x < 0) { player.x = 0; player.vx = 0; }
-            if (player.x + player.w > canvas.width) { player.x = canvas.width - player.w; player.vx = 0; }
-
-            // Mover e verificar Inimigos (Patos)
+            // Mover Inimigos
             ducks.forEach(d => {
                 d.x += d.vx;
                 if (d.x <= d.minX || d.x + d.w >= d.maxX) d.vx *= -1;
 
-                // Colisão do jogador com pato (Game Over)
+                // Colisão de Game Over
                 if (player.x < d.x + d.w && player.x + player.w > d.x &&
                     player.y < d.y + d.h && player.y + player.h > d.y) {
-                    triggerGameOver();
+                    isGameOver = true;
+                    setTimeout(resetGame, 1200);
                 }
             });
 
-            // Recolher Ovos
-            eggs.forEach(e => {
-                if (!e.collected &&
-                    player.x < e.x + e.w && player.x + player.w > e.x &&
-                    player.y < e.y + e.h && player.y + player.h > e.y) {
-                    e.collected = true;
-                    updateEggUI();
+            // Recolher Ovos / Milho
+            collectibles.forEach((item, index) => {
+                if (player.x < item.x + 12 && player.x + player.w > item.x &&
+                    player.y < item.y + 12 && player.y + player.h > item.y) {
+                    collectibles.splice(index, 1);
+                    score += item.type === 'egg' ? 100 : 50;
+                    if (collectibles.filter(c => c.type === 'egg').length === 0) {
+                        unlockSite('completed');
+                    }
                 }
             });
 
-            // Porta de Saída (Vitória)
-            if (exitDoor.open &&
-                player.x < exitDoor.x + exitDoor.w && player.x + player.w > exitDoor.x &&
-                player.y < exitDoor.y + exitDoor.h && player.y + player.h > exitDoor.y) {
-                isVictorious = true;
-                unlockSite('completed');
-            }
+            // Timer
+            if (Math.random() < 0.05 && timeLeft > 0) timeLeft--;
+        }
+
+        function resetGame() {
+            player.x = 180; player.y = 295; player.vx = 0; player.vy = 0;
+            player.isClimbing = false;
+            isGameOver = false;
         }
 
         function drawRender() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Escadas (Linhas estilo ZX Spectrum)
-            ctx.strokeStyle = '#333333';
+            // 1. DESENHAR HUD (Topo estilo ZX Spectrum)
+            ctx.fillStyle = 'rgb(0, 17, 255)';
+            ctx.font = '12px monospace';
+            ctx.fillText(`SCORE  ${String(score).padStart(6, '0')}`, 10, 20);
+            ctx.fillText(`PLAYER 1  LEVEL 01`, 10, 38);
+            ctx.fillText(`BONUS ${String(bonus).padStart(4, '0')}`, 280, 38);
+            ctx.fillText(`TIME ${timeLeft}`, 400, 38);
+
+            // 2. DESENHAR GAIOLA DO PATO GIGANTE (Topo Esquerdo - Amarelo Neon)
+            ctx.strokeStyle = '#facc15';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(45, 75, 25, Math.PI, 0); // Cúpula
+            ctx.stroke();
+            ctx.strokeRect(20, 75, 50, 40); // Corpo da gaiola
+            for (let x = 28; x < 70; x += 8) { // Grades
+                ctx.beginPath(); ctx.moveTo(x, 75); ctx.lineTo(x, 115); ctx.stroke();
+            }
+            // Pato na gaiola
+            ctx.fillStyle = '#facc15';
+            ctx.fillRect(38, 88, 14, 14);
+
+            // 3. DESENHAR ESCADAS (Azul Elétrico Pure)
+            ctx.strokeStyle = 'rgb(0, 17, 255)';
             ctx.lineWidth = 2;
             ladders.forEach(l => {
                 ctx.beginPath();
-                ctx.moveTo(l.x, l.y);
-                ctx.lineTo(l.x, l.y + l.h);
-                ctx.moveTo(l.x + 12, l.y);
-                ctx.lineTo(l.x + 12, l.y + l.h);
+                ctx.moveTo(l.x, l.y); ctx.lineTo(l.x, l.y + l.h);
+                ctx.moveTo(l.x + 12, l.y); ctx.lineTo(l.x + 12, l.y + l.h);
                 ctx.stroke();
-                // Degraus
-                for (let i = 0; i < l.h; i += 8) {
-                    ctx.beginPath();
-                    ctx.moveTo(l.x, l.y + i);
-                    ctx.lineTo(l.x + 12, l.y + i);
-                    ctx.stroke();
+                for (let y = l.y + 6; y < l.y + l.h; y += 8) {
+                    ctx.beginPath(); ctx.moveTo(l.x, y); ctx.lineTo(l.x + 12, y); ctx.stroke();
                 }
             });
 
-            // Plataformas em Azul Elétrico
+            // 4. DESENHAR PLATAFORMAS (Padrão tracejado Azul Elétrico)
             ctx.fillStyle = 'rgb(0, 17, 255)';
-            platforms.forEach(p => ctx.fillRect(p.x, p.y, p.w, p.h));
+            platforms.forEach(p => {
+                for (let x = p.x; x < p.x + p.w; x += 8) {
+                    ctx.fillRect(x, p.y, 6, p.h);
+                }
+            });
 
-            // Porta de Saída
-            ctx.fillStyle = exitDoor.open ? '#22c55e' : '#404040';
-            ctx.fillRect(exitDoor.x, exitDoor.y, exitDoor.w, exitDoor.h);
-            ctx.fillStyle = '#000';
-            ctx.fillRect(exitDoor.x + 3, exitDoor.y + 3, exitDoor.w - 6, exitDoor.h - 6);
-
-            // Ovos Dourados
-            eggs.forEach(e => {
-                if (!e.collected) {
-                    ctx.fillStyle = '#fbbf24';
+            // 5. DESENHAR COLECCIONÁVEIS (Ovos & Milho em Amarelo)
+            collectibles.forEach(item => {
+                ctx.fillStyle = '#facc15';
+                if (item.type === 'egg') {
                     ctx.beginPath();
-                    ctx.ellipse(e.x + 5, e.y + 6, 5, 6, 0, 0, Math.PI * 2);
+                    ctx.ellipse(item.x + 5, item.y + 6, 5, 6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    // Monte de milho
+                    ctx.beginPath();
+                    ctx.moveTo(item.x, item.y + 8);
+                    ctx.lineTo(item.x + 6, item.y + 1);
+                    ctx.lineTo(item.x + 12, item.y + 8);
                     ctx.fill();
                 }
             });
 
-            // Inimigos (Patos Patrulheiros Retro)
+            // 6. DESENHAR INIMIGOS (Pássaros Patrulheiros)
+            ctx.fillStyle = '#facc15';
             ducks.forEach(d => {
-                ctx.fillStyle = '#ef4444'; // Vermelho perigo
-                ctx.fillRect(d.x, d.y + 4, d.w, d.h - 4);
-                // Bico do Pato
-                ctx.fillStyle = '#f97316';
-                ctx.fillRect(d.vx > 0 ? d.x + d.w : d.x - 4, d.y + 6, 4, 4);
+                ctx.fillRect(d.x, d.y, d.w, d.h);
+                // Pescoço longo
+                ctx.fillRect(d.vx > 0 ? d.x + 10 : d.x - 2, d.y - 5, 4, 8);
             });
 
-            // Jogador (Hen-House Harry em tom Amarelo 8-bit)
+            // 7. DESENHAR JOGADOR (Cyan / Azul Claro 8-bit)
             if (!isGameOver) {
-                ctx.fillStyle = '#facc15';
+                ctx.fillStyle = '#22d3ee';
                 ctx.fillRect(player.x, player.y, player.w, player.h);
-                // Olho
-                ctx.fillStyle = '#000';
-                ctx.fillRect(player.x + (player.vx >= 0 ? 9 : 2), player.y + 3, 3, 3);
             } else {
-                // Efeito Game Over / Flash
                 ctx.fillStyle = '#ef4444';
                 ctx.fillRect(player.x - 2, player.y - 2, player.w + 4, player.h + 4);
             }
@@ -695,10 +451,6 @@
             cancelAnimationFrame(animFrame);
             localStorage.setItem('game_unlocked', 'true');
 
-            if (typeof gtag === 'function') {
-                gtag('event', 'game_unlocked', {'event_category': 'Engagement', 'event_label': reason});
-            }
-
             const overlay = document.getElementById('game-overlay');
             const mainSite = document.getElementById('main-site');
 
@@ -709,67 +461,12 @@
             }, 700);
         }
 
-        // Verificação de acesso prévio
         if (localStorage.getItem('game_unlocked') === 'true') {
             document.getElementById('game-overlay').style.display = 'none';
             document.getElementById('main-site').classList.remove('opacity-0');
         } else {
             gameLoop();
         }
-
-        // --- SCRIPTS DO SITE PRINCIPAL ---
-        function triggerChat() {
-            if (typeof gtag === 'function') {
-                gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
-            }
-            if (typeof window.chatbase === 'function') {
-                window.chatbase('open');
-            } else {
-                window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
-            }
-        }
-
-        function filterBrands(category, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            const items = document.querySelectorAll('.brand-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-cat') === category) {
-                    item.classList.remove('dimmed');
-                    if (category !== 'all') {
-                        item.classList.add('highlighted');
-                    } else {
-                        item.classList.remove('highlighted');
-                    }
-                } else {
-                    item.classList.add('dimmed');
-                    item.classList.remove('highlighted');
-                }
-            });
-
-            if (typeof gtag === 'function') {
-                gtag('event', 'filter_brands', {'event_category': 'Engagement', 'event_label': category});
-            }
-        }
-
-        function copyToClipboard(text, element, label) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text);
-                const feedback = element.nextElementSibling;
-                if (feedback && feedback.classList.contains('copy-feedback')) {
-                    feedback.innerText = '✓ Copiado';
-                    feedback.style.opacity = '1';
-                    setTimeout(() => {
-                        feedback.style.opacity = '0';
-                    }, 2000);
-                }
-            }
-            if (typeof gtag === 'function') {
-                gtag('event', 'click_contact', {'event_category': 'Contact', 'event_label': label});
-            }
-        }
     </script>
-
 </body>
 </html>
