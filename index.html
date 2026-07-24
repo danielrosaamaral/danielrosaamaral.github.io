@@ -205,7 +205,6 @@
             image-rendering: pixelated;
         }
 
-        /* Prevenção de gestos nativos no ecrã de jogo */
         .touch-btn {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -216,10 +215,10 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO CHUCKIE EGG COM FULLSCREEN MÓVEL OPTIMIZADO -->
+    <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between p-2 sm:p-4 overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo com Skip -->
+        <!-- Cabeçalho Topo -->
         <div class="w-full flex justify-between items-center z-50 px-2 py-1">
             <span class="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-widest">Retro Arcade Mode</span>
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
@@ -250,36 +249,27 @@
         </div>
 
         <!-- Ecrã Principal de Jogo -->
-        <div id="game-screen" class="hidden flex-col items-center justify-between w-full h-full max-w-[680px] my-auto">
+        <div id="game-screen" class="hidden flex-col items-center justify-between w-full h-full max-w-[680px] my-auto overflow-hidden">
             
-            <!-- Canvas Adaptativo com Proporção Mantida -->
-            <div class="w-full flex-1 flex items-center justify-center p-1 min-h-0">
-                <canvas id="chuckieCanvas" width="640" height="480" class="max-h-[58dvh] sm:max-h-[68dvh] w-auto aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
+            <!-- Canvas Adaptativo Sem Corte Lateral -->
+            <div class="w-full flex-1 flex items-center justify-center p-2 min-h-0 overflow-hidden">
+                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-auto max-h-[52dvh] aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
             </div>
 
-            <!-- Controlo Táctil Móvel Ergonomicamente Distribuído -->
-            <div id="mobile-controls" class="w-full flex justify-between items-center px-4 py-2 select-none touch-none max-w-[500px]">
-                
-                <!-- D-PAD Direcional em Cruz (Esquerda) -->
-                <div class="grid grid-cols-3 gap-1.5 w-36 h-36 sm:w-40 sm:h-40">
+            <!-- Controlo Táctil Centrado com Botão JUMP no Centro -->
+            <div id="mobile-controls" class="w-full flex justify-center items-center px-4 py-2 select-none touch-none">
+                <div class="grid grid-cols-3 gap-2 w-44 h-44 sm:w-48 sm:h-48">
                     <div></div>
-                    <button id="btn-up" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▲</button>
+                    <button id="btn-up" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▲</button>
                     <div></div>
-                    
-                    <button id="btn-left" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">◄</button>
-                    <div class="bg-neutral-900/40 border border-neutral-800/80 rounded-lg flex items-center justify-center text-[9px] text-neutral-600 font-mono uppercase tracking-tighter">PAD</div>
-                    <button id="btn-right" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">►</button>
-                    
-                    <div></div>
-                    <button id="btn-down" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▼</button>
-                    <div></div>
-                </div>
 
-                <!-- Botão de Ação Exclusivo JUMP (Direita) -->
-                <div class="flex items-center justify-center pl-2">
-                    <button id="btn-jump" class="touch-btn w-24 h-24 sm:w-28 sm:h-28 bg-[rgb(0,17,255)]/90 active:bg-[rgb(0,17,255)] border-2 border-[rgb(0,17,255)] rounded-full text-white font-mono text-sm font-bold tracking-widest shadow-[0_0_20px_rgba(0,17,255,0.4)] active:scale-95 uppercase flex items-center justify-center">
-                        JUMP
-                    </button>
+                    <button id="btn-left" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">◄</button>
+                    <button id="btn-jump" class="touch-btn bg-[rgb(0,17,255)] active:bg-[rgb(0,17,255)]/80 border border-[rgb(0,17,255)] rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xs font-bold shadow-[0_0_15px_rgba(0,17,255,0.5)] uppercase tracking-tight">JUMP</button>
+                    <button id="btn-right" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">►</button>
+
+                    <div></div>
+                    <button id="btn-down" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▼</button>
+                    <div></div>
                 </div>
             </div>
 
@@ -504,9 +494,8 @@
         </div>
     </main>
 
-    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG REFINADO -->
+    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG -->
     <script>
-        // Favicon Animado via Canvas
         (function initAnimatedFavicon() {
             const canvas = document.createElement('canvas');
             canvas.width = 32;
@@ -594,7 +583,6 @@
             }
         }
 
-        // --- MOTOR DE JOGO CHUCKIE EGG (REFINADO E DESACOPLADO) ---
         function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -680,11 +668,9 @@
                 {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
             ];
 
-            // Eventos Teclado
             window.addEventListener('keydown', e => { keys[e.code] = true; });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
 
-            // Eventos Táctil (Móvel D-Pad + Jump)
             function setupTouchBtn(id, keyCode) {
                 const btn = document.getElementById(id);
                 if(!btn) return;
@@ -842,13 +828,11 @@
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
-                // Rotação / Inclinamento Dinâmico de Movimento
                 let targetTilt = 0;
                 if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
                 else if(player.vx < -0.5) { targetTilt = -0.16; player.facingRight = false; }
                 player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
 
-                // Verificação e Alinhamento com Escadas
                 let playerCenterX = player.x + player.w/2;
                 let activeLadder = null;
 
@@ -862,24 +846,22 @@
 
                 player.onLadder = activeLadder !== null;
 
-                // Lógica de Escalar (Subir / Descer)
                 if(player.onLadder) {
                     if(keys['ArrowUp']) {
                         player.climbing = true;
                         player.vy = -CLIMB_SPEED;
-                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3; // Snap automático ao centro da escada
+                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
                     } else if(keys['ArrowDown']) {
                         player.climbing = true;
                         player.vy = CLIMB_SPEED;
                         player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
                     } else if(player.climbing) {
-                        player.vy = 0; // Fixar posição na escada quando não há input vertical
+                        player.vy = 0;
                     }
                 } else {
                     player.climbing = false;
                 }
 
-                // Deslocação Horizontal & Inércia
                 if(keys['ArrowLeft']) {
                     player.vx = -SPEED;
                 } else if(keys['ArrowRight']) {
@@ -889,11 +871,9 @@
                     if(Math.abs(player.vx) < 0.05) player.vx = 0;
                 }
 
-                // Aplicação de Gravidade e Salto Exclusivo
                 if(!player.climbing) {
                     player.vy += GRAVITY;
                     
-                    // Apenas a tecla SPACE (ou botão JUMP) despoleta salto quando assente no solo
                     if(keys['Space'] && player.onGround) {
                         player.vy = JUMP_FORCE;
                         player.onGround = false;
@@ -903,11 +883,9 @@
                 player.x += player.vx;
                 player.y += player.vy;
 
-                // Limites de Ecrã
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                // Colisões com Plataformas
                 player.onGround = false;
                 if(!player.climbing && player.vy >= 0) {
                     for(let p of platformData) {
@@ -928,13 +906,11 @@
                     }
                 }
 
-                // Elevadores Dinâmicos
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // Inimigos / Obstáculos
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
@@ -944,7 +920,6 @@
                     }
                 }
 
-                // Recolha de Ovos
                 let eggsLeft = 0;
                 for(let egg of eggs) {
                     if(!egg.collected) {
@@ -957,7 +932,6 @@
                     }
                 }
 
-                // Recolha de Sementes
                 for(let s of seeds) {
                     if(!s.collected && player.x < s.x + 12 && player.x + player.w > s.x &&
                        player.y < s.y + 12 && player.y + player.h > s.y) {
@@ -966,7 +940,6 @@
                     }
                 }
 
-                // Condição de Vitória
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
