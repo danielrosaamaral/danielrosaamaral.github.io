@@ -188,8 +188,6 @@
             background-color: rgba(0, 17, 255, 0.12);
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
         #game-overlay {
             transition: opacity 0.5s ease;
             touch-action: none;
@@ -210,10 +208,10 @@
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
     <!-- OVERLAY DO JOGO CHUCKIE EGG -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between overflow-hidden h-[100dvh] w-screen">
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
         <!-- Cabeçalho Topo -->
-        <div class="w-full flex justify-between items-center z-50 px-4 py-3 absolute top-0 left-0">
+        <div class="w-full flex justify-between items-center z-50 px-4 py-2 shrink-0">
             <span class="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-widest">Retro Arcade Mode</span>
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
                 SKIP [ ⏭ ]
@@ -221,7 +219,7 @@
         </div>
 
         <!-- Ecrã de Conflito de Sessão (LIFO) -->
-        <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-neutral-900 border border-red-900/50 p-6 md:p-8 rounded-2xl shadow-2xl text-center flex-col items-center gap-4 z-50">
+        <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-neutral-900 border border-red-900/50 p-6 md:p-8 rounded-2xl shadow-2xl text-center flex-col items-center gap-4 z-50 mx-auto">
             <div class="inline-flex p-3 rounded-full bg-red-500/10 text-red-500 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -261,31 +259,29 @@
         </div>
 
         <!-- Ecrã Principal de Jogo -->
-        <div id="game-screen" class="hidden flex-col items-center justify-start md:justify-center w-full h-full max-w-5xl mx-auto overflow-hidden pt-12 md:pt-0">
+        <div id="game-screen" class="hidden flex-col w-full h-full justify-between overflow-hidden">
             
-            <!-- Canvas Adaptativo -->
-            <div class="w-full flex-1 flex items-start md:items-center justify-center p-2 min-h-0 overflow-hidden">
-                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-auto max-h-[50dvh] md:max-h-[85dvh] aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
+            <!-- 2/3 Superiores: Canvas do Jogo -->
+            <div class="w-full h-[66.66dvh] flex items-center justify-center p-2 overflow-hidden shrink-0">
+                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-full max-h-full aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
             </div>
 
-            <!-- Controlo Táctil Mobile (Oculto em PC) -->
-            <div id="mobile-controls" class="w-full md:hidden flex justify-center items-end px-4 pb-8 mt-auto select-none touch-none">
-                <div class="grid grid-cols-3 gap-4 w-full max-w-[320px]">
-                    <div></div>
-                    <button id="btn-up" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">▲</button>
-                    <div></div>
-
-                    <button id="btn-left" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">◄</button>
-                    <button id="btn-jump" class="touch-btn h-16 sm:h-20 bg-[rgb(0,17,255)] active:bg-white active:text-[rgb(0,17,255)] border border-[rgb(0,17,255)] rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-sm font-bold shadow-[0_0_15px_rgba(0,17,255,0.5)] uppercase tracking-tight">JUMP</button>
-                    <button id="btn-right" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">►</button>
-
-                    <div></div>
-                    <button id="btn-down" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">▼</button>
-                    <div></div>
+            <!-- 1/3 Inferior: Controlo Circular e Botão Central JUMP -->
+            <div id="mobile-controls" class="w-full h-[33.33dvh] md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
+                <div id="control-ring" class="relative w-48 h-48 sm:w-52 sm:h-52 rounded-full border-2 border-[rgb(0,17,255)]/40 bg-neutral-950/90 flex items-center justify-center shadow-[0_0_25px_rgba(0,17,255,0.15)] backdrop-blur-md">
+                    <!-- Botão Central Fixo de Jump -->
+                    <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[rgb(0,17,255)] active:bg-white active:text-[rgb(0,17,255)] text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center shadow-[0_0_20px_rgba(0,17,255,0.6)] z-20 transition-transform active:scale-95">
+                        JUMP
+                    </button>
+                    <!-- Guias Visuais na Circunferência -->
+                    <span class="absolute top-2 text-[rgb(0,17,255)]/70 text-xs font-mono pointer-events-none">▲</span>
+                    <span class="absolute bottom-2 text-[rgb(0,17,255)]/70 text-xs font-mono pointer-events-none">▼</span>
+                    <span class="absolute left-2 text-[rgb(0,17,255)]/70 text-xs font-mono pointer-events-none">◄</span>
+                    <span class="absolute right-2 text-[rgb(0,17,255)]/70 text-xs font-mono pointer-events-none">►</span>
                 </div>
             </div>
 
-            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-2 absolute bottom-4">
+            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-2 shrink-0">
                 Setas (Mover / Escadas) • Barra de Espaço (Saltar)
             </p>
         </div>
@@ -627,7 +623,94 @@
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-screen').classList.add('flex');
+            initCircularControls();
             initChuckieEgg();
+        }
+
+        // --- Gestão do Anel Circular Tátil (Circunferência de Controlo) ---
+        function initCircularControls() {
+            const ring = document.getElementById('control-ring');
+            const jumpBtn = document.getElementById('btn-jump');
+
+            // Configurar Botão Central JUMP isolado
+            const pressJump = (e) => {
+                if(e.cancelable) e.preventDefault();
+                keys['Space'] = true;
+            };
+            const releaseJump = (e) => {
+                if(e.cancelable) e.preventDefault();
+                keys['Space'] = false;
+            };
+
+            jumpBtn.addEventListener('touchstart', pressJump, { passive: false });
+            jumpBtn.addEventListener('touchend', releaseJump, { passive: false });
+            jumpBtn.addEventListener('touchcancel', releaseJump, { passive: false });
+            jumpBtn.addEventListener('mousedown', pressJump);
+            jumpBtn.addEventListener('mouseup', releaseJump);
+            jumpBtn.addEventListener('mouseleave', releaseJump);
+
+            // Gestão do Deslize na Circunferência Exterior
+            const handleRingTouch = (clientX, clientY) => {
+                const rect = ring.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const dx = clientX - centerX;
+                const dy = clientY - centerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const innerRadius = rect.width * 0.22; // Raio central onde está o botão Jump
+
+                // Reset de direções
+                keys['ArrowLeft'] = false;
+                keys['ArrowRight'] = false;
+                keys['ArrowUp'] = false;
+                keys['ArrowDown'] = false;
+
+                // Se o toque estiver fora do botão central e dentro do anel tátil
+                if (distance > innerRadius) {
+                    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                    
+                    if (angle >= -45 && angle < 45) {
+                        keys['ArrowRight'] = true;
+                    } else if (angle >= 45 && angle < 135) {
+                        keys['ArrowDown'] = true;
+                    } else if (angle >= -135 && angle < -45) {
+                        keys['ArrowUp'] = true;
+                    } else {
+                        keys['ArrowLeft'] = true;
+                    }
+                }
+            };
+
+            const resetRing = () => {
+                keys['ArrowLeft'] = false;
+                keys['ArrowRight'] = false;
+                keys['ArrowUp'] = false;
+                keys['ArrowDown'] = false;
+            };
+
+            ring.addEventListener('touchstart', (e) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                handleRingTouch(touch.clientX, touch.clientY);
+            }, { passive: false });
+
+            ring.addEventListener('touchmove', (e) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                handleRingTouch(touch.clientX, touch.clientY);
+            }, { passive: false });
+
+            ring.addEventListener('touchend', resetRing);
+            ring.addEventListener('touchcancel', resetRing);
+
+            ring.addEventListener('mousemove', (e) => {
+                if (e.buttons === 1) {
+                    handleRingTouch(e.clientX, e.clientY);
+                }
+            });
+            ring.addEventListener('mouseleave', resetRing);
+            ring.addEventListener('mouseup', resetRing);
         }
 
         function initChuckieEgg() {
@@ -715,33 +798,6 @@
                 keys[e.code] = true; 
             });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
-
-            function setupTouchBtn(id, keyCode) {
-                const btn = document.getElementById(id);
-                if(!btn) return;
-                
-                const press = (e) => {
-                    if(e.cancelable) e.preventDefault();
-                    keys[keyCode] = true;
-                };
-                const release = (e) => {
-                    if(e.cancelable) e.preventDefault();
-                    keys[keyCode] = false;
-                };
-
-                btn.addEventListener('touchstart', press, { passive: false });
-                btn.addEventListener('touchend', release, { passive: false });
-                btn.addEventListener('touchcancel', release, { passive: false });
-                btn.addEventListener('mousedown', press);
-                btn.addEventListener('mouseup', release);
-                btn.addEventListener('mouseleave', release);
-            }
-
-            setupTouchBtn('btn-left', 'ArrowLeft');
-            setupTouchBtn('btn-right', 'ArrowRight');
-            setupTouchBtn('btn-up', 'ArrowUp');
-            setupTouchBtn('btn-down', 'ArrowDown');
-            setupTouchBtn('btn-jump', 'Space');
 
             function triggerShake(intensity, duration) {
                 shakeIntensity = intensity;
