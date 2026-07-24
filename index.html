@@ -8,12 +8,9 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-<!-- Favicon GIF Animado -->
-<link rel="icon" type="image/gif" href="favicon.gif">
-<link rel="shortcut icon" type="image/gif" href="favicon.gif">
-
-<!-- Fallback estático para dispositivos Apple (iOS) -->
-<link rel="apple-touch-icon" href="favicon.png">
+    <!-- Favicon Dinâmico Base (Inicializado via JS) -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
@@ -463,8 +460,42 @@
         </div>
     </main>
 
-    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG MEJORADO -->
+    <!-- SCRIPTS DE INTERATIVIDADE, FAVICON ANIMADO & MOTOR DE JOGO CHUCKIE EGG -->
     <script>
+        // --- ANIMATED FAVICON VIA CANVAS (CROSS-BROWSER GUARANTEE) ---
+        (function initAnimatedFavicon() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            
+            let favicon = document.querySelector("link[rel*='icon']");
+            if (!favicon) {
+                favicon = document.createElement('link');
+                favicon.rel = 'shortcut icon';
+                document.head.appendChild(favicon);
+            }
+
+            let angle = 0;
+
+            function renderFrame() {
+                ctx.clearRect(0, 0, 32, 32);
+                
+                // Círculo azul elétrico pulsante
+                const radius = 10 + Math.sin(angle) * 4;
+                
+                ctx.beginPath();
+                ctx.arc(16, 16, Math.max(1, radius), 0, Math.PI * 2);
+                ctx.fillStyle = 'rgb(0, 17, 255)';
+                ctx.fill();
+
+                favicon.href = canvas.toDataURL('image/png');
+                angle += 0.12;
+            }
+
+            setInterval(renderFrame, 66);
+        })();
+
         let animationFrameId;
         const keys = {};
 
@@ -636,11 +667,9 @@
                 floatingTexts.push({ text: text, x: x, y: y, life: 25 });
             }
 
-            // Funções de Desenho com Estilo Arcade Detalhado
             function drawPlatform(x, y, w) {
                 ctx.fillStyle = C_GREEN;
                 ctx.fillRect(x, y, w, 16);
-                // Textura arcade riscas duplas
                 ctx.fillStyle = '#000000';
                 for(let i = 0; i < w; i += 12) {
                     ctx.fillRect(x + i, y + 2, 6, 3);
@@ -662,28 +691,23 @@
                 let px = -player.w/2;
                 let py = -player.h/2;
 
-                // Chapéu
                 ctx.fillStyle = C_CYAN;
                 ctx.fillRect(px - 1, py - 3, 16, 4);
                 ctx.fillRect(px + 2, py - 7, 10, 4);
 
-                // Cabeça
                 ctx.fillStyle = C_YELLOW;
                 ctx.fillRect(px + 3, py - 3, 8, 6);
                 ctx.fillStyle = '#000000';
                 if(player.facingRight) ctx.fillRect(px + 8, py - 1, 2, 2);
                 else ctx.fillRect(px + 3, py - 1, 2, 2);
 
-                // Casaco / Corpo
                 ctx.fillStyle = C_RED;
                 ctx.fillRect(px + 1, py + 3, 12, 11);
 
-                // Calças
                 ctx.fillStyle = C_BLUE;
                 ctx.fillRect(px + 2, py + 14, 4, 7);
                 ctx.fillRect(px + 8, py + 14, 4, 7);
 
-                // Sapatos
                 ctx.fillStyle = C_YELLOW;
                 ctx.fillRect(px, py + 21, 5, 3);
                 ctx.fillRect(px + 8, py + 21, 5, 3);
@@ -693,28 +717,24 @@
 
             function drawOstrich(o) {
                 ctx.save();
-                // Corpo
                 ctx.fillStyle = C_CYAN;
                 ctx.fillRect(o.x + 3, o.y + 6, 14, 12);
-                // Asa detalhada
                 ctx.fillStyle = C_WHITE;
                 ctx.fillRect(o.x + 5, o.y + 8, 8, 6);
                 
-                // Pescoço & Cabeça
                 ctx.fillStyle = C_CYAN;
                 if (o.vx > 0) {
                     ctx.fillRect(o.x + 13, o.y - 2, 4, 10);
                     ctx.fillRect(o.x + 13, o.y - 6, 8, 6);
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + 21, o.y - 4, 5, 3); // Bico
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + 17, o.y - 5, 2, 2); // Olho
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + 21, o.y - 4, 5, 3);
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + 17, o.y - 5, 2, 2);
                 } else {
                     ctx.fillRect(o.x, o.y - 2, 4, 10);
                     ctx.fillRect(o.x - 4, o.y - 6, 8, 6);
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - 9, o.y - 4, 5, 3); // Bico
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - 2, o.y - 5, 2, 2); // Olho
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - 9, o.y - 4, 5, 3);
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - 2, o.y - 5, 2, 2);
                 }
                 
-                // Pernas
                 ctx.fillStyle = C_WHITE;
                 let legOffset = Math.sin(Date.now() * 0.02) * 3;
                 ctx.fillRect(o.x + 5, o.y + 18, 2, 6 + legOffset);
@@ -729,7 +749,6 @@
                 ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, 30);
                 ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), 80, 30);
                 
-                // Temporizador a piscar a vermelho quando < 100
                 if (timer < 100) {
                     ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
                 } else {
@@ -740,7 +759,6 @@
                 ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, 60);
                 ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', 140, 60);
                 
-                // Gaiola do Pato
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = 2;
                 ctx.beginPath(); ctx.arc(60, 110, 30, Math.PI, 0); ctx.stroke();
@@ -759,13 +777,11 @@
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
-                // Transição de inclinação suave no movimento
                 let targetTilt = 0;
                 if(player.vx > 0) { targetTilt = 0.18; player.facingRight = true; }
                 else if(player.vx < 0) { targetTilt = -0.18; player.facingRight = false; }
                 player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
 
-                // Escadas
                 player.onLadder = false;
                 for(let l of ladders) {
                     if(player.x + player.w/2 > l.x && player.x + player.w/2 < l.x + 20 &&
@@ -791,7 +807,6 @@
                     player.vy = JUMP_FORCE; player.onGround = false;
                 }
 
-                // Cálculo de queda para tremor de câmara
                 if(!player.onGround && player.vy > 0) {
                     fallDistance += player.vy;
                 }
@@ -808,7 +823,7 @@
                         if(player.x + player.w > p.x && player.x < p.x + p.w &&
                            player.y + player.h >= p.y && player.y + player.h <= p.y + 16) {
                             
-                            if(fallDistance > 120) { triggerShake(5, 10); } // Queda grande
+                            if(fallDistance > 120) { triggerShake(5, 10); }
                             fallDistance = 0;
 
                             player.y = p.y - player.h;
@@ -824,13 +839,11 @@
                     }
                 }
 
-                // Elevadores
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // Inimigos
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
@@ -840,7 +853,6 @@
                     }
                 }
 
-                // Recolha de Ovos
                 let eggsLeft = 0;
                 for(let egg of eggs) {
                     if(!egg.collected) {
@@ -853,7 +865,6 @@
                     }
                 }
 
-                // Recolha de Sementes
                 for(let s of seeds) {
                     if(!s.collected && player.x < s.x + 12 && player.x + player.w > s.x &&
                        player.y < s.y + 12 && player.y + player.h > s.y) {
@@ -862,7 +873,6 @@
                     }
                 }
 
-                // Vitória
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
@@ -873,7 +883,6 @@
             function draw() {
                 ctx.save();
                 
-                // Aplicação de Screen Shake
                 if(shakeTime > 0) {
                     let rx = (Math.random() - 0.5) * shakeIntensity;
                     let ry = (Math.random() - 0.5) * shakeIntensity;
@@ -890,7 +899,6 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
-                // Sementes intermitentes
                 let seedAlpha = (Math.sin(Date.now() * 0.01) + 1) / 2;
                 for(let s of seeds) {
                     if(!s.collected) {
@@ -900,7 +908,6 @@
                     }
                 }
 
-                // Ovos
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         ctx.fillStyle = C_WHITE; ctx.beginPath();
@@ -911,7 +918,6 @@
                 for(let o of ostriches) drawOstrich(o);
                 if(!isGameOver && !isVictory) drawPlayer();
 
-                // Desenho de Partículas
                 for(let i = particles.length - 1; i >= 0; i--) {
                     let p = particles[i];
                     p.x += p.vx; p.y += p.vy; p.life--;
@@ -919,7 +925,6 @@
                     if(p.life <= 0) particles.splice(i, 1);
                 }
 
-                // Floating Text
                 ctx.font = '10px "Courier New", monospace';
                 for(let i = floatingTexts.length - 1; i >= 0; i--) {
                     let ft = floatingTexts[i];
@@ -930,14 +935,12 @@
 
                 drawUI();
 
-                // Flash a vermelho em dano
                 if(redFlashAlpha > 0) {
                     ctx.fillStyle = `rgba(255, 0, 0, ${redFlashAlpha})`;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     redFlashAlpha -= 0.05;
                 }
 
-                // Animação de Vitória Retro
                 if(isVictory) {
                     victoryTimer++;
                     const retroColors = [C_RED, C_GREEN, C_YELLOW, C_CYAN, C_MAGENTA];
