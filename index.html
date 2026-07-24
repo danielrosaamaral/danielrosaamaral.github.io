@@ -8,7 +8,7 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-    <!-- Favicon Dinâmico Base (Inicializado via JS) -->
+    <!-- Favicon Dinâmico Base -->
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
 
@@ -18,7 +18,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://danielrosaamaral.github.io/">
 
-    <!-- Schema.org JSON-LD para AEO & Motores de Pesquisa Sintéticos -->
+    <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -205,7 +205,7 @@
             image-rendering: pixelated;
         }
 
-        /* Prevenção de seleção e gestos no D-Pad */
+        /* Prevenção de gestos nativos no ecrã de jogo */
         .touch-btn {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -216,15 +216,19 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO CHUCKIE EGG COM CONTROLO TÁCTIL MÓVEL -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-center p-2 md:p-4 overflow-hidden">
+    <!-- OVERLAY DO JOGO CHUCKIE EGG COM FULLSCREEN MÓVEL OPTIMIZADO -->
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between p-2 sm:p-4 overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Botão Skip Global -->
-        <button onclick="skipGame()" class="absolute top-4 right-4 z-50 text-neutral-400 hover:text-white text-xs md:text-sm font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 md:px-4 md:py-2 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
-            SKIP [ ⏭ ]
-        </button>
+        <!-- Cabeçalho Topo com Skip -->
+        <div class="w-full flex justify-between items-center z-50 px-2 py-1">
+            <span class="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-widest">Retro Arcade Mode</span>
+            <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
+                SKIP [ ⏭ ]
+            </button>
+        </div>
 
-        <div id="disclaimer-screen" class="max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6">
+        <!-- Ecrã Disclaimer Inicial -->
+        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6">
             <div class="inline-flex p-3 rounded-full bg-[rgb(0,17,255)]/10 text-[rgb(0,17,255)] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -245,26 +249,42 @@
             </div>
         </div>
 
-        <!-- Ecrã de Jogo -->
-        <div id="game-screen" class="hidden flex-col items-center w-full max-w-[640px]">
-            <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-[640px] h-auto aspect-[4/3] block bg-black shadow-[0_0_40px_rgba(0,255,0,0.15)] rounded-lg"></canvas>
+        <!-- Ecrã Principal de Jogo -->
+        <div id="game-screen" class="hidden flex-col items-center justify-between w-full h-full max-w-[680px] my-auto">
+            
+            <!-- Canvas Adaptativo com Proporção Mantida -->
+            <div class="w-full flex-1 flex items-center justify-center p-1 min-h-0">
+                <canvas id="chuckieCanvas" width="640" height="480" class="max-h-[58dvh] sm:max-h-[68dvh] w-auto aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
+            </div>
 
-            <!-- D-Pad Virtual Táctil Móvel -->
-            <div id="mobile-controls" class="w-full mt-3 flex justify-between items-center px-2 select-none touch-none">
-                <!-- Mover Esquerda / Direita -->
-                <div class="flex gap-2">
-                    <button id="btn-left" class="touch-btn w-12 h-12 sm:w-14 sm:h-14 bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono text-lg flex items-center justify-center active:scale-95 transition-transform">◄</button>
-                    <button id="btn-right" class="touch-btn w-12 h-12 sm:w-14 sm:h-14 bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono text-lg flex items-center justify-center active:scale-95 transition-transform">►</button>
+            <!-- Controlo Táctil Móvel Ergonomicamente Distribuído -->
+            <div id="mobile-controls" class="w-full flex justify-between items-center px-4 py-2 select-none touch-none max-w-[500px]">
+                
+                <!-- D-PAD Direcional em Cruz (Esquerda) -->
+                <div class="grid grid-cols-3 gap-1.5 w-36 h-36 sm:w-40 sm:h-40">
+                    <div></div>
+                    <button id="btn-up" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▲</button>
+                    <div></div>
+                    
+                    <button id="btn-left" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">◄</button>
+                    <div class="bg-neutral-900/40 border border-neutral-800/80 rounded-lg flex items-center justify-center text-[9px] text-neutral-600 font-mono uppercase tracking-tighter">PAD</div>
+                    <button id="btn-right" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">►</button>
+                    
+                    <div></div>
+                    <button id="btn-down" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-lg text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▼</button>
+                    <div></div>
                 </div>
-                <!-- Subir Escadas / Saltar -->
-                <div class="flex gap-2">
-                    <button id="btn-up" class="touch-btn w-12 h-12 sm:w-14 sm:h-14 bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono text-lg flex items-center justify-center active:scale-95 transition-transform">▲</button>
-                    <button id="btn-jump" class="touch-btn h-12 sm:h-14 px-4 bg-[rgb(0,17,255)]/80 active:bg-[rgb(0,17,255)] border border-[rgb(0,17,255)] rounded-xl text-white font-mono text-xs font-semibold tracking-wider flex items-center justify-center active:scale-95 transition-transform uppercase">JUMP</button>
+
+                <!-- Botão de Ação Exclusivo JUMP (Direita) -->
+                <div class="flex items-center justify-center pl-2">
+                    <button id="btn-jump" class="touch-btn w-24 h-24 sm:w-28 sm:h-28 bg-[rgb(0,17,255)]/90 active:bg-[rgb(0,17,255)] border-2 border-[rgb(0,17,255)] rounded-full text-white font-mono text-sm font-bold tracking-widest shadow-[0_0_20px_rgba(0,17,255,0.4)] active:scale-95 uppercase flex items-center justify-center">
+                        JUMP
+                    </button>
                 </div>
             </div>
 
-            <p class="hidden md:block text-xs text-neutral-500 text-center font-mono mt-3">
-                Setas Esquerda/Direita (Mover) • Seta Cima/Espaço (Salta/Escadas)
+            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-1">
+                Setas (Mover / Escadas) • Barra de Espaço (Saltar)
             </p>
         </div>
     </div>
@@ -484,9 +504,9 @@
         </div>
     </main>
 
-    <!-- SCRIPTS DE INTERATIVIDADE, FAVICON ANIMADO & MOTOR DE JOGO CHUCKIE EGG -->
+    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG REFINADO -->
     <script>
-        // --- ANIMATED FAVICON VIA CANVAS (CROSS-BROWSER GUARANTEE) ---
+        // Favicon Animado via Canvas
         (function initAnimatedFavicon() {
             const canvas = document.createElement('canvas');
             canvas.width = 32;
@@ -501,11 +521,9 @@
             }
 
             let angle = 0;
-
             function renderFrame() {
                 ctx.clearRect(0, 0, 32, 32);
                 const radius = 10 + Math.sin(angle) * 4;
-                
                 ctx.beginPath();
                 ctx.arc(16, 16, Math.max(1, radius), 0, Math.PI * 2);
                 ctx.fillStyle = 'rgb(0, 17, 255)';
@@ -514,7 +532,6 @@
                 favicon.href = canvas.toDataURL('image/png');
                 angle += 0.12;
             }
-
             setInterval(renderFrame, 66);
         })();
 
@@ -577,7 +594,7 @@
             }
         }
 
-        // --- MOTOR DE JOGO CHUCKIE EGG (COM SUPORTE MÓVEL TÁCTIL) ---
+        // --- MOTOR DE JOGO CHUCKIE EGG (REFINADO E DESACOPLADO) ---
         function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -589,10 +606,12 @@
             const canvas = document.getElementById('chuckieCanvas');
             const ctx = canvas.getContext('2d');
             
-            const GRAVITY = 0.4;
-            const JUMP_FORCE = -8;
-            const SPEED = 2.5;
-            
+            const GRAVITY = 0.45;
+            const JUMP_FORCE = -8.5;
+            const SPEED = 2.8;
+            const CLIMB_SPEED = 2.2;
+            const FRICTION = 0.78;
+
             const C_GREEN = '#00CC00';
             const C_MAGENTA = '#FF00FF';
             const C_CYAN = '#00FFFF';
@@ -610,7 +629,6 @@
             let shakeTime = 0;
             let shakeIntensity = 0;
             let redFlashAlpha = 0;
-            let fallDistance = 0;
             let particles = [];
             let floatingTexts = [];
 
@@ -662,11 +680,11 @@
                 {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
             ];
 
-            // Eventos de Teclado
+            // Eventos Teclado
             window.addEventListener('keydown', e => { keys[e.code] = true; });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
 
-            // Eventos de Toque (Mobile D-Pad)
+            // Eventos Táctil (Móvel D-Pad + Jump)
             function setupTouchBtn(id, keyCode) {
                 const btn = document.getElementById(id);
                 if(!btn) return;
@@ -682,6 +700,7 @@
 
                 btn.addEventListener('touchstart', press, { passive: false });
                 btn.addEventListener('touchend', release, { passive: false });
+                btn.addEventListener('touchcancel', release, { passive: false });
                 btn.addEventListener('mousedown', press);
                 btn.addEventListener('mouseup', release);
                 btn.addEventListener('mouseleave', release);
@@ -690,6 +709,7 @@
             setupTouchBtn('btn-left', 'ArrowLeft');
             setupTouchBtn('btn-right', 'ArrowRight');
             setupTouchBtn('btn-up', 'ArrowUp');
+            setupTouchBtn('btn-down', 'ArrowDown');
             setupTouchBtn('btn-jump', 'Space');
 
             function triggerShake(intensity, duration) {
@@ -822,73 +842,99 @@
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
+                // Rotação / Inclinamento Dinâmico de Movimento
                 let targetTilt = 0;
-                if(player.vx > 0) { targetTilt = 0.18; player.facingRight = true; }
-                else if(player.vx < 0) { targetTilt = -0.18; player.facingRight = false; }
+                if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
+                else if(player.vx < -0.5) { targetTilt = -0.16; player.facingRight = false; }
                 player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
 
-                player.onLadder = false;
+                // Verificação e Alinhamento com Escadas
+                let playerCenterX = player.x + player.w/2;
+                let activeLadder = null;
+
                 for(let l of ladders) {
-                    if(player.x + player.w/2 > l.x && player.x + player.w/2 < l.x + 20 &&
+                    if(playerCenterX >= l.x && playerCenterX <= l.x + 20 &&
                        player.y + player.h >= l.y && player.y <= l.y + l.h) {
-                        player.onLadder = true; break;
+                        activeLadder = l;
+                        break;
                     }
                 }
 
+                player.onLadder = activeLadder !== null;
+
+                // Lógica de Escalar (Subir / Descer)
                 if(player.onLadder) {
-                    if(keys['ArrowUp']) { player.y -= SPEED; player.vy = 0; player.climbing = true; }
-                    else if(keys['ArrowDown']) { player.y += SPEED; player.vy = 0; player.climbing = true; }
-                    else { player.climbing = false; }
-                } else { player.climbing = false; }
+                    if(keys['ArrowUp']) {
+                        player.climbing = true;
+                        player.vy = -CLIMB_SPEED;
+                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3; // Snap automático ao centro da escada
+                    } else if(keys['ArrowDown']) {
+                        player.climbing = true;
+                        player.vy = CLIMB_SPEED;
+                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
+                    } else if(player.climbing) {
+                        player.vy = 0; // Fixar posição na escada quando não há input vertical
+                    }
+                } else {
+                    player.climbing = false;
+                }
 
+                // Deslocação Horizontal & Inércia
+                if(keys['ArrowLeft']) {
+                    player.vx = -SPEED;
+                } else if(keys['ArrowRight']) {
+                    player.vx = SPEED;
+                } else {
+                    player.vx *= FRICTION;
+                    if(Math.abs(player.vx) < 0.05) player.vx = 0;
+                }
+
+                // Aplicação de Gravidade e Salto Exclusivo
                 if(!player.climbing) {
-                    if(keys['ArrowLeft']) player.vx = -SPEED;
-                    else if(keys['ArrowRight']) player.vx = SPEED;
-                    else player.vx = 0;
                     player.vy += GRAVITY;
-                }
-
-                if((keys['Space'] || keys['ArrowUp']) && player.onGround && !player.climbing) {
-                    player.vy = JUMP_FORCE; player.onGround = false;
-                }
-
-                if(!player.onGround && player.vy > 0) {
-                    fallDistance += player.vy;
+                    
+                    // Apenas a tecla SPACE (ou botão JUMP) despoleta salto quando assente no solo
+                    if(keys['Space'] && player.onGround) {
+                        player.vy = JUMP_FORCE;
+                        player.onGround = false;
+                    }
                 }
 
                 player.x += player.vx;
                 player.y += player.vy;
 
+                // Limites de Ecrã
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
+                // Colisões com Plataformas
                 player.onGround = false;
                 if(!player.climbing && player.vy >= 0) {
                     for(let p of platformData) {
                         if(player.x + player.w > p.x && player.x < p.x + p.w &&
                            player.y + player.h >= p.y && player.y + player.h <= p.y + 16) {
-                            
-                            if(fallDistance > 120) { triggerShake(5, 10); }
-                            fallDistance = 0;
-
                             player.y = p.y - player.h;
-                            player.vy = 0; player.onGround = true;
+                            player.vy = 0; 
+                            player.onGround = true;
                         }
                     }
                     for(let e of elevators) {
                         if(player.x + player.w > e.x && player.x < e.x + e.w &&
                            player.y + player.h >= e.y && player.y + player.h <= e.y + 12) {
                             player.y = e.y - player.h;
-                            player.vy = e.vy; player.onGround = true;
+                            player.vy = e.vy; 
+                            player.onGround = true;
                         }
                     }
                 }
 
+                // Elevadores Dinâmicos
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
+                // Inimigos / Obstáculos
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
@@ -898,6 +944,7 @@
                     }
                 }
 
+                // Recolha de Ovos
                 let eggsLeft = 0;
                 for(let egg of eggs) {
                     if(!egg.collected) {
@@ -910,6 +957,7 @@
                     }
                 }
 
+                // Recolha de Sementes
                 for(let s of seeds) {
                     if(!s.collected && player.x < s.x + 12 && player.x + player.w > s.x &&
                        player.y < s.y + 12 && player.y + player.h > s.y) {
@@ -918,6 +966,7 @@
                     }
                 }
 
+                // Condição de Vitória
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
