@@ -210,8 +210,14 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- GATE / OVERLAY COM POP-UP E JOGO CHUCKIE EGG -->
+    <!-- GATE / OVERLAY COM POP-UP, JOGO CHUCKIE EGG E BOTÃO SKIP -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex items-center justify-center p-4">
+        
+        <!-- Botão Skip Global do Overlay -->
+        <button onclick="skipGame()" class="absolute top-6 right-6 z-50 text-neutral-400 hover:text-white text-xs md:text-sm font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-4 py-2 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
+            SKIP [ ⏭ ]
+        </button>
+
         <div id="disclaimer-screen" class="max-w-xl w-full bg-neutral-900 border border-neutral-800 p-8 rounded-2xl shadow-2xl text-center space-y-6">
             <div class="inline-flex p-3 rounded-full bg-[rgb(0,17,255)]/10 text-[rgb(0,17,255)] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -236,7 +242,7 @@
         <div id="game-screen" class="hidden flex-col items-center">
             <canvas id="chuckieCanvas" width="640" height="480" class="block bg-black shadow-[0_0_40px_rgba(0,255,0,0.15)]"></canvas>
             <p class="text-xs text-neutral-500 text-center font-mono mt-4">
-                Setas Esquerda/Direita (Mover) • Seta Cima/Espaço (Saltar/Escadas)
+                Setas Esquerda/Direita (Mover) • Seta Cima/Espaço (Salta/Escadas)
             </p>
         </div>
     </div>
@@ -455,8 +461,11 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade & Jogo Chuckie Egg (Versão Gráfica Fiel) -->
+    <!-- Scripts de Interatividade & Jogo Chuckie Egg (Versão com Skip) -->
     <script>
+        let animationFrameId;
+        const keys = {};
+
         function triggerChat() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
@@ -499,10 +508,22 @@
             }
         }
 
-        // --- MOTOR DE JOGO CHUCKIE EGG (GRÁFICOS ORIGINAIS / LÓGICA LEVEL 3) ---
-        let animationFrameId;
-        const keys = {};
+        // Função de Skip para fechar o overlay e ir direto à landing page
+        function skipGame() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            const overlay = document.getElementById('game-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 500);
+            }
+            if (typeof gtag === 'function') {
+                gtag('event', 'skip_game', {'event_category': 'Engagement'});
+            }
+        }
 
+        // --- MOTOR DE JOGO CHUCKIE EGG (GRÁFICOS ORIGINAIS / LÓGICA LEVEL 3) ---
         function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -539,7 +560,6 @@
             };
 
             // Layout Fiel ao Level 3 (Referência: image_403616.png)
-            // Plataformas: x, y, largura
             const platformData = [
                 {x: 0, y: 464, w: 640}, // Chão Base
                 {x: 0, y: 224, w: 120}, {x: 150, y: 240, w: 90}, {x: 120, y: 160, w: 80},
@@ -580,7 +600,7 @@
                 {x: 480, y: 376, w: 18, h: 24, vx: 1.5, minX: 460, maxX: 560}
             ];
 
-            // Event Listeners
+            // Event Listeners para Controlo
             window.addEventListener('keydown', e => { keys[e.code] = true; });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
 
@@ -600,22 +620,19 @@
 
             function drawPlayer() {
                 ctx.fillStyle = C_YELLOW;
-                // Chapéu e Corpo Simples
                 ctx.fillRect(player.x-2, player.y, 20, 4);
                 ctx.fillRect(player.x+4, player.y-6, 8, 6);
                 ctx.fillRect(player.x+4, player.y+4, 8, 12);
-                // Pernas
                 ctx.fillRect(player.x+2, player.y+16, 4, 8);
                 ctx.fillRect(player.x+10, player.y+16, 4, 8);
             }
 
             function drawOstrich(o) {
                 ctx.fillStyle = C_CYAN;
-                // Corpo, Pescoço, Cabeça (virada baseada na direção)
                 ctx.fillRect(o.x+4, o.y+8, 12, 8);
                 if(o.vx > 0) { ctx.fillRect(o.x+12, o.y, 4, 10); ctx.fillRect(o.x+14, o.y-2, 6, 4); } 
                 else { ctx.fillRect(o.x+4, o.y, 4, 10); ctx.fillRect(o.x, o.y-2, 6, 4); }
-                ctx.fillRect(o.x+6, o.y+16, 2, 8); ctx.fillRect(o.x+12, o.y+16, 2, 8); // Pernas
+                ctx.fillRect(o.x+6, o.y+16, 2, 8); ctx.fillRect(o.x+12, o.y+16, 2, 8);
             }
 
             function drawUI() {
@@ -633,7 +650,6 @@
                 ctx.beginPath(); ctx.arc(60, 110, 30, Math.PI, 0); ctx.stroke();
                 for(let i=35; i<=85; i+=10) ctx.fillRect(i, 110, 2, 40);
                 ctx.fillRect(30, 150, 60, 4);
-                // Pato Simplificado (Amarelo)
                 ctx.fillRect(50, 130, 14, 10); ctx.fillRect(60, 122, 8, 8);
             }
 
@@ -646,7 +662,6 @@
                 if(isGameOver) return;
                 timer -= 0.02;
 
-                // Input & Movimento em Escadas
                 player.onLadder = false;
                 for(let l of ladders) {
                     if(player.x + player.w/2 > l.x && player.x + player.w/2 < l.x + 20 &&
@@ -668,7 +683,6 @@
                     player.vy += GRAVITY;
                 }
 
-                // Salto
                 if((keys['Space'] || keys['ArrowUp']) && player.onGround && !player.climbing) {
                     player.vy = JUMP_FORCE; player.onGround = false;
                 }
@@ -676,11 +690,9 @@
                 player.x += player.vx;
                 player.y += player.vy;
 
-                // Limites de Ecrã
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                // Colisões com Plataformas
                 player.onGround = false;
                 if(!player.climbing && player.vy >= 0) {
                     for(let p of platformData) {
@@ -690,7 +702,6 @@
                             player.vy = 0; player.onGround = true;
                         }
                     }
-                    // Elevadores
                     for(let e of elevators) {
                         if(player.x + player.w > e.x && player.x < e.x + e.w &&
                            player.y + player.h >= e.y && player.y + player.h <= e.y + 12) {
@@ -700,13 +711,11 @@
                     }
                 }
 
-                // Atualizar Elevadores
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // Atualizar Avestruzes & Colisão
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
@@ -716,7 +725,6 @@
                     }
                 }
 
-                // Recolha de Itens
                 let eggsLeft = 0;
                 for(let egg of eggs) {
                     if(!egg.collected) {
@@ -734,13 +742,10 @@
                     }
                 }
 
-                // Vitória
                 if(eggsLeft === 0) {
                     isGameOver = true;
                     setTimeout(() => {
-                        const overlay = document.getElementById('game-overlay');
-                        overlay.style.opacity = '0';
-                        setTimeout(() => overlay.remove(), 500);
+                        skipGame();
                     }, 1000);
                 }
             }
