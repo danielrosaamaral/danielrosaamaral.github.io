@@ -74,14 +74,8 @@
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-reveal {
@@ -216,18 +210,36 @@
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
     <!-- OVERLAY DO JOGO CHUCKIE EGG -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between p-2 sm:p-4 overflow-hidden h-[100dvh] w-screen">
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between overflow-hidden h-[100dvh] w-screen">
         
         <!-- Cabeçalho Topo -->
-        <div class="w-full flex justify-between items-center z-50 px-2 py-1">
+        <div class="w-full flex justify-between items-center z-50 px-4 py-3 absolute top-0 left-0">
             <span class="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-widest">Retro Arcade Mode</span>
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
                 SKIP [ ⏭ ]
             </button>
         </div>
 
+        <!-- Ecrã de Conflito de Sessão (LIFO) -->
+        <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-neutral-900 border border-red-900/50 p-6 md:p-8 rounded-2xl shadow-2xl text-center flex-col items-center gap-4 z-50">
+            <div class="inline-flex p-3 rounded-full bg-red-500/10 text-red-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Sessão Interrompida</h2>
+            <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
+                O acesso foi iniciado num novo dispositivo ou separador. Por razões de integridade, apenas uma instância simultânea é permitida.
+            </p>
+            <div class="pt-4 flex justify-center">
+                <button onclick="skipGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
+                    Prosseguir para Portefólio
+                </button>
+            </div>
+        </div>
+
         <!-- Ecrã Disclaimer Inicial -->
-        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6">
+        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6 z-40 mx-4">
             <div class="inline-flex p-3 rounded-full bg-[rgb(0,17,255)]/10 text-[rgb(0,17,255)] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -249,31 +261,31 @@
         </div>
 
         <!-- Ecrã Principal de Jogo -->
-        <div id="game-screen" class="hidden flex-col items-center justify-between w-full h-full max-w-[680px] my-auto overflow-hidden">
+        <div id="game-screen" class="hidden flex-col items-center justify-start md:justify-center w-full h-full max-w-5xl mx-auto overflow-hidden pt-12 md:pt-0">
             
-            <!-- Canvas Adaptativo Sem Corte Lateral -->
-            <div class="w-full flex-1 flex items-center justify-center p-2 min-h-0 overflow-hidden">
-                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-auto max-h-[52dvh] aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
+            <!-- Canvas Adaptativo -->
+            <div class="w-full flex-1 flex items-start md:items-center justify-center p-2 min-h-0 overflow-hidden">
+                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-auto max-h-[50dvh] md:max-h-[85dvh] aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
             </div>
 
-            <!-- Controlo Táctil Centrado com Botão JUMP no Centro -->
-            <div id="mobile-controls" class="w-full flex justify-center items-center px-4 py-2 select-none touch-none">
-                <div class="grid grid-cols-3 gap-2 w-44 h-44 sm:w-48 sm:h-48">
+            <!-- Controlo Táctil Mobile (Oculto em PC) -->
+            <div id="mobile-controls" class="w-full md:hidden flex justify-center items-end px-4 pb-8 mt-auto select-none touch-none">
+                <div class="grid grid-cols-3 gap-4 w-full max-w-[320px]">
                     <div></div>
-                    <button id="btn-up" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▲</button>
+                    <button id="btn-up" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">▲</button>
                     <div></div>
 
-                    <button id="btn-left" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">◄</button>
-                    <button id="btn-jump" class="touch-btn bg-[rgb(0,17,255)] active:bg-[rgb(0,17,255)]/80 border border-[rgb(0,17,255)] rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xs font-bold shadow-[0_0_15px_rgba(0,17,255,0.5)] uppercase tracking-tight">JUMP</button>
-                    <button id="btn-right" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">►</button>
+                    <button id="btn-left" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">◄</button>
+                    <button id="btn-jump" class="touch-btn h-16 sm:h-20 bg-[rgb(0,17,255)] active:bg-white active:text-[rgb(0,17,255)] border border-[rgb(0,17,255)] rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-sm font-bold shadow-[0_0_15px_rgba(0,17,255,0.5)] uppercase tracking-tight">JUMP</button>
+                    <button id="btn-right" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">►</button>
 
                     <div></div>
-                    <button id="btn-down" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▼</button>
+                    <button id="btn-down" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-2xl shadow-lg">▼</button>
                     <div></div>
                 </div>
             </div>
 
-            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-1">
+            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-2 absolute bottom-4">
                 Setas (Mover / Escadas) • Barra de Espaço (Saltar)
             </p>
         </div>
@@ -496,6 +508,32 @@
 
     <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG -->
     <script>
+        // --- 1. Lógica de Gestão de Sessão (LIFO) ---
+        const SESSION_ID = Math.random().toString(36).substring(2, 15);
+        const SESSION_KEY = 'da_active_game_session';
+        
+        window.addEventListener('storage', (e) => {
+            if (e.key === SESSION_KEY && e.newValue !== SESSION_ID && document.getElementById('game-overlay')) {
+                forceDisconnect();
+            }
+        });
+
+        function forceDisconnect() {
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            
+            const gameScreen = document.getElementById('game-screen');
+            const disclaimerScreen = document.getElementById('disclaimer-screen');
+            const conflictScreen = document.getElementById('session-conflict-screen');
+            
+            if(gameScreen) gameScreen.classList.add('hidden');
+            if(disclaimerScreen) disclaimerScreen.classList.add('hidden');
+            
+            if(conflictScreen) {
+                conflictScreen.classList.remove('hidden');
+                conflictScreen.classList.add('flex');
+            }
+        }
+
         (function initAnimatedFavicon() {
             const canvas = document.createElement('canvas');
             canvas.width = 32;
@@ -584,6 +622,8 @@
         }
 
         function startChuckieGame() {
+            localStorage.setItem(SESSION_KEY, SESSION_ID);
+            
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-screen').classList.add('flex');
@@ -668,7 +708,12 @@
                 {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
             ];
 
-            window.addEventListener('keydown', e => { keys[e.code] = true; });
+            window.addEventListener('keydown', e => { 
+                if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                    e.preventDefault();
+                }
+                keys[e.code] = true; 
+            });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
 
             function setupTouchBtn(id, keyCode) {
