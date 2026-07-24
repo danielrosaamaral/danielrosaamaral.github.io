@@ -1,541 +1,1041 @@
 <!DOCTYPE html>
-<html lang="pt-PT" class="scroll-smooth">
+<html lang="pt" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <!-- Meta Tags Base -->
-    <title>Daniel Amaral | Arquitecto Estratégico & Designer de Sistemas</title>
-    <meta name="description" content="Posicionamento estratégico, design de sistemas e optimização de processos. De executor a arquitecto estratégico.">
-    <meta name="theme-color" content="#0a0a0a">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            blue: 'rgb(0,17,255)', // MGRA Blue fallback
-                            dark: '#0a0a0a'
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'scanline': 'scanline 8s linear infinite',
-                    },
-                    keyframes: {
-                        scanline: {
-                            '0%': { transform: 'translateY(-100%)' },
-                            '100%': { transform: 'translateY(100vh)' }
-                        }
-                    }
-                }
-            }
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daniel da Rosa Amaral - Designer Gráfico, Diretor de Arte, Branding, SEO & AEO</title>
+    <meta name="description" content="Há mais de 25 anos a desenvolver projetos de branding, identidade visual, design gráfico, design editorial, publicidade, SEO, AEO e Google Ads para empresas e instituições.">
+    <meta name="author" content="Daniel da Rosa Amaral">
+    <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
+
+    <!-- Favicon Dinâmico Base -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Diretor de Arte">
+    <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://danielrosaamaral.github.io/">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Daniel da Rosa Amaral",
+      "jobTitle": ["Designer Gráfico", "Diretor de Arte", "Especialista em Branding", "Consultor SEO & AEO"],
+      "description": "Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.",
+      "url": "https://danielrosaamaral.github.io/",
+      "sameAs": [
+        "https://www.linkedin.com/in/daniel-da-rosa-amaral/"
+      ],
+      "knowsAbout": [
+        "Design Gráfico",
+        "Direção de Arte",
+        "Branding & Identidade Visual",
+        "Design Editorial",
+        "Publicidade",
+        "SEO (Search Engine Optimization)",
+        "AEO (Answer Engine Optimization)",
+        "Google Ads",
+        "Web Design & UX/UI",
+        "Comunicação Corporativa"
+      ]
+    }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HGFXN8E316"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-HGFXN8E316');
+      gtag('config', 'G-4X7D309RVX');
     </script>
 
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chatbase Config & Script -->
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "4Xp1KrkvShDv2af8eykrm",
+            domain: "www.chatbase.co"
+        }
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
+
     <style>
-        html, body {
-            background-color: #0a0a0a;
-            color: #f5f5f5;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            --electric-blue-pure: rgb(0, 17, 255);
+            --electric-blue-dark: rgb(0, 8, 120);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .crt-overlay::before {
-            content: " ";
-            display: block;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-reveal {
+            opacity: 0;
+            animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
+        }
+
+        .delay-1 { animation-delay: 80ms; }
+        .delay-2 { animation-delay: 160ms; }
+        .delay-3 { animation-delay: 240ms; }
+        .delay-4 { animation-delay: 320ms; }
+        .delay-5 { animation-delay: 400ms; }
+        .delay-6 { animation-delay: 480ms; }
+        .delay-7 { animation-delay: 560ms; }
+
+        @keyframes shimmerElectric {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-electric {
+            background: linear-gradient(90deg, rgb(0, 17, 255) 0%, rgb(100, 140, 255) 50%, rgb(0, 17, 255) 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmerElectric 5s linear infinite;
+        }
+
+        @keyframes electricPulse {
+            0%, 100% {
+                border-color: var(--electric-blue-dark);
+                color: rgb(120, 150, 255);
+                box-shadow: 0 0 8px rgba(0, 17, 255, 0.2);
+            }
+            50% {
+                border-color: var(--electric-blue-pure);
+                color: var(--electric-blue-pure);
+                box-shadow: 0 0 22px rgba(0, 17, 255, 0.65);
+            }
+        }
+
+        .btn-electric-pulse {
+            animation: electricPulse 3s ease-in-out infinite;
+        }
+
+        .btn-electric-pulse:hover {
+            animation: none;
+            background-color: var(--electric-blue-pure);
+            border-color: var(--electric-blue-pure);
+            color: #000000;
+            box-shadow: 0 0 30px rgba(0, 17, 255, 0.9);
+        }
+
+        @keyframes waveHand {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-14deg); }
+            40% { transform: rotate(12deg); }
+            60% { transform: rotate(-10deg); }
+            80% { transform: rotate(8deg); }
+        }
+
+        .wave-emoji {
+            display: inline-block;
+            transform-origin: 70% 70%;
+            animation: waveHand 2.2s infinite;
+        }
+
+        .interactive-link {
+            position: relative;
+            display: inline-block;
+        }
+        .interactive-link::after {
+            content: '';
             position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -1px;
+            left: 0;
+            background-color: var(--electric-blue-pure);
+            transform-origin: bottom right;
+            transition: transform 0.35s var(--ease-out-expo);
+        }
+        .interactive-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .interactive-link:hover {
+            color: rgb(100, 140, 255);
         }
 
-        /* Oculta scrollbar mas permite scroll no portfolio */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgb(0,17,255); }
+        .brand-item {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .brand-item.dimmed {
+            opacity: 0.15;
+            filter: grayscale(100%);
+        }
+        .brand-item.highlighted {
+            opacity: 1;
+            color: #ffffff;
+            font-weight: 400;
+        }
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        .filter-btn.active {
+            border-color: rgb(0, 17, 255);
+            color: #ffffff;
+            background-color: rgba(0, 17, 255, 0.12);
+        }
 
-        /* Touch botões prevenção de selecção */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        #game-overlay {
+            transition: opacity 0.5s ease;
+            touch-action: none;
+        }
+        
+        #chuckieCanvas {
+            image-rendering: pixelated;
+        }
+
         .touch-btn {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
-            touch-action: none;
-        }
-
-        /* Canvas Rendering limpo */
-        canvas {
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            image-rendering: pixelated;
+            touch-action: manipulation;
         }
     </style>
 </head>
-<body class="font-sans antialiased overflow-x-hidden selection:bg-brand-blue selection:text-white">
+<body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO (Sobe sobre o portefólio) -->
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-black flex flex-col hidden h-[100dvh]">
+    <!-- OVERLAY DO JOGO CHUCKIE EGG -->
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between p-2 sm:p-4 overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Header Utility -->
-        <div class="absolute top-0 right-0 p-4 sm:p-6 z-[60] flex items-center justify-end w-full">
-            <button onclick="skipGame()" class="group flex items-center gap-2 text-xs font-mono text-neutral-500 hover:text-white transition-colors bg-black/50 p-2 rounded backdrop-blur-sm">
-                <span>[ESC] BYPASS</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+        <!-- Cabeçalho Topo -->
+        <div class="w-full flex justify-between items-center z-50 px-2 py-1">
+            <span class="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-widest">Retro Arcade Mode</span>
+            <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
+                SKIP [ ⏭ ]
             </button>
         </div>
 
-        <!-- Ecrã de Disclaimer -->
-        <div id="disclaimer-screen" class="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto crt-overlay">
-            <div class="text-brand-blue mb-6 animate-pulse-slow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        <!-- Ecrã Disclaimer Inicial -->
+        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6">
+            <div class="inline-flex p-3 rounded-full bg-[rgb(0,17,255)]/10 text-[rgb(0,17,255)] mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-mono font-bold mb-4">INICIALIZAÇÃO DO SISTEMA</h2>
-            <p class="text-neutral-400 mb-8 font-mono text-sm sm:text-base leading-relaxed">
-                Bem-vindo. O ambiente que se segue é um micro-teste de carga cognitiva disfarçado de simulação de 8-bits.<br><br>
-                Objectivo: Aceder à sala de servidores para desbloquear a framework estratégica do portefólio.
+            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Aviso de Acesso / Disclaimer</h2>
+            <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
+                Please note: if you don't recognize this game, it's probably because you are younger than me.
             </p>
-            <button onclick="startGame()" class="px-8 py-4 bg-brand-blue hover:bg-white hover:text-brand-blue text-white font-mono font-bold text-lg rounded-none transition-all border border-brand-blue shadow-[0_0_20px_rgba(0,17,255,0.3)]">
-                > EXECUTAR SIMULAÇÃO
-            </button>
-        </div>
-
-        <!-- Ecrã de Conflito de Sessão (LIFO) -->
-        <div id="session-conflict-screen" class="hidden flex-1 flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto z-[70] bg-black inset-0 absolute">
-            <div class="text-red-600 mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                </svg>
-            </div>
-            <h2 class="text-3xl font-mono font-bold mb-4 text-white">SESSÃO INTERROMPIDA</h2>
-            <p class="text-neutral-400 mb-8 font-mono text-sm leading-relaxed max-w-md">
-                O acesso foi iniciado num novo dispositivo ou separador.<br><br>
-                Por razões de integridade de estado e política LIFO (Last In, First Out), apenas uma instância simultânea é permitida.
+            <p class="text-xs text-neutral-400 font-mono">
+                [ Desafio: Apanha todos os ovos no nível clássico para desbloquear o portefólio ]
             </p>
-            <button onclick="skipGame()" class="px-8 py-4 bg-neutral-800 hover:bg-neutral-700 text-white font-mono font-bold text-sm rounded transition-all border border-neutral-700">
-                > PROSSEGUIR PARA PORTEFÓLIO
-            </button>
-        </div>
-
-        <!-- Ecrã do Jogo -->
-        <div id="game-screen" class="hidden flex-col w-full h-[100dvh] max-w-7xl mx-auto overflow-hidden relative">
-            
-            <!-- Ecrã Win State -->
-            <div id="win-screen" class="hidden absolute inset-0 z-[60] bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6">
-                <h2 class="text-4xl font-mono font-bold text-brand-blue mb-4">ACESSO CONCEDIDO</h2>
-                <p class="text-neutral-300 mb-8 font-mono">Autenticação estrutural completa. A transferir para o ambiente principal.</p>
-                <div class="w-64 h-2 bg-neutral-900 rounded overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-brand-blue w-0 transition-all duration-[2000ms] ease-out"></div>
-                </div>
-            </div>
-
-            <!-- Área do Jogo: Topo no Mobile (flex-1), Centro no PC -->
-            <div class="w-full flex-1 flex items-start md:items-center justify-center p-2 pt-12 md:p-8 min-h-0 relative crt-overlay">
-                <!-- Canvas 4:3 -->
-                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-[100vw] md:max-w-none md:h-full md:w-auto aspect-[4/3] object-contain block bg-neutral-950 shadow-[0_0_40px_rgba(0,17,255,0.1)] rounded-lg md:rounded-xl border border-neutral-900"></canvas>
-            </div>
-
-            <!-- Controles Mobile (Visíveis apenas em ecrãs pequenos < md) -->
-            <div id="mobile-controls" class="w-full mt-auto pb-10 md:hidden flex flex-col items-center justify-end px-4 touch-none select-none z-50">
-                <div class="grid grid-cols-3 gap-3 sm:gap-5 w-full max-w-[320px]">
-                    <div></div>
-                    <button id="btn-up" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-brand-blue border border-neutral-800 rounded-2xl text-white font-mono flex items-center justify-center active:scale-95 transition-transform text-3xl">▲</button>
-                    <div></div>
-
-                    <button id="btn-left" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-brand-blue border border-neutral-800 rounded-2xl text-white font-mono flex items-center justify-center active:scale-95 transition-transform text-3xl">◄</button>
-                    <button id="btn-jump" class="touch-btn h-16 sm:h-20 bg-brand-blue active:bg-white active:text-brand-blue border border-brand-blue rounded-2xl text-white font-mono font-bold flex items-center justify-center active:scale-95 transition-transform text-sm tracking-widest shadow-[0_0_20px_rgba(0,17,255,0.4)]">JUMP</button>
-                    <button id="btn-right" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-brand-blue border border-neutral-800 rounded-2xl text-white font-mono flex items-center justify-center active:scale-95 transition-transform text-3xl">►</button>
-
-                    <div></div>
-                    <button id="btn-down" class="touch-btn h-16 sm:h-20 bg-neutral-900 active:bg-brand-blue border border-neutral-800 rounded-2xl text-white font-mono flex items-center justify-center active:scale-95 transition-transform text-3xl">▼</button>
-                    <div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PORTEFÓLIO PRINCIPAL (Mantido estritamente igual ao original) -->
-    <div id="main-portfolio" class="hidden">
-        <!-- Navegação Minimalista -->
-        <nav class="fixed w-full top-0 z-40 bg-brand-dark/80 backdrop-blur-md border-b border-neutral-900">
-            <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-                <div class="font-mono font-bold text-xl tracking-tighter">
-                    DANIEL<span class="text-brand-blue">AMARAL</span>
-                </div>
-                <div class="hidden md:flex space-x-8 font-mono text-xs tracking-widest text-neutral-400">
-                    <a href="#arquitectura" class="hover:text-white transition-colors">01. ARQUITECTURA</a>
-                    <a href="#sistemas" class="hover:text-white transition-colors">02. SISTEMAS</a>
-                    <a href="#contacto" class="hover:text-white transition-colors">03. TERMINAL</a>
-                </div>
-                <button class="md:hidden text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="startChuckieGame()" class="bg-[rgb(0,17,255)] hover:bg-[rgb(0,17,255)]/80 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(0,17,255,0.4)] cursor-pointer">
+                    Aceitar & Jogar
                 </button>
             </div>
-        </nav>
+        </div>
 
-        <!-- Hero Section -->
-        <section class="pt-40 pb-20 px-6 min-h-[90vh] flex flex-col justify-center relative overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <div class="h-px w-full bg-neutral-900 absolute top-1/4"></div>
-                <div class="h-px w-full bg-neutral-900 absolute top-2/4"></div>
-                <div class="h-px w-full bg-neutral-900 absolute top-3/4"></div>
-                <div class="w-px h-full bg-neutral-900 absolute left-1/4"></div>
-                <div class="w-px h-full bg-neutral-900 absolute left-2/4"></div>
-                <div class="w-px h-full bg-neutral-900 absolute left-3/4"></div>
-            </div>
+        <!-- Ecrã Principal de Jogo -->
+        <div id="game-screen" class="hidden flex-col items-center justify-between w-full h-full max-w-[680px] my-auto overflow-hidden">
             
-            <div class="max-w-6xl mx-auto w-full relative z-10">
-                <div class="inline-block border border-brand-blue/30 bg-brand-blue/10 text-brand-blue font-mono text-xs px-3 py-1 rounded-full mb-8">
-                    STATUS: SISTEMA OPERACIONAL V10.1
-                </div>
-                <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight max-w-4xl">
-                    Transição estruturada de executor visual para <span class="text-brand-blue italic">arquitecto estratégico.</span>
-                </h1>
-                <p class="text-xl text-neutral-400 max-w-2xl mb-12 leading-relaxed">
-                    Optimização de sistemas, design institucional (MGRA) e desenvolvimento de lógicas cognitivas baseadas em IA para escala sustentada.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#sistemas" class="px-8 py-4 bg-white text-black font-semibold hover:bg-neutral-200 transition-colors text-center">
-                        Explorar Sistemas
-                    </a>
-                    <a href="https://linkedin.com/in/daniel-amaral-pt" target="_blank" class="px-8 py-4 border border-neutral-700 hover:border-white transition-colors flex items-center justify-center gap-2 font-mono text-sm">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        Terminal LinkedIn
-                    </a>
+            <!-- Canvas Adaptativo Sem Corte Lateral -->
+            <div class="w-full flex-1 flex items-center justify-center p-2 min-h-0 overflow-hidden">
+                <canvas id="chuckieCanvas" width="640" height="480" class="w-full max-w-full h-auto max-h-[52dvh] aspect-[4/3] object-contain block bg-black shadow-[0_0_30px_rgba(0,17,255,0.2)] rounded-lg border border-neutral-800"></canvas>
+            </div>
+
+            <!-- Controlo Táctil Centrado com Botão JUMP no Centro -->
+            <div id="mobile-controls" class="w-full flex justify-center items-center px-4 py-2 select-none touch-none">
+                <div class="grid grid-cols-3 gap-2 w-44 h-44 sm:w-48 sm:h-48">
+                    <div></div>
+                    <button id="btn-up" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▲</button>
+                    <div></div>
+
+                    <button id="btn-left" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">◄</button>
+                    <button id="btn-jump" class="touch-btn bg-[rgb(0,17,255)] active:bg-[rgb(0,17,255)]/80 border border-[rgb(0,17,255)] rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xs font-bold shadow-[0_0_15px_rgba(0,17,255,0.5)] uppercase tracking-tight">JUMP</button>
+                    <button id="btn-right" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">►</button>
+
+                    <div></div>
+                    <button id="btn-down" class="touch-btn bg-neutral-800 active:bg-[rgb(0,17,255)] border border-neutral-700 rounded-xl text-white font-mono flex items-center justify-center active:scale-95 text-xl shadow-lg">▼</button>
+                    <div></div>
                 </div>
             </div>
-        </section>
-        
-        <!-- Footer Simples -->
-        <footer class="border-t border-neutral-900 py-12 px-6">
-            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-neutral-500 font-mono text-xs">
-                <div>© 2026 Daniel Amaral. Arquitectura Híbrida.</div>
-                <div class="flex gap-6">
-                    <a href="#" class="hover:text-brand-blue transition-colors">SYSTEM_LOG</a>
-                    <a href="#" class="hover:text-brand-blue transition-colors">ESTADO_REDE</a>
-                </div>
-            </div>
-        </footer>
+
+            <p class="hidden md:block text-[11px] text-neutral-500 text-center font-mono my-1">
+                Setas (Mover / Escadas) • Barra de Espaço (Saltar)
+            </p>
+        </div>
     </div>
 
-    <!-- Script do Jogo -->
+    <!-- LANDING PAGE PRINCIPAL -->
+    <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
+        <div class="max-w-2xl w-full">
+            
+            <!-- Avatar Video + Callout -->
+            <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
+                <button 
+                    onclick="triggerChat()" 
+                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" 
+                    aria-label="Abrir conversa">
+                    <video 
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
+                        autoplay loop muted playsinline 
+                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
+                    </video>
+                </button>
+
+                <button 
+                    onclick="triggerChat()" 
+                    class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
+                    
+                    <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
+                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
+                    </span>
+                    
+                    <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
+                        Clica em mim para começar.
+                    </span>
+                </button>
+            </div>
+
+            <!-- Título & Subtítulo Principal -->
+            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
+                Daniel da Rosa Amaral
+            </h1>
+            <div>
+                <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2 inline-block cursor-default leading-relaxed tracking-normal">
+                    Designer Gráfico • Diretor de Arte • Branding • SEO • AEO
+                </p>
+            </div>
+
+            <!-- Conteúdo Introdutório -->
+            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
+                <p>
+                    Desenvolvo projetos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
+                </p>
+                <p>
+                    Há mais de 25 anos que ajudo marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital através do design, da estratégia e da otimização para motores de busca e Inteligência Artificial.
+                </p>
+            </div>
+
+            <!-- Especialidades -->
+            <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-8 animate-reveal delay-4">
+                <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
+                    Especialidades
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-10 text-base text-neutral-400">
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Design Gráfico
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direção de arte.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Branding & Identidade Visual
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitetura de marca e comunicação visual.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Design Editorial
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Publicidade
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            SEO, AEO & Google Ads
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            SEO técnico, SEO on-page, arquitetura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico.
+                        </p>
+                    </div>
+
+                    <div class="group cursor-default">
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
+                            Web Design
+                        </h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
+                            Arquitetura de informação, wireframes, UX, UI, layouts para websites, landing pages e direção de arte para projetos digitais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marcas & Instituições -->
+            <div id="brands-section" class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
+                        Marcas & Instituições
+                    </h2>
+                </div>
+                
+                <p class="text-sm text-neutral-400 font-extralight mb-3">
+                    Projetos e colaborações desenvolvidos ao longo do percurso profissional:
+                </p>
+
+                <!-- Filtros -->
+                <div class="flex flex-wrap gap-2 mb-6 text-xs font-light">
+                    <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
+                    <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
+                    <button onclick="filterBrands('health', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Saúde & Pharma</button>
+                    <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
+                    <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
+                </div>
+                
+                <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span> •
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span> •
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span> •
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span> •
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
+                </div>
+            </div>
+
+            <!-- CTA Portfólio -->
+            <div class="mt-16 animate-reveal delay-6">
+                <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
+                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-98">
+                    Ver Portfólio Completo
+                </a>
+            </div>
+
+            <!-- Contactos -->
+            <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
+                <div class="flex items-center gap-3">
+                    <a href="mailto:daniel.rosa.amaral@gmail.com" 
+                       onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        daniel.rosa.amaral@gmail.com
+                    </a>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="tel:+351919958423" 
+                       onclick="copyToClipboard('+351919958423', this, 'phone')"
+                       class="interactive-link text-neutral-300 transition-colors w-max">
+                        +351 919 958 423
+                    </a>
+                    <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
+                </div>
+
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'linkedin'});}"
+                   class="interactive-link text-neutral-300 transition-colors w-max">
+                    linkedin.com/in/daniel-da-rosa-amaral
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG -->
     <script>
-        // --- 1. Lógica de Gestão de Sessão (LIFO - Realtime Local Mock) ---
-        // Na ausência de um WebSocket backend, usamos o localStorage events
-        // que dispara across-tabs no mesmo browser instantaneamente.
-        const SESSION_ID = Math.random().toString(36).substring(2, 15);
-        const SESSION_KEY = 'da_active_game_session';
-        
-        // Registar esta sessão como a activa
-        localStorage.setItem(SESSION_KEY, SESSION_ID);
-        
-        // Ouvir alterações de outros separadores
-        window.addEventListener('storage', (e) => {
-            if (e.key === SESSION_KEY && e.newValue !== SESSION_ID) {
-                // Outra sessão tomou controlo, forçar LIFO exit
-                forceDisconnect();
+        (function initAnimatedFavicon() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            
+            let favicon = document.querySelector("link[rel*='icon']");
+            if (!favicon) {
+                favicon = document.createElement('link');
+                favicon.rel = 'shortcut icon';
+                document.head.appendChild(favicon);
             }
-        });
 
-        function forceDisconnect() {
-            // Parar o jogo
-            isGameOver = true;
-            if(animationFrameId) cancelAnimationFrame(animationFrameId);
-            
-            // Alterar UI
-            document.getElementById('disclaimer-screen').classList.add('hidden');
-            document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('session-conflict-screen').classList.remove('hidden');
-            document.getElementById('session-conflict-screen').classList.add('flex');
+            let angle = 0;
+            function renderFrame() {
+                ctx.clearRect(0, 0, 32, 32);
+                const radius = 10 + Math.sin(angle) * 4;
+                ctx.beginPath();
+                ctx.arc(16, 16, Math.max(1, radius), 0, Math.PI * 2);
+                ctx.fillStyle = 'rgb(0, 17, 255)';
+                ctx.fill();
+
+                favicon.href = canvas.toDataURL('image/png');
+                angle += 0.12;
+            }
+            setInterval(renderFrame, 66);
+        })();
+
+        let animationFrameId;
+        const keys = {};
+
+        function triggerChat() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
+            }
+            if (typeof window.chatbase === 'function') {
+                window.chatbase('open');
+            } else {
+                window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
+            }
         }
 
-        // --- 2. Lógica de UI e Transição ---
+        function filterBrands(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            const items = document.querySelectorAll('.brand-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.classList.remove('dimmed');
+                    if (category !== 'all') { item.classList.add('highlighted'); } 
+                    else { item.classList.remove('highlighted'); }
+                } else {
+                    item.classList.add('dimmed');
+                    item.classList.remove('highlighted');
+                }
+            });
+            if (typeof gtag === 'function') {
+                gtag('event', 'filter_brands', {'event_category': 'Engagement', 'event_label': category});
+            }
+        }
+
+        function copyToClipboard(text, element, label) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+                const feedback = element.nextElementSibling;
+                if (feedback && feedback.classList.contains('copy-feedback')) {
+                    feedback.innerText = '✓ Copiado';
+                    feedback.style.opacity = '1';
+                    setTimeout(() => { feedback.style.opacity = '0'; }, 2000);
+                }
+            }
+        }
+
         function skipGame() {
-            document.getElementById('game-overlay').style.display = 'none';
-            const mainPortfolio = document.getElementById('main-portfolio');
-            mainPortfolio.classList.remove('hidden');
-            
-            // Cleanup do jogo
-            isGameOver = true;
-            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            const overlay = document.getElementById('game-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 500);
+            }
+            if (typeof gtag === 'function') {
+                gtag('event', 'skip_game', {'event_category': 'Engagement'});
+            }
         }
 
-        function startGame() {
-            // Reforçar que esta é a sessão activa ao clicar play
-            localStorage.setItem(SESSION_KEY, SESSION_ID);
-
+        function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-screen').classList.add('flex');
-            
-            // Pequeno delay para garantir dimensões do canvas
-            setTimeout(() => {
-                initGame();
-            }, 100);
+            initChuckieEgg();
         }
 
-        function triggerWin() {
-            isGameOver = true;
-            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        function initChuckieEgg() {
+            const canvas = document.getElementById('chuckieCanvas');
+            const ctx = canvas.getContext('2d');
             
-            const winScreen = document.getElementById('win-screen');
-            winScreen.classList.remove('hidden');
+            const GRAVITY = 0.45;
+            const JUMP_FORCE = -8.5;
+            const SPEED = 2.8;
+            const CLIMB_SPEED = 2.2;
+            const FRICTION = 0.78;
+
+            const C_GREEN = '#00CC00';
+            const C_MAGENTA = '#FF00FF';
+            const C_CYAN = '#00FFFF';
+            const C_YELLOW = '#FFFF00';
+            const C_WHITE = '#FFFFFF';
+            const C_RED = '#FF0000';
+            const C_BLUE = '#0033FF';
+
+            let score = 0;
+            let timer = 893;
+            let isGameOver = false;
+            let isVictory = false;
+            let victoryTimer = 0;
             
-            setTimeout(() => {
-                document.getElementById('progress-bar').style.width = '100%';
-            }, 100);
+            let shakeTime = 0;
+            let shakeIntensity = 0;
+            let redFlashAlpha = 0;
+            let particles = [];
+            let floatingTexts = [];
 
-            setTimeout(() => {
-                skipGame();
-            }, 2500);
-        }
-
-        // Se pressionar ESC, ignora o jogo
-        window.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape' && document.getElementById('game-overlay').style.display !== 'none') {
-                skipGame();
-            }
-        });
-
-        // --- 3. Motor do Jogo (Ajustado para D-Pad Específico e Teclado Global) ---
-        const canvas = document.getElementById('chuckieCanvas');
-        const ctx = canvas.getContext('2d', { alpha: false });
-        let animationFrameId;
-        let isGameOver = false;
-
-        const GAME_WIDTH = 640;
-        const GAME_HEIGHT = 480;
-
-        const keys = {};
-
-        // Listeners Globais para PC (Teclado)
-        window.addEventListener('keydown', (e) => {
-            if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
-                e.preventDefault();
-            }
-            keys[e.code] = true;
-        });
-
-        window.addEventListener('keyup', (e) => {
-            keys[e.code] = false;
-        });
-
-        // Listeners para Mobile (Touch D-Pad)
-        function setupTouchControls() {
-            const btnUp = document.getElementById('btn-up');
-            const btnDown = document.getElementById('btn-down');
-            const btnLeft = document.getElementById('btn-left');
-            const btnRight = document.getElementById('btn-right');
-            const btnJump = document.getElementById('btn-jump');
-
-            const addTouch = (el, code) => {
-                if(!el) return;
-                el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[code] = true; }, {passive: false});
-                el.addEventListener('touchend', (e) => { e.preventDefault(); keys[code] = false; }, {passive: false});
-                el.addEventListener('mousedown', (e) => { e.preventDefault(); keys[code] = true; });
-                el.addEventListener('mouseup', (e) => { e.preventDefault(); keys[code] = false; });
-                el.addEventListener('mouseleave', (e) => { keys[code] = false; });
+            let player = {
+                x: 300, y: 440, w: 18, h: 24,
+                vx: 0, vy: 0,
+                onGround: false, onLadder: false, climbing: false,
+                facingRight: true, tiltAngle: 0
             };
 
-            addTouch(btnUp, 'ArrowUp');
-            addTouch(btnDown, 'ArrowDown');
-            addTouch(btnLeft, 'ArrowLeft');
-            addTouch(btnRight, 'ArrowRight');
-            addTouch(btnJump, 'Space');
-        }
+            const platformData = [
+                {x: 0, y: 464, w: 640},
+                {x: 0, y: 224, w: 120}, {x: 150, y: 240, w: 90}, {x: 120, y: 160, w: 80},
+                {x: 60, y: 320, w: 120}, {x: 230, y: 368, w: 110}, {x: 350, y: 384, w: 80},
+                {x: 460, y: 400, w: 120}, {x: 410, y: 336, w: 80}, {x: 520, y: 288, w: 100},
+                {x: 350, y: 272, w: 80}, {x: 340, y: 192, w: 100}, {x: 400, y: 144, w: 110},
+                {x: 520, y: 160, w: 100}
+            ];
 
-        // Objectos do Jogo
-        const player = {
-            x: 50, y: GAME_HEIGHT - 60, width: 30, height: 40,
-            vx: 0, vy: 0, speed: 5, jumpPower: -12,
-            grounded: false, color: '#0011ff' // MgRA Blue
-        };
+            const ladders = [
+                {x: 100, y: 224, h: 240}, {x: 60, y: 120, h: 104}, {x: 180, y: 160, h: 80},
+                {x: 260, y: 120, h: 248}, {x: 310, y: 120, h: 248}, {x: 370, y: 80, h: 112},
+                {x: 550, y: 160, h: 128}, {x: 520, y: 304, h: 160}
+            ];
 
-        // Plataformas (A última é a "Sala de Servidores" - Vitória)
-        const platforms = [
-            { x: 0, y: GAME_HEIGHT - 20, width: GAME_WIDTH, height: 20 }, // Chão
-            { x: 150, y: 380, width: 100, height: 20 },
-            { x: 300, y: 300, width: 100, height: 20 },
-            { x: 100, y: 220, width: 100, height: 20 },
-            { x: 250, y: 140, width: 100, height: 20 },
-            { x: 450, y: 100, width: 150, height: 20, isServerRoom: true } // Win Target
-        ];
+            const elevators = [
+                {x: 190, y: 200, w: 40, h: 10, vy: 1, minY: 180, maxY: 380},
+                {x: 190, y: 320, w: 40, h: 10, vy: -1, minY: 180, maxY: 380}
+            ];
 
-        const gravity = 0.6;
+            let eggs = [
+                {x: 90, y: 208, w: 14, h: 12, collected: false}, {x: 150, y: 144, w: 14, h: 12, collected: false},
+                {x: 70, y: 304, w: 14, h: 12, collected: false}, {x: 260, y: 352, w: 14, h: 12, collected: false},
+                {x: 430, y: 320, w: 14, h: 12, collected: false}, {x: 480, y: 272, w: 14, h: 12, collected: false},
+                {x: 550, y: 144, w: 14, h: 12, collected: false}, {x: 440, y: 128, w: 14, h: 12, collected: false},
+                {x: 370, y: 176, w: 14, h: 12, collected: false}, {x: 480, y: 384, w: 14, h: 12, collected: false}
+            ];
 
-        function update() {
-            if (isGameOver) return;
+            let seeds = [
+                {x: 40, y: 216, collected: false}, {x: 130, y: 312, collected: false}, 
+                {x: 230, y: 360, collected: false}, {x: 340, y: 184, collected: false}, 
+                {x: 420, y: 136, collected: false}, {x: 530, y: 280, collected: false}, 
+                {x: 390, y: 376, collected: false}
+            ];
 
-            // Movimento Horizontal
-            if (keys['ArrowLeft']) {
-                player.vx = -player.speed;
-            } else if (keys['ArrowRight']) {
-                player.vx = player.speed;
-            } else {
-                player.vx = 0;
+            let ostriches = [
+                {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
+                {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
+                {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
+            ];
+
+            window.addEventListener('keydown', e => { keys[e.code] = true; });
+            window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+            function setupTouchBtn(id, keyCode) {
+                const btn = document.getElementById(id);
+                if(!btn) return;
+                
+                const press = (e) => {
+                    if(e.cancelable) e.preventDefault();
+                    keys[keyCode] = true;
+                };
+                const release = (e) => {
+                    if(e.cancelable) e.preventDefault();
+                    keys[keyCode] = false;
+                };
+
+                btn.addEventListener('touchstart', press, { passive: false });
+                btn.addEventListener('touchend', release, { passive: false });
+                btn.addEventListener('touchcancel', release, { passive: false });
+                btn.addEventListener('mousedown', press);
+                btn.addEventListener('mouseup', release);
+                btn.addEventListener('mouseleave', release);
             }
 
-            // Salto (Seta Cima ou Jump(Space))
-            if ((keys['Space'] || keys['ArrowUp']) && player.grounded) {
-                player.vy = player.jumpPower;
-                player.grounded = false;
+            setupTouchBtn('btn-left', 'ArrowLeft');
+            setupTouchBtn('btn-right', 'ArrowRight');
+            setupTouchBtn('btn-up', 'ArrowUp');
+            setupTouchBtn('btn-down', 'ArrowDown');
+            setupTouchBtn('btn-jump', 'Space');
+
+            function triggerShake(intensity, duration) {
+                shakeIntensity = intensity;
+                shakeTime = duration;
             }
 
-            // Aplicar física
-            player.vy += gravity;
-            player.x += player.vx;
-            player.y += player.vy;
+            function addParticles(x, y) {
+                for(let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: x, y: y,
+                        vx: (Math.random() - 0.5) * 5,
+                        vy: (Math.random() - 0.5) * 5,
+                        life: 18, color: i % 2 === 0 ? C_YELLOW : C_WHITE
+                    });
+                }
+            }
 
-            // Limites do ecrã
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > GAME_WIDTH) player.x = GAME_WIDTH - player.width;
+            function addFloatingText(text, x, y) {
+                floatingTexts.push({ text: text, x: x, y: y, life: 25 });
+            }
 
-            // Colisões com plataformas
-            player.grounded = false;
-            for (let p of platforms) {
-                if (player.x < p.x + p.width &&
-                    player.x + player.width > p.x &&
-                    player.y + player.height > p.y &&
-                    player.y + player.height < p.y + p.height + player.vy + 1) { // Verifica direcção Queda
-                    
-                    if (player.vy > 0) { // A cair
-                        player.grounded = true;
+            function drawPlatform(x, y, w) {
+                ctx.fillStyle = C_GREEN;
+                ctx.fillRect(x, y, w, 16);
+                ctx.fillStyle = '#000000';
+                for(let i = 0; i < w; i += 12) {
+                    ctx.fillRect(x + i, y + 2, 6, 3);
+                    ctx.fillRect(x + i + 3, y + 9, 6, 3);
+                }
+            }
+
+            function drawLadder(x, y, h) {
+                ctx.fillStyle = C_MAGENTA;
+                ctx.fillRect(x, y, 4, h); ctx.fillRect(x + 16, y, 4, h);
+                for(let i = y + 4; i < y + h; i += 8) { ctx.fillRect(x + 4, i, 12, 4); }
+            }
+
+            function drawPlayer() {
+                ctx.save();
+                ctx.translate(player.x + player.w/2, player.y + player.h/2);
+                ctx.rotate(player.tiltAngle);
+
+                let px = -player.w/2;
+                let py = -player.h/2;
+
+                ctx.fillStyle = C_CYAN;
+                ctx.fillRect(px - 1, py - 3, 16, 4);
+                ctx.fillRect(px + 2, py - 7, 10, 4);
+
+                ctx.fillStyle = C_YELLOW;
+                ctx.fillRect(px + 3, py - 3, 8, 6);
+                ctx.fillStyle = '#000000';
+                if(player.facingRight) ctx.fillRect(px + 8, py - 1, 2, 2);
+                else ctx.fillRect(px + 3, py - 1, 2, 2);
+
+                ctx.fillStyle = C_RED;
+                ctx.fillRect(px + 1, py + 3, 12, 11);
+
+                ctx.fillStyle = C_BLUE;
+                ctx.fillRect(px + 2, py + 14, 4, 7);
+                ctx.fillRect(px + 8, py + 14, 4, 7);
+
+                ctx.fillStyle = C_YELLOW;
+                ctx.fillRect(px, py + 21, 5, 3);
+                ctx.fillRect(px + 8, py + 21, 5, 3);
+
+                ctx.restore();
+            }
+
+            function drawOstrich(o) {
+                ctx.save();
+                ctx.fillStyle = C_CYAN;
+                ctx.fillRect(o.x + 3, o.y + 6, 14, 12);
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(o.x + 5, o.y + 8, 8, 6);
+                
+                ctx.fillStyle = C_CYAN;
+                if (o.vx > 0) {
+                    ctx.fillRect(o.x + 13, o.y - 2, 4, 10);
+                    ctx.fillRect(o.x + 13, o.y - 6, 8, 6);
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + 21, o.y - 4, 5, 3);
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + 17, o.y - 5, 2, 2);
+                } else {
+                    ctx.fillRect(o.x, o.y - 2, 4, 10);
+                    ctx.fillRect(o.x - 4, o.y - 6, 8, 6);
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - 9, o.y - 4, 5, 3);
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - 2, o.y - 5, 2, 2);
+                }
+                
+                ctx.fillStyle = C_WHITE;
+                let legOffset = Math.sin(Date.now() * 0.02) * 3;
+                ctx.fillRect(o.x + 5, o.y + 18, 2, 6 + legOffset);
+                ctx.fillRect(o.x + 11, o.y + 18, 2, 6 - legOffset);
+                ctx.restore();
+            }
+
+            function drawUI() {
+                ctx.font = '14px "Courier New", monospace, sans-serif';
+                if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                
+                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, 30);
+                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), 80, 30);
+                
+                if (timer < 100) {
+                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
+                } else {
+                    ctx.fillStyle = C_RED;
+                }
+                ctx.fillText('TIME ' + Math.floor(timer), 500, 30);
+
+                ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, 60);
+                ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', 140, 60);
+                
+                ctx.fillStyle = C_YELLOW;
+                ctx.strokeStyle = C_YELLOW; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(60, 110, 30, Math.PI, 0); ctx.stroke();
+                for(let i = 35; i <= 85; i += 10) ctx.fillRect(i, 110, 2, 40);
+                ctx.fillRect(30, 150, 60, 4);
+                ctx.fillRect(50, 130, 14, 10); ctx.fillRect(60, 122, 8, 8);
+            }
+
+            function resetLevel() {
+                redFlashAlpha = 0.8;
+                triggerShake(12, 16);
+                player.x = 300; player.y = 440; player.vx = 0; player.vy = 0;
+            }
+
+            function update() {
+                if(isGameOver || isVictory) return;
+                timer -= 0.02;
+
+                let targetTilt = 0;
+                if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
+                else if(player.vx < -0.5) { targetTilt = -0.16; player.facingRight = false; }
+                player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
+
+                let playerCenterX = player.x + player.w/2;
+                let activeLadder = null;
+
+                for(let l of ladders) {
+                    if(playerCenterX >= l.x && playerCenterX <= l.x + 20 &&
+                       player.y + player.h >= l.y && player.y <= l.y + l.h) {
+                        activeLadder = l;
+                        break;
+                    }
+                }
+
+                player.onLadder = activeLadder !== null;
+
+                if(player.onLadder) {
+                    if(keys['ArrowUp']) {
+                        player.climbing = true;
+                        player.vy = -CLIMB_SPEED;
+                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
+                    } else if(keys['ArrowDown']) {
+                        player.climbing = true;
+                        player.vy = CLIMB_SPEED;
+                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
+                    } else if(player.climbing) {
                         player.vy = 0;
-                        player.y = p.y - player.height;
+                    }
+                } else {
+                    player.climbing = false;
+                }
 
-                        // Condição de Vitória
-                        if(p.isServerRoom) {
-                            triggerWin();
-                            return; // Stop update loop
+                if(keys['ArrowLeft']) {
+                    player.vx = -SPEED;
+                } else if(keys['ArrowRight']) {
+                    player.vx = SPEED;
+                } else {
+                    player.vx *= FRICTION;
+                    if(Math.abs(player.vx) < 0.05) player.vx = 0;
+                }
+
+                if(!player.climbing) {
+                    player.vy += GRAVITY;
+                    
+                    if(keys['Space'] && player.onGround) {
+                        player.vy = JUMP_FORCE;
+                        player.onGround = false;
+                    }
+                }
+
+                player.x += player.vx;
+                player.y += player.vy;
+
+                if(player.x < 0) player.x = 0;
+                if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+                player.onGround = false;
+                if(!player.climbing && player.vy >= 0) {
+                    for(let p of platformData) {
+                        if(player.x + player.w > p.x && player.x < p.x + p.w &&
+                           player.y + player.h >= p.y && player.y + player.h <= p.y + 16) {
+                            player.y = p.y - player.h;
+                            player.vy = 0; 
+                            player.onGround = true;
+                        }
+                    }
+                    for(let e of elevators) {
+                        if(player.x + player.w > e.x && player.x < e.x + e.w &&
+                           player.y + player.h >= e.y && player.y + player.h <= e.y + 12) {
+                            player.y = e.y - player.h;
+                            player.vy = e.vy; 
+                            player.onGround = true;
                         }
                     }
                 }
-            }
 
-            // Fallback (caso caia do chão por bug, restarta posição)
-            if (player.y > GAME_HEIGHT) {
-                player.x = 50;
-                player.y = GAME_HEIGHT - 60;
-                player.vy = 0;
-            }
-        }
+                for(let e of elevators) {
+                    e.y += e.vy;
+                    if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
+                }
 
-        function draw() {
-            if (isGameOver && document.getElementById('win-screen').classList.contains('hidden') === false) return;
-
-            // Fundo
-            ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            // Grelha tipo Cyberpunk/Matrix
-            ctx.strokeStyle = '#1a1a1a';
-            ctx.lineWidth = 1;
-            for(let i=0; i<GAME_WIDTH; i+=40) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, GAME_HEIGHT); ctx.stroke();
-            }
-            for(let i=0; i<GAME_HEIGHT; i+=40) {
-                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(GAME_WIDTH, i); ctx.stroke();
-            }
-
-            // Desenhar Plataformas
-            for (let p of platforms) {
-                if(p.isServerRoom) {
-                    // Servidor final (Estilizado)
-                    ctx.fillStyle = '#222';
-                    ctx.fillRect(p.x, p.y, p.width, p.height);
-                    ctx.fillStyle = '#0011ff';
-                    ctx.fillRect(p.x, p.y, p.width, 4);
-                    // Leds a piscar
-                    if(Math.floor(Date.now() / 200) % 2 === 0) {
-                        ctx.fillStyle = '#fff';
-                        ctx.fillRect(p.x + 20, p.y + 8, 4, 4);
-                        ctx.fillRect(p.x + 40, p.y + 8, 4, 4);
+                for(let o of ostriches) {
+                    o.x += o.vx;
+                    if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
+                    if(player.x < o.x + o.w && player.x + player.w > o.x &&
+                       player.y < o.y + o.h && player.y + player.h > o.y) {
+                        resetLevel();
                     }
-                    ctx.fillStyle = '#fff';
-                    ctx.font = "12px monospace";
-                    ctx.fillText("SERVER_ROOM", p.x + 10, p.y - 10);
-                } else {
-                    ctx.fillStyle = '#333';
-                    ctx.fillRect(p.x, p.y, p.width, p.height);
-                    ctx.strokeStyle = '#555';
-                    ctx.strokeRect(p.x, p.y, p.width, p.height);
+                }
+
+                let eggsLeft = 0;
+                for(let egg of eggs) {
+                    if(!egg.collected) {
+                        if(player.x < egg.x + egg.w && player.x + player.w > egg.x &&
+                           player.y < egg.y + egg.h && player.y + player.h > egg.y) {
+                            egg.collected = true; score += 100;
+                            addParticles(egg.x + 7, egg.y + 6);
+                            addFloatingText('+100', egg.x, egg.y - 10);
+                        } else { eggsLeft++; }
+                    }
+                }
+
+                for(let s of seeds) {
+                    if(!s.collected && player.x < s.x + 12 && player.x + player.w > s.x &&
+                       player.y < s.y + 12 && player.y + player.h > s.y) {
+                        s.collected = true; score += 50; timer += 40;
+                        addFloatingText('+50', s.x, s.y - 10);
+                    }
+                }
+
+                if(eggsLeft === 0 && !isVictory) {
+                    isVictory = true;
+                    victoryTimer = 0;
+                    triggerShake(8, 20);
                 }
             }
 
-            // Desenhar Jogador
-            ctx.fillStyle = player.color;
-            ctx.shadowColor = player.color;
-            ctx.shadowBlur = 10;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-            ctx.shadowBlur = 0; // reset
-        }
+            function draw() {
+                ctx.save();
+                
+                if(shakeTime > 0) {
+                    let rx = (Math.random() - 0.5) * shakeIntensity;
+                    let ry = (Math.random() - 0.5) * shakeIntensity;
+                    ctx.translate(rx, ry);
+                    shakeTime--;
+                }
 
-        function loop() {
-            if (isGameOver) return;
-            update();
-            draw();
-            animationFrameId = requestAnimationFrame(loop);
-        }
+                ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                for(let p of platformData) drawPlatform(p.x, p.y, p.w);
+                for(let l of ladders) drawLadder(l.x, l.y, l.h);
+                
+                for(let e of elevators) {
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
+                }
 
-        function initGame() {
-            setupTouchControls();
+                let seedAlpha = (Math.sin(Date.now() * 0.01) + 1) / 2;
+                for(let s of seeds) {
+                    if(!s.collected) {
+                        ctx.fillStyle = seedAlpha > 0.3 ? C_MAGENTA : C_WHITE;
+                        ctx.beginPath();
+                        ctx.moveTo(s.x + 6, s.y); ctx.lineTo(s.x + 12, s.y + 12); ctx.lineTo(s.x, s.y + 12); ctx.fill();
+                    }
+                }
+
+                for(let egg of eggs) {
+                    if(!egg.collected) {
+                        ctx.fillStyle = C_WHITE; ctx.beginPath();
+                        ctx.ellipse(egg.x + 7, egg.y + 6, 7, 5, 0, 0, Math.PI*2); ctx.fill();
+                    }
+                }
+
+                for(let o of ostriches) drawOstrich(o);
+                if(!isGameOver && !isVictory) drawPlayer();
+
+                for(let i = particles.length - 1; i >= 0; i--) {
+                    let p = particles[i];
+                    p.x += p.vx; p.y += p.vy; p.life--;
+                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 3, 3);
+                    if(p.life <= 0) particles.splice(i, 1);
+                }
+
+                ctx.font = '10px "Courier New", monospace';
+                for(let i = floatingTexts.length - 1; i >= 0; i--) {
+                    let ft = floatingTexts[i];
+                    ft.y -= 0.8; ft.life--;
+                    ctx.fillStyle = C_YELLOW; ctx.fillText(ft.text, ft.x, ft.y);
+                    if(ft.life <= 0) floatingTexts.splice(i, 1);
+                }
+
+                drawUI();
+
+                if(redFlashAlpha > 0) {
+                    ctx.fillStyle = `rgba(255, 0, 0, ${redFlashAlpha})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    redFlashAlpha -= 0.05;
+                }
+
+                if(isVictory) {
+                    victoryTimer++;
+                    const retroColors = [C_RED, C_GREEN, C_YELLOW, C_CYAN, C_MAGENTA];
+                    ctx.fillStyle = retroColors[victoryTimer % retroColors.length];
+                    ctx.fillRect(160, 180, 320, 100);
+                    ctx.fillStyle = '#000000';
+                    ctx.font = '14px "Courier New", monospace';
+                    if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                    ctx.fillText('NÍVEL CONCLUÍDO!', 210, 235);
+
+                    if(victoryTimer > 80) {
+                        skipGame();
+                    }
+                }
+
+                ctx.restore();
+            }
+
+            function loop() {
+                update(); draw();
+                if(document.getElementById('game-overlay')) {
+                    animationFrameId = requestAnimationFrame(loop);
+                }
+            }
             
-            // Reset player status
-            player.x = 50;
-            player.y = GAME_HEIGHT - 60;
-            player.vx = 0;
-            player.vy = 0;
-            isGameOver = false;
-
-            // Iniciar o ecrã
-            document.getElementById('game-overlay').style.display = 'flex';
+            cancelAnimationFrame(animationFrameId);
             loop();
         }
-
-        // Por defeito, mostrar a intro do jogo ao carregar a página
-        window.onload = () => {
-            document.getElementById('game-overlay').style.display = 'flex';
-            document.getElementById('game-overlay').classList.remove('hidden');
-        };
-
-    </script>
-
-    <!-- Chatbase (Mantido intacto) -->
-    <script>
-      window.chatbaseConfig = {
-        chatbotId: "W9oXW-G09Zg3r_k7QeQ-P",
-      }
-    </script>
-    <script
-      src="https://www.chatbase.co/embed.min.js"
-      chatbotId="W9oXW-G09Zg3r_k7QeQ-P"
-      domain="www.chatbase.co"
-      defer>
     </script>
 </body>
 </html>
