@@ -8,7 +8,7 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Diretor de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa">
 
-    <!-- Favicon PNG (Fundo Transparente) -->
+    <!-- Favicon PNG -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
@@ -204,16 +204,16 @@
         }
         
         #chuckieCanvas {
-            image-rendering: pixelated; /* Mantém o aspeto 8-bit nítido */
+            image-rendering: pixelated;
         }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- GATE / OVERLAY COM POP-UP, JOGO CHUCKIE EGG E BOTÃO SKIP -->
+    <!-- OVERLAY DO JOGO CHUCKIE EGG COM SKIP -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#000000] flex items-center justify-center p-4">
         
-        <!-- Botão Skip Global do Overlay -->
+        <!-- Botão Skip Global -->
         <button onclick="skipGame()" class="absolute top-6 right-6 z-50 text-neutral-400 hover:text-white text-xs md:text-sm font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-4 py-2 rounded-lg backdrop-blur-md transition-all hover:border-[rgb(0,17,255)] cursor-pointer">
             SKIP [ ⏭ ]
         </button>
@@ -247,6 +247,7 @@
         </div>
     </div>
 
+    <!-- LANDING PAGE PRINCIPAL -->
     <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
         <div class="max-w-2xl w-full">
             
@@ -461,7 +462,7 @@
         </div>
     </main>
 
-    <!-- Scripts de Interatividade & Jogo Chuckie Egg (Versão com Skip) -->
+    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG MEJORADO -->
     <script>
         let animationFrameId;
         const keys = {};
@@ -508,7 +509,6 @@
             }
         }
 
-        // Função de Skip para fechar o overlay e ir direto à landing page
         function skipGame() {
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
@@ -523,7 +523,7 @@
             }
         }
 
-        // --- MOTOR DE JOGO CHUCKIE EGG (GRÁFICOS ORIGINAIS / LÓGICA LEVEL 3) ---
+        // --- MOTOR DE JOGO REFINADO (GRAFICOS AVANÇADOS RETRO) ---
         function startChuckieGame() {
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -535,33 +535,44 @@
             const canvas = document.getElementById('chuckieCanvas');
             const ctx = canvas.getContext('2d');
             
-            // Configurações Globais
+            // Constantes e Cores ZX Spectrum/BBC Micro
             const GRAVITY = 0.4;
             const JUMP_FORCE = -8;
             const SPEED = 2.5;
-            let score = 0;
-            let timer = 893;
-            let isGameOver = false;
-
-            // Cores originais ZX Spectrum/BBC Micro
+            
             const C_GREEN = '#00CC00';
             const C_MAGENTA = '#FF00FF';
             const C_CYAN = '#00FFFF';
             const C_YELLOW = '#FFFF00';
-            const C_WHITE = '#DDDDDD';
+            const C_WHITE = '#FFFFFF';
             const C_RED = '#FF0000';
+            const C_BLUE = '#0033FF';
 
-            // Jogador (Harry)
+            // Estados globais do jogo
+            let score = 0;
+            let timer = 893;
+            let isGameOver = false;
+            let isVictory = false;
+            let victoryTimer = 0;
+            
+            // Efeitos
+            let shakeTime = 0;
+            let shakeIntensity = 0;
+            let redFlashAlpha = 0;
+            let fallDistance = 0;
+            let particles = [];
+            let floatingTexts = [];
+
+            // Jogador (Harry) com inclinação dinâmica
             let player = {
-                x: 300, y: 440, w: 16, h: 24,
+                x: 300, y: 440, w: 18, h: 24,
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
-                facingRight: true
+                facingRight: true, tiltAngle: 0
             };
 
-            // Layout Fiel ao Level 3 (Referência: image_403616.png)
             const platformData = [
-                {x: 0, y: 464, w: 640}, // Chão Base
+                {x: 0, y: 464, w: 640},
                 {x: 0, y: 224, w: 120}, {x: 150, y: 240, w: 90}, {x: 120, y: 160, w: 80},
                 {x: 60, y: 320, w: 120}, {x: 230, y: 368, w: 110}, {x: 350, y: 384, w: 80},
                 {x: 460, y: 400, w: 120}, {x: 410, y: 336, w: 80}, {x: 520, y: 288, w: 100},
@@ -580,7 +591,6 @@
                 {x: 190, y: 320, w: 40, h: 10, vy: -1, minY: 180, maxY: 380}
             ];
 
-            // Entidades coletáveis e inimigos
             let eggs = [
                 {x: 90, y: 208, w: 14, h: 12, collected: false}, {x: 150, y: 144, w: 14, h: 12, collected: false},
                 {x: 70, y: 304, w: 14, h: 12, collected: false}, {x: 260, y: 352, w: 14, h: 12, collected: false},
@@ -590,57 +600,142 @@
             ];
 
             let seeds = [
-                {x: 40, y: 216}, {x: 130, y: 312}, {x: 230, y: 360}, {x: 340, y: 184}, 
-                {x: 420, y: 136}, {x: 530, y: 280}, {x: 390, y: 376}
+                {x: 40, y: 216, collected: false}, {x: 130, y: 312, collected: false}, 
+                {x: 230, y: 360, collected: false}, {x: 340, y: 184, collected: false}, 
+                {x: 420, y: 136, collected: false}, {x: 530, y: 280, collected: false}, 
+                {x: 390, y: 376, collected: false}
             ];
 
             let ostriches = [
-                {x: 20, y: 200, w: 18, h: 24, vx: 1.5, minX: 0, maxX: 100},
-                {x: 360, y: 168, w: 18, h: 24, vx: -1.5, minX: 340, maxX: 430},
-                {x: 480, y: 376, w: 18, h: 24, vx: 1.5, minX: 460, maxX: 560}
+                {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
+                {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
+                {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
             ];
 
-            // Event Listeners para Controlo
             window.addEventListener('keydown', e => { keys[e.code] = true; });
             window.addEventListener('keyup', e => { keys[e.code] = false; });
 
-            // Funções de Desenho 8-Bit
+            function triggerShake(intensity, duration) {
+                shakeIntensity = intensity;
+                shakeTime = duration;
+            }
+
+            function addParticles(x, y) {
+                for(let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: x, y: y,
+                        vx: (Math.random() - 0.5) * 5,
+                        vy: (Math.random() - 0.5) * 5,
+                        life: 18, color: i % 2 === 0 ? C_YELLOW : C_WHITE
+                    });
+                }
+            }
+
+            function addFloatingText(text, x, y) {
+                floatingTexts.push({ text: text, x: x, y: y, life: 25 });
+            }
+
+            // Funções de Desenho com Estilo Arcade Detalhado
             function drawPlatform(x, y, w) {
                 ctx.fillStyle = C_GREEN;
                 ctx.fillRect(x, y, w, 16);
+                // Textura arcade riscas duplas
                 ctx.fillStyle = '#000000';
-                for(let i=0; i<w; i+=8) { ctx.fillRect(x+i, y+6, 4, 2); ctx.fillRect(x+i+4, y+10, 4, 2); }
+                for(let i = 0; i < w; i += 12) {
+                    ctx.fillRect(x + i, y + 2, 6, 3);
+                    ctx.fillRect(x + i + 3, y + 9, 6, 3);
+                }
             }
 
             function drawLadder(x, y, h) {
                 ctx.fillStyle = C_MAGENTA;
-                ctx.fillRect(x, y, 4, h); ctx.fillRect(x+16, y, 4, h);
-                for(let i=y+4; i<y+h; i+=8) { ctx.fillRect(x+4, i, 12, 4); }
+                ctx.fillRect(x, y, 4, h); ctx.fillRect(x + 16, y, 4, h);
+                for(let i = y + 4; i < y + h; i += 8) { ctx.fillRect(x + 4, i, 12, 4); }
             }
 
             function drawPlayer() {
+                ctx.save();
+                ctx.translate(player.x + player.w/2, player.y + player.h/2);
+                ctx.rotate(player.tiltAngle);
+
+                let px = -player.w/2;
+                let py = -player.h/2;
+
+                // Chapéu
+                ctx.fillStyle = C_CYAN;
+                ctx.fillRect(px - 1, py - 3, 16, 4);
+                ctx.fillRect(px + 2, py - 7, 10, 4);
+
+                // Cabeça
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(player.x-2, player.y, 20, 4);
-                ctx.fillRect(player.x+4, player.y-6, 8, 6);
-                ctx.fillRect(player.x+4, player.y+4, 8, 12);
-                ctx.fillRect(player.x+2, player.y+16, 4, 8);
-                ctx.fillRect(player.x+10, player.y+16, 4, 8);
+                ctx.fillRect(px + 3, py - 3, 8, 6);
+                ctx.fillStyle = '#000000';
+                if(player.facingRight) ctx.fillRect(px + 8, py - 1, 2, 2);
+                else ctx.fillRect(px + 3, py - 1, 2, 2);
+
+                // Casaco / Corpo
+                ctx.fillStyle = C_RED;
+                ctx.fillRect(px + 1, py + 3, 12, 11);
+
+                // Calças
+                ctx.fillStyle = C_BLUE;
+                ctx.fillRect(px + 2, py + 14, 4, 7);
+                ctx.fillRect(px + 8, py + 14, 4, 7);
+
+                // Sapatos
+                ctx.fillStyle = C_YELLOW;
+                ctx.fillRect(px, py + 21, 5, 3);
+                ctx.fillRect(px + 8, py + 21, 5, 3);
+
+                ctx.restore();
             }
 
             function drawOstrich(o) {
+                ctx.save();
+                // Corpo
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x+4, o.y+8, 12, 8);
-                if(o.vx > 0) { ctx.fillRect(o.x+12, o.y, 4, 10); ctx.fillRect(o.x+14, o.y-2, 6, 4); } 
-                else { ctx.fillRect(o.x+4, o.y, 4, 10); ctx.fillRect(o.x, o.y-2, 6, 4); }
-                ctx.fillRect(o.x+6, o.y+16, 2, 8); ctx.fillRect(o.x+12, o.y+16, 2, 8);
+                ctx.fillRect(o.x + 3, o.y + 6, 14, 12);
+                // Asa detalhada
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(o.x + 5, o.y + 8, 8, 6);
+                
+                // Pescoço & Cabeça
+                ctx.fillStyle = C_CYAN;
+                if (o.vx > 0) {
+                    ctx.fillRect(o.x + 13, o.y - 2, 4, 10);
+                    ctx.fillRect(o.x + 13, o.y - 6, 8, 6);
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + 21, o.y - 4, 5, 3); // Bico
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + 17, o.y - 5, 2, 2); // Olho
+                } else {
+                    ctx.fillRect(o.x, o.y - 2, 4, 10);
+                    ctx.fillRect(o.x - 4, o.y - 6, 8, 6);
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - 9, o.y - 4, 5, 3); // Bico
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - 2, o.y - 5, 2, 2); // Olho
+                }
+                
+                // Pernas
+                ctx.fillStyle = C_WHITE;
+                let legOffset = Math.sin(Date.now() * 0.02) * 3;
+                ctx.fillRect(o.x + 5, o.y + 18, 2, 6 + legOffset);
+                ctx.fillRect(o.x + 11, o.y + 18, 2, 6 - legOffset);
+                ctx.restore();
             }
 
             function drawUI() {
                 ctx.font = '14px "Courier New", monospace, sans-serif';
                 if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                
                 ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, 30);
                 ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), 80, 30);
-                ctx.fillStyle = C_RED; ctx.fillText('TIME ' + Math.floor(timer), 500, 30);
+                
+                // Temporizador a piscar a vermelho quando < 100
+                if (timer < 100) {
+                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
+                } else {
+                    ctx.fillStyle = C_RED;
+                }
+                ctx.fillText('TIME ' + Math.floor(timer), 500, 30);
+
                 ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, 60);
                 ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', 140, 60);
                 
@@ -648,20 +743,28 @@
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = 2;
                 ctx.beginPath(); ctx.arc(60, 110, 30, Math.PI, 0); ctx.stroke();
-                for(let i=35; i<=85; i+=10) ctx.fillRect(i, 110, 2, 40);
+                for(let i = 35; i <= 85; i += 10) ctx.fillRect(i, 110, 2, 40);
                 ctx.fillRect(30, 150, 60, 4);
                 ctx.fillRect(50, 130, 14, 10); ctx.fillRect(60, 122, 8, 8);
             }
 
             function resetLevel() {
+                redFlashAlpha = 0.8;
+                triggerShake(12, 16);
                 player.x = 300; player.y = 440; player.vx = 0; player.vy = 0;
             }
 
-            // Loop Principal
             function update() {
-                if(isGameOver) return;
+                if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
+                // Transição de inclinação suave no movimento
+                let targetTilt = 0;
+                if(player.vx > 0) { targetTilt = 0.18; player.facingRight = true; }
+                else if(player.vx < 0) { targetTilt = -0.18; player.facingRight = false; }
+                player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
+
+                // Escadas
                 player.onLadder = false;
                 for(let l of ladders) {
                     if(player.x + player.w/2 > l.x && player.x + player.w/2 < l.x + 20 &&
@@ -687,6 +790,11 @@
                     player.vy = JUMP_FORCE; player.onGround = false;
                 }
 
+                // Cálculo de queda para tremor de câmara
+                if(!player.onGround && player.vy > 0) {
+                    fallDistance += player.vy;
+                }
+
                 player.x += player.vx;
                 player.y += player.vy;
 
@@ -698,6 +806,10 @@
                     for(let p of platformData) {
                         if(player.x + player.w > p.x && player.x < p.x + p.w &&
                            player.y + player.h >= p.y && player.y + player.h <= p.y + 16) {
+                            
+                            if(fallDistance > 120) { triggerShake(5, 10); } // Queda grande
+                            fallDistance = 0;
+
                             player.y = p.y - player.h;
                             player.vy = 0; player.onGround = true;
                         }
@@ -711,11 +823,13 @@
                     }
                 }
 
+                // Elevadores
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
+                // Inimigos
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
@@ -725,32 +839,47 @@
                     }
                 }
 
+                // Recolha de Ovos
                 let eggsLeft = 0;
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         if(player.x < egg.x + egg.w && player.x + player.w > egg.x &&
                            player.y < egg.y + egg.h && player.y + player.h > egg.y) {
                             egg.collected = true; score += 100;
+                            addParticles(egg.x + 7, egg.y + 6);
+                            addFloatingText('+100', egg.x, egg.y - 10);
                         } else { eggsLeft++; }
                     }
                 }
 
+                // Recolha de Sementes
                 for(let s of seeds) {
                     if(!s.collected && player.x < s.x + 12 && player.x + player.w > s.x &&
                        player.y < s.y + 12 && player.y + player.h > s.y) {
-                        s.collected = true; score += 50; timer += 50;
+                        s.collected = true; score += 50; timer += 40;
+                        addFloatingText('+50', s.x, s.y - 10);
                     }
                 }
 
-                if(eggsLeft === 0) {
-                    isGameOver = true;
-                    setTimeout(() => {
-                        skipGame();
-                    }, 1000);
+                // Vitória
+                if(eggsLeft === 0 && !isVictory) {
+                    isVictory = true;
+                    victoryTimer = 0;
+                    triggerShake(8, 20);
                 }
             }
 
             function draw() {
+                ctx.save();
+                
+                // Aplicação de Screen Shake
+                if(shakeTime > 0) {
+                    let rx = (Math.random() - 0.5) * shakeIntensity;
+                    let ry = (Math.random() - 0.5) * shakeIntensity;
+                    ctx.translate(rx, ry);
+                    shakeTime--;
+                }
+
                 ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
                 for(let p of platformData) drawPlatform(p.x, p.y, p.w);
@@ -760,29 +889,70 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
+                // Sementes intermitentes
+                let seedAlpha = (Math.sin(Date.now() * 0.01) + 1) / 2;
                 for(let s of seeds) {
                     if(!s.collected) {
-                        ctx.fillStyle = C_MAGENTA; ctx.beginPath();
-                        ctx.moveTo(s.x+6, s.y); ctx.lineTo(s.x+12, s.y+12); ctx.lineTo(s.x, s.y+12); ctx.fill();
+                        ctx.fillStyle = seedAlpha > 0.3 ? C_MAGENTA : C_WHITE;
+                        ctx.beginPath();
+                        ctx.moveTo(s.x + 6, s.y); ctx.lineTo(s.x + 12, s.y + 12); ctx.lineTo(s.x, s.y + 12); ctx.fill();
                     }
                 }
 
+                // Ovos
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         ctx.fillStyle = C_WHITE; ctx.beginPath();
-                        ctx.ellipse(egg.x+7, egg.y+6, 7, 5, 0, 0, Math.PI*2); ctx.fill();
+                        ctx.ellipse(egg.x + 7, egg.y + 6, 7, 5, 0, 0, Math.PI*2); ctx.fill();
                     }
                 }
 
                 for(let o of ostriches) drawOstrich(o);
-                
-                if(!isGameOver) drawPlayer();
+                if(!isGameOver && !isVictory) drawPlayer();
+
+                // Desenho de Partículas
+                for(let i = particles.length - 1; i >= 0; i--) {
+                    let p = particles[i];
+                    p.x += p.vx; p.y += p.vy; p.life--;
+                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 3, 3);
+                    if(p.life <= 0) particles.splice(i, 1);
+                }
+
+                // Floating Text
+                ctx.font = '10px "Courier New", monospace';
+                for(let i = floatingTexts.length - 1; i >= 0; i--) {
+                    let ft = floatingTexts[i];
+                    ft.y -= 0.8; ft.life--;
+                    ctx.fillStyle = C_YELLOW; ctx.fillText(ft.text, ft.x, ft.y);
+                    if(ft.life <= 0) floatingTexts.splice(i, 1);
+                }
+
                 drawUI();
 
-                if(isGameOver) {
-                    ctx.fillStyle = C_GREEN; ctx.fillRect(200, 200, 240, 60);
-                    ctx.fillStyle = '#000000'; ctx.fillText('NÍVEL CONCLUÍDO!', 230, 235);
+                // Flash a vermelho em dano
+                if(redFlashAlpha > 0) {
+                    ctx.fillStyle = `rgba(255, 0, 0, ${redFlashAlpha})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    redFlashAlpha -= 0.05;
                 }
+
+                // Animação de Vitória Retro
+                if(isVictory) {
+                    victoryTimer++;
+                    const retroColors = [C_RED, C_GREEN, C_YELLOW, C_CYAN, C_MAGENTA];
+                    ctx.fillStyle = retroColors[victoryTimer % retroColors.length];
+                    ctx.fillRect(160, 180, 320, 100);
+                    ctx.fillStyle = '#000000';
+                    ctx.font = '14px "Courier New", monospace';
+                    if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                    ctx.fillText('NÍVEL CONCLUÍDO!', 210, 235);
+
+                    if(victoryTimer > 80) {
+                        skipGame();
+                    }
+                }
+
+                ctx.restore();
             }
 
             function loop() {
