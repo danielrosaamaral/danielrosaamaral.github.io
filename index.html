@@ -267,10 +267,10 @@
                     <button id="btn-jump" class="touch-btn absolute w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-transform active:scale-95">
                         JUMP[cite: 2]
                     </button>
-                    <span class="absolute top-2 text-neutral-500 text-xs font-mono pointer-events-none">▲</span>
-                    <span class="absolute bottom-2 text-neutral-500 text-xs font-mono pointer-events-none">▼</span>
-                    <span class="absolute left-2 text-neutral-500 text-xs font-mono pointer-events-none">◄</span>
-                    <span class="absolute right-2 text-neutral-500 text-xs font-mono pointer-events-none">►</span>
+                    <span id="arrow-up" class="absolute top-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▲</span>
+                    <span id="arrow-down" class="absolute bottom-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▼</span>
+                    <span id="arrow-left" class="absolute left-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">◄</span>
+                    <span id="arrow-right" class="absolute right-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">►</span>
                 </div>
             </div>
         </div>
@@ -542,13 +542,14 @@
             initChuckieEgg();
         }
 
-        function initCircularControls() {
+function initCircularControls() {
             const ring = document.getElementById('control-ring');
             const jumpBtn = document.getElementById('btn-jump');
 
             const pressJump = (e) => {
                 if(e.cancelable) e.preventDefault();
                 keys['Space'] = true;
+                if(navigator.vibrate) navigator.vibrate(8);
             };
             const releaseJump = (e) => {
                 if(e.cancelable) e.preventDefault();
@@ -561,6 +562,27 @@
             jumpBtn.addEventListener('mousedown', pressJump);
             jumpBtn.addEventListener('mouseup', releaseJump);
             jumpBtn.addEventListener('mouseleave', releaseJump);
+
+            const arrowEls = {
+                ArrowUp: document.getElementById('arrow-up'),
+                ArrowDown: document.getElementById('arrow-down'),
+                ArrowLeft: document.getElementById('arrow-left'),
+                ArrowRight: document.getElementById('arrow-right')
+            };
+
+            const setActiveArrow = (activeKey) => {
+                for(const k in arrowEls) {
+                    const el = arrowEls[k];
+                    if (!el) continue;
+                    if (k === activeKey) {
+                        el.classList.remove('text-neutral-500');
+                        el.classList.add('text-[rgb(0,17,255)]', 'scale-125');
+                    } else {
+                        el.classList.add('text-neutral-500');
+                        el.classList.remove('text-[rgb(0,17,255)]', 'scale-125');
+                    }
+                }
+            };
 
             const handleRingTouch = (clientX, clientY) => {
                 const rect = ring.getBoundingClientRect();
@@ -578,15 +600,20 @@
 
                 if (distance > innerRadius) {
                     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                    let activeKey = null;
                     if (angle >= -45 && angle < 45) {
-                        keys['ArrowRight'] = true;
+                        activeKey = 'ArrowRight';
                     } else if (angle >= 45 && angle < 135) {
-                        keys['ArrowDown'] = true;
+                        activeKey = 'ArrowDown';
                     } else if (angle >= -135 && angle < -45) {
-                        keys['ArrowUp'] = true;
+                        activeKey = 'ArrowUp';
                     } else {
-                        keys['ArrowLeft'] = true;
+                        activeKey = 'ArrowLeft';
                     }
+                    keys[activeKey] = true;
+                    setActiveArrow(activeKey);
+                } else {
+                    setActiveArrow(null);
                 }
             };
 
@@ -595,6 +622,7 @@
                 keys['ArrowRight'] = false;
                 keys['ArrowUp'] = false;
                 keys['ArrowDown'] = false;
+                setActiveArrow(null);
             };
 
             ring.addEventListener('touchstart', (e) => {
@@ -663,10 +691,29 @@
                 h: Math.round(24 * gfxScale),
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
-                facingRight: true, tiltAngle: 0
+                facingRight: true, tiltAngle: 0,
+                walkCycle: 0, coyoteTime: 0
             };
 
+            // Janela de tolerância (coyote time) e buffer de salto para tornar os controlos
+            // mais intuitivos e "perdoáveis" no toque do telemóvel
+            const COYOTE_FRAMES = 6;
+            const JUMP_BUFFER_FRAMES = 8;
+            let jumpBufferTimer = 0;
+
             let platformData, ladders, elevators, eggs, seeds, ostriches;
+
+            // Campo de estrelas estático (gerado uma vez) para dar profundidade ao fundo
+            // sem distrair nem pesar no desempenho em telemóvel
+            let stars = [];
+            for(let i = 0; i < 45; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() < 0.15 ? 1.6 : 0.9,
+                    twinkleOffset: Math.random() * 10
+                });
+            }
 
             // Alturas exatas dos objetos baseadas na escala para alinhamento perfeito na superfície das plataformas
             const eggW = Math.round(14 * gfxScale);
@@ -794,8 +841,7 @@
                     {x: 480, y: 400 - 24, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
                 ];
             }
-
-            function triggerShake(intensity, duration) {
+function triggerShake(intensity, duration) {
                 shakeIntensity = intensity;
                 shakeTime = duration;
             }
@@ -864,13 +910,18 @@
                 ctx.fillStyle = C_RED;
                 ctx.fillRect(px + Math.round(1*s), py + Math.round(3*s), Math.round(12*s), Math.round(11*s));
 
+                // Pernas alternam em contra-fase enquanto o jogador corre no chão,
+                // ficam paradas no ar/parado para leitura clara do estado
+                let legSwing = (player.onGround && Math.abs(player.vx) > 0.3)
+                    ? Math.sin(player.walkCycle) * Math.round(2.5 * s) : 0;
+
                 ctx.fillStyle = C_BLUE;
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(14*s) + legSwing, Math.round(4*s), Math.round(7*s));
+                ctx.fillRect(px + Math.round(8*s), py + Math.round(14*s) - legSwing, Math.round(4*s), Math.round(7*s));
 
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px, py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
+                ctx.fillRect(px, py + Math.round(21*s) + legSwing, Math.round(5*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(8*s), py + Math.round(21*s) - legSwing, Math.round(5*s), Math.round(3*s));
 
                 ctx.restore();
             }
@@ -955,8 +1006,7 @@
                 player.y = isMobile ? 710 : 440; 
                 player.vx = 0; player.vy = 0;
             }
-
-            function update() {
+function update() {
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
@@ -1003,11 +1053,30 @@
                     if(Math.abs(player.vx) < 0.05) player.vx = 0;
                 }
 
+                // Ciclo de passada só avança quando o jogador se move e está no chão,
+                // para as pernas alternarem em vez de ficarem estáticas
+                if(player.onGround && Math.abs(player.vx) > 0.3) {
+                    player.walkCycle += Math.abs(player.vx) * 0.35;
+                } 
+
+                // Buffer de salto: se o jogador tocar em "saltar" um pouco antes de
+                // aterrar, o salto é executado assim que tocar o chão (mais intuitivo no telemóvel)
+                if(keys['Space']) {
+                    jumpBufferTimer = JUMP_BUFFER_FRAMES;
+                } else if(jumpBufferTimer > 0) {
+                    jumpBufferTimer--;
+                }
+
                 if(!player.climbing) {
                     player.vy += GRAVITY;
-                    if(keys['Space'] && player.onGround) {
+                    // Coyote time: permite saltar por alguns frames depois de sair da plataforma
+                    const canJump = player.onGround || player.coyoteTime > 0;
+                    if(jumpBufferTimer > 0 && canJump) {
                         player.vy = JUMP_FORCE;
                         player.onGround = false;
+                        player.coyoteTime = 0;
+                        jumpBufferTimer = 0;
+                        if(navigator.vibrate) navigator.vibrate(12);
                     }
                 }
 
@@ -1017,6 +1086,7 @@
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
+                let wasOnGround = player.onGround;
                 player.onGround = false;
                 let platformThickness = Math.round(16 * gfxScale);
                 if(!player.climbing && player.vy >= 0) {
@@ -1038,16 +1108,28 @@
                     }
                 }
 
+                if(player.onGround) {
+                    player.coyoteTime = COYOTE_FRAMES;
+                } else if(wasOnGround) {
+                    player.coyoteTime = COYOTE_FRAMES;
+                } else if(player.coyoteTime > 0) {
+                    player.coyoteTime--;
+                }
+
                 for(let e of elevators) {
                     e.y += e.vy;
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
+                // Margem de tolerância nos inimigos: encolhe ligeiramente a hitbox para que
+                // o contacto só conte quando é visualmente óbvio (mais justo a jogar num ecrã pequeno)
+                const enemyForgiveness = Math.round(3 * gfxScale);
                 for(let o of ostriches) {
                     o.x += o.vx;
                     if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
-                    if(player.x < o.x + o.w && player.x + player.w > o.x &&
-                       player.y < o.y + o.h && player.y + player.h > o.y) {
+                    if(player.x < o.x + o.w - enemyForgiveness && player.x + player.w > o.x + enemyForgiveness &&
+                       player.y < o.y + o.h - enemyForgiveness && player.y + player.h > o.y + enemyForgiveness) {
+                        if(navigator.vibrate) navigator.vibrate(60);
                         resetLevel();
                     }
                 }
@@ -1063,6 +1145,7 @@
                             egg.collected = true; score += 100;
                             addParticles(egg.x + 7, currentEggY + 6);
                             addFloatingText('+100', egg.x, currentEggY - 10);
+                            if(navigator.vibrate) navigator.vibrate(15);
                         } else { eggsLeft++; }
                     }
                 }
@@ -1095,6 +1178,12 @@
                 }
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for(let st of stars) {
+                    let twinkle = 0.35 + 0.35 * Math.abs(Math.sin(Date.now() * 0.001 + st.twinkleOffset));
+                    ctx.fillStyle = `rgba(255,255,255,${twinkle.toFixed(2)})`;
+                    ctx.fillRect(st.x, st.y, st.r, st.r);
+                }
                 
                 for(let p of platformData) {
                     if (!p.hidden) drawPlatform(p.x, p.y, p.w);
@@ -1196,3 +1285,5 @@
     </script>
 </body>
 </html>
+
+
