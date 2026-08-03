@@ -2,9 +2,14 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mini-Jogo Arcade (Canvas 2D)</title>
     <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
         body {
             margin: 0;
             padding: 0;
@@ -17,6 +22,7 @@
             justify-content: center;
             min-height: 100vh;
             overflow: hidden;
+            touch-action: none;
         }
         #game-container {
             position: relative;
@@ -25,16 +31,55 @@
             overflow: hidden;
             border: 1px solid #334155;
             background: #020617;
+            max-width: 100%;
         }
         canvas {
             display: block;
-            touch-action: none;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            aspect-ratio: 4 / 3;
         }
         .controls-hint {
-            margin-top: 1rem;
-            font-size: 0.875rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
             color: #94a3b8;
             text-align: center;
+            padding: 0 1rem;
+        }
+        /* Touch Controls Overlay for Mobile */
+        .mobile-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+        .control-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-control {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            font-size: 1.25rem;
+            padding: 15px 24px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            touch-action: manipulation;
+            font-weight: bold;
+        }
+        .btn-control:active {
+            background-color: #3b82f6;
+            border-color: #60a5fa;
+        }
+        @media (min-width: 768px) {
+            .mobile-controls {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -42,8 +87,19 @@
     <div id="game-container">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
     </div>
+    
+    <div class="mobile-controls">
+        <div class="control-group">
+            <button class="btn-control" id="btnLeft">←</button>
+            <button class="btn-control" id="btnRight">→</button>
+        </div>
+        <div class="control-group">
+            <button class="btn-control" id="btnJump">▲</button>
+        </div>
+    </div>
+
     <div class="controls-hint">
-        <p>Utiliza as setas do teclado (ou A/D para mover, W/Espaço para saltar). Suporte tátil ativo.</p>
+        <p>Desktop: Setas / WASD + Espaço. Mobile: Utiliza os botões virtuais.</p>
     </div>
 
     <script>
@@ -54,11 +110,9 @@
                 this.width = this.canvas.width;
                 this.height = this.canvas.height;
                 
-                // Estado do jogo
                 this.score = parseInt(localStorage.getItem('arcade_score')) || 0;
                 this.highScore = parseInt(localStorage.getItem('arcade_highscore')) || 0;
                 
-                // Física e Input
                 this.keys = {};
                 this.player = {
                     x: 100,
@@ -77,13 +131,22 @@
                     jumpBufferMax: 10
                 };
 
-                // Plataformas e Elementos do Nível
                 this.platforms = [
                     { x: 0, y: 550, w: 800, h: 50, type: 'ground' },
                     { x: 100, y: 440, w: 250, h: 20, type: 'platform' },
                     { x: 450, y: 350, w: 250, h: 20, type: 'platform' },
                     { x: 200, y: 260, w: 400, h: 20, type: 'platform' },
                     { x: 150, y: 160, w: 200, h: 20, type: 'platform' }
+                ];
+
+                // 6 Inimigos com patrulha definida nas plataformas
+                this.enemies = [
+                    { x: 150, y: 526, width: 24, height: 24, vx: 1.5, minX: 20, maxX: 750 },
+                    { x: 400, y: 526, width: 24, height: 24, vx: -2, minX: 20, maxX: 750 },
+                    { x: 150, y: 416, width: 24, height: 24, vx: 1, minX: 100, maxX: 330 },
+                    { x: 500, y: 326, width: 24, height: 24, vx: -1.5, minX: 450, maxX: 680 },
+                    { x: 250, y: 236, width: 24, height: 24, vx: 2, minX: 200, maxX: 580 },
+                    { x: 180, y: 136, width: 24, height: 24, vx: 1, minX: 150, maxX: 330 }
                 ];
 
                 this.initInputs();
@@ -101,14 +164,29 @@
                     this.keys[e.code] = false;
                 });
 
-                this.canvas.addEventListener('touchstart', e => {
-                    this.keys['Space'] = true;
-                });
-                this.canvas.addEventListener('touchend', () => {
-                    this.keys['Space'] = false;
-                    this.keys['ArrowLeft'] = false;
-                    this.keys['ArrowRight'] = false;
-                });
+                // Controlos Táteis / Botões Virtuais
+                const bindTouchButton = (id, code) => {
+                    const btn = document.getElementById(id);
+                    if (!btn) return;
+                    
+                    const press = (e) => {
+                        e.preventDefault();
+                        this.keys[code] = true;
+                    };
+                    const release = (e) => {
+                        e.preventDefault();
+                        this.keys[code] = false;
+                    };
+
+                    btn.addEventListener('touchstart', press, { passive: false });
+                    btn.addEventListener('touchend', release, { passive: false });
+                    btn.addEventListener('mousedown', press);
+                    btn.addEventListener('mouseup', release);
+                };
+
+                bindTouchButton('btnLeft', 'ArrowLeft');
+                bindTouchButton('btnRight', 'ArrowRight');
+                bindTouchButton('btnJump', 'Space');
             }
 
             update() {
@@ -146,6 +224,20 @@
 
                 this.player.y += this.player.vy;
                 this.resolveCollisionsY();
+
+                // Atualizar posição e colisão dos 6 inimigos
+                for (let enemy of this.enemies) {
+                    enemy.x += enemy.vx;
+                    if (enemy.x <= enemy.minX || enemy.x + enemy.width >= enemy.maxX) {
+                        enemy.vx *= -1;
+                    }
+
+                    // Colisão com o jogador (Reinicia se tocar num inimigo)
+                    if (this.checkCollision(this.player, enemy)) {
+                        this.resetPlayer();
+                        this.score = Math.max(0, this.score - 50);
+                    }
+                }
 
                 if (this.player.x < 0) this.player.x = 0;
                 if (this.player.x + this.player.width > this.width) {
@@ -203,14 +295,23 @@
                 this.ctx.fillStyle = '#020617';
                 this.ctx.fillRect(0, 0, this.width, this.height);
 
+                // Renderizar Plataformas
                 this.ctx.fillStyle = '#3b82f6';
                 for (let p of this.platforms) {
                     this.ctx.fillRect(p.x, p.y, p.w, p.h);
                 }
 
+                // Renderizar Inimigos (6)
+                this.ctx.fillStyle = '#ef4444';
+                for (let enemy of this.enemies) {
+                    this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                }
+
+                // Renderizar Jogador
                 this.ctx.fillStyle = '#10b981';
                 this.ctx.fillRect(this.player.x, this.player.y, this.player.width, this.player.height);
 
+                // Interface Textual
                 this.ctx.fillStyle = '#f8fafc';
                 this.ctx.font = '16px system-ui';
                 this.ctx.fillText(`Pontuação: ${this.score}`, 20, 30);
