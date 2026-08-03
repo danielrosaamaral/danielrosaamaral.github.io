@@ -3,79 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuga da Gaiola - Jogo</title>
+    <title>Fuga da Gaiola - Jogo Interativo</title>
     <style>
         :root {
-            --bg-color: #0f172a;
+            --bg-primary: #090d16;
+            --stage-bg: #111827;
             --cage-metal: #334155;
-            --cage-base: #1e293b;
-            --bird-color: #38bdf8;
-            --wood-color: #b45309;
+            --cage-metal-light: #475569;
+            --cage-base: #78350f;
+            --cage-base-top: #92400e;
+            --ladder-color: #d97706;
+            --bird-body: #38bdf8;
+            --bird-wing: #0284c7;
+            --bird-beak: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #f8fafc;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
-            color: #f8fafc;
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+        }
+
+        .game-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .game-header p {
+            font-size: 0.875rem;
+            color: #94a3b8;
         }
 
         .game-stage {
             position: relative;
-            width: 400px;
-            height: 500px;
-            background: #1e293b;
-            border: 2px solid #475569;
-            border-radius: 12px;
+            width: 420px;
+            height: 520px;
+            background-color: var(--stage-bg);
+            border: 1px solid #1f2937;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
         .cage-container {
             position: relative;
-            width: 180px;
-            height: 260px;
+            width: 200px;
+            height: 300px;
         }
 
-        /* Base da Gaiola */
+        /* Base da Gaiola Sólida */
         .cage-base {
             position: absolute;
             bottom: 0;
-            left: -10px;
-            width: 200px;
-            height: 20px;
-            background-color: var(--wood-color);
-            border-radius: 4px;
-            z-index: 3;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            left: -15px;
+            width: 230px;
+            height: 28px;
+            background: linear-gradient(to bottom, var(--cage-base-top), var(--cage-base));
+            border-radius: 6px;
+            z-index: 5;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            border-top: 2px solid #b45309;
         }
 
-        /* Escada Alinhada Corretamente com a Base */
+        /* Escada perfeitamente alinhada e ancorada à base */
         .ladder {
             position: absolute;
-            bottom: 20px; /* Posicionada exatamente no topo da base */
-            left: 30px;
-            width: 30px;
-            height: 160px;
-            z-index: 4; /* Garante que fica à frente e não passa incorretamente por trás */
+            bottom: 28px; /* Posicionada exatamente no topo da base */
+            left: 35px;
+            width: 32px;
+            height: 180px;
+            z-index: 6; /* Acima da base e dos elementos para evitar sobreposições incorretas */
             display: flex;
             justify-content: space-between;
+            pointer-events: none;
         }
 
         .ladder-rail {
-            width: 4px;
+            width: 5px;
             height: 100%;
-            background-color: #d97706;
+            background-color: #f59e0b;
             border-radius: 2px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .ladder-rungs {
@@ -93,155 +129,215 @@
         .rung {
             width: 100%;
             height: 4px;
-            background-color: #d97706;
+            background-color: #f59e0b;
             border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
 
-        /* Estrutura da Gaiola (Grades) */
+        /* Estrutura Superior / Grades da Gaiola */
         .cage-bars {
             position: absolute;
-            top: 20px;
+            top: 25px;
             left: 0;
-            width: 180px;
-            height: 220px;
+            width: 200px;
+            height: 247px;
             border: 4px solid var(--cage-metal);
-            border-top: 20px solid var(--cage-metal);
-            border-radius: 90px 90px 0 0;
+            border-top: 24px solid var(--cage-metal);
+            border-radius: 100px 100px 0 0;
             z-index: 2;
             box-sizing: border-box;
+            background: rgba(51, 65, 85, 0.05);
         }
 
-        /* Micro-Animação do Pássaro em Cativeiro (Idle Ativo) */
-        @keyframes cage-idle {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-3px) rotate(-1.5deg); }
-            100% { transform: translateY(0) rotate(1.5deg); }
+        /* Micro-animação orgânica do pássaro em cativeiro (Nunca estático) */
+        @keyframes bird-breathing-idle {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-2px) rotate(-1deg) scale(1, 1.02);
+            }
+            50% {
+                transform: translateY(-4px) rotate(0.5deg) scale(1.01, 0.99);
+            }
+            75% {
+                transform: translateY(-1px) rotate(1.5deg) scale(1, 1.01);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
         }
 
         .bird {
             position: absolute;
-            bottom: 35px;
-            left: 70px;
-            width: 40px;
-            height: 30px;
-            background-color: var(--bird-color);
-            border-radius: 50% 50% 40% 40%;
-            z-index: 2;
+            bottom: 42px;
+            left: 75px;
+            width: 44px;
+            height: 34px;
+            background-color: var(--bird-body);
+            border-radius: 50% 50% 45% 45%;
+            z-index: 3;
             transform-origin: center bottom;
-            animation: cage-idle 3s ease-in-out infinite;
+            animation: bird-breathing-idle 3.5s ease-in-out infinite;
+            box-shadow: inset -4px -4px 0px rgba(0, 0, 0, 0.15);
         }
 
+        /* Detalhe da Asa do Pássaro com micro-movimento */
+        @keyframes wing-twitch {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-5deg); }
+        }
+
+        .bird-wing {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            width: 18px;
+            height: 14px;
+            background-color: var(--bird-wing);
+            border-radius: 50% 50% 50% 20%;
+            animation: wing-twitch 1.8s ease-in-out infinite;
+        }
+
+        /* Bico do Pássaro */
         .bird::before {
             content: '';
             position: absolute;
-            right: -6px;
-            top: 10px;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
-            border-left: 8px solid #fbbf24;
+            right: -8px;
+            top: 11px;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 10px solid var(--bird-beak);
         }
 
+        /* Olho do Pássaro */
         .bird::after {
             content: '';
             position: absolute;
-            right: 10px;
-            top: 8px;
-            width: 4px;
-            height: 4px;
+            right: 12px;
+            top: 9px;
+            width: 5px;
+            height: 5px;
             background-color: #0f172a;
             border-radius: 50%;
         }
 
         /* Animação de Fuga (Fim de Jogo) */
         @keyframes bird-escape {
-            0% { 
-                transform: translate(0, 0) scale(1) rotate(0deg); 
-                opacity: 1; 
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
             }
-            30% { 
-                transform: translate(-20px, -40px) scale(1.05) rotate(-10deg); 
+            25% {
+                transform: translate(-15px, -50px) scale(1.08) rotate(-12deg);
             }
-            100% { 
-                transform: translate(180px, -220px) scale(0.9) rotate(15deg); 
-                opacity: 0; 
+            60% {
+                transform: translate(60px, -140px) scale(1.02) rotate(5deg);
+            }
+            100% {
+                transform: translate(180px, -260px) scale(0.9) rotate(20deg);
+                opacity: 0;
             }
         }
 
         .game-stage.game-over .bird {
-            animation: bird-escape 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: bird-escape 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             z-index: 10;
         }
 
         .game-stage.game-over .cage-bars {
-            border-color: #64748b;
-            transition: transform 0.5s ease;
-            transform: rotateY(45deg);
-            transform-origin: left;
+            border-color: #475569;
+            transform: perspective(400px) rotateY(55deg);
+            transform-origin: left center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+            opacity: 0.6;
         }
 
-        .controls {
-            margin-top: 20px;
+        .controls-panel {
+            margin-top: 5px;
         }
 
-        button {
+        .btn-action {
             background-color: #2563eb;
-            color: white;
+            color: #ffffff;
             border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 12px 28px;
+            font-size: 0.95rem;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
         }
 
-        button:hover {
+        .btn-action:hover {
             background-color: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-action:active {
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <div class="game-stage" id="gameStage">
-        <div class="cage-container">
-            <!-- Escada alinhada corretamente com a base -->
-            <div class="ladder">
-                <div class="ladder-rail"></div>
-                <div class="ladder-rungs">
-                    <div class="rung"></div>
-                    <div class="rung"></div>
-                    <div class="rung"></div>
-                    <div class="rung"></div>
-                    <div class="rung"></div>
+    <div class="game-wrapper">
+        <div class="game-header">
+            <h1>Fuga da Gaiola</h1>
+            <p>Estado do Pássaro: Em Cativeiro (Ativo)</p>
+        </div>
+
+        <div class="game-stage" id="gameStage">
+            <div class="cage-container">
+                <!-- Escada perfeitamente alinhada e ancorada no topo da base -->
+                <div class="ladder">
+                    <div class="ladder-rail"></div>
+                    <div class="ladder-rungs">
+                        <div class="rung"></div>
+                        <div class="rung"></div>
+                        <div class="rung"></div>
+                        <div class="rung"></div>
+                        <div class="rung"></div>
+                    </div>
+                    <div class="ladder-rail"></div>
                 </div>
-                <div class="ladder-rail"></div>
+
+                <!-- Grades da Gaiola -->
+                <div class="cage-bars"></div>
+                
+                <!-- Pássaro com Micro-Animação Orgânica Ativa (Nunca estático) -->
+                <div class="bird" id="bird">
+                    <div class="bird-wing"></div>
+                </div>
+
+                <!-- Base Sólida da Gaiola -->
+                <div class="cage-base"></div>
             </div>
+        </div>
 
-            <!-- Estrutura da Gaiola -->
-            <div class="cage-bars"></div>
-            
-            <!-- Pássaro com micro-animação ativa -->
-            <div class="bird" id="bird"></div>
-
-            <!-- Base da Gaiola -->
-            <div class="cage-base"></div>
+        <div class="controls-panel">
+            <button class="btn-action" id="actionBtn">Terminar Jogo / Libertar Pássaro</button>
         </div>
     </div>
 
-    <div class="controls">
-        <button id="triggerBtn">Terminar Jogo / Libertar Pássaro</button>
-    </div>
-
     <script>
-        const stage = document.getElementById('gameStage');
-        const triggerBtn = document.getElementById('triggerBtn');
+        const gameStage = document.getElementById('gameStage');
+        const actionBtn = document.getElementById('actionBtn');
+        const headerText = document.querySelector('.game-header p');
 
-        triggerBtn.addEventListener('click', () => {
-            stage.classList.toggle('game-over');
-            if (stage.classList.contains('game-over')) {
-                triggerBtn.textContent = 'Reiniciar Jogo';
+        actionBtn.addEventListener('click', () => {
+            gameStage.classList.toggle('game-over');
+            
+            if (gameStage.classList.contains('game-over')) {
+                actionBtn.textContent = 'Reiniciar Jogo';
+                headerText.textContent = 'Estado do Pássaro: Libertado!';
+                actionBtn.style.backgroundColor = '#16a34a';
             } else {
-                triggerBtn.textContent = 'Terminar Jogo / Libertar Pássaro';
+                actionBtn.textContent = 'Terminar Jogo / Libertar Pássaro';
+                headerText.textContent = 'Estado do Pássaro: Em Cativeiro (Ativo)';
+                actionBtn.style.backgroundColor = '#2563eb';
             }
         });
     </script>
