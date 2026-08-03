@@ -669,57 +669,76 @@
             let platformData, ladders, elevators, eggs, seeds, ostriches;
 
             if (isMobile) {
-                player.x = 240; player.y = 730;
+                // Posição de início adaptada com acesso por escada direta à base
+                player.x = 240; player.y = 710;
 
+                // 14 Plataformas (equivalente exato ao desktop, equilibrando esquerda, centro e direita)
                 platformData = [
-                    {x: 0, y: 760, w: 480},
-                    {x: 0, y: 620, w: 140}, {x: 180, y: 640, w: 110}, {x: 140, y: 530, w: 100},
-                    {x: 60, y: 440, w: 130}, {x: 230, y: 400, w: 120}, {x: 360, y: 370, w: 90},
-                    {x: 330, y: 480, w: 100}, {x: 400, y: 280, w: 90}, {x: 220, y: 240, w: 110},
-                    {x: 60, y: 280, w: 110}, {x: 30, y: 160, w: 60, hidden: true}
+                    {x: 0, y: 740, w: 480}, // Solo Base
+                    {x: 10, y: 590, w: 120}, {x: 350, y: 590, w: 120}, // Nível 1 (esq/dir)
+                    {x: 180, y: 520, w: 120}, // Nível 1.5 centro
+                    {x: 20, y: 440, w: 110}, {x: 350, y: 440, w: 110}, // Nível 2 (esq/dir)
+                    {x: 170, y: 380, w: 140}, // Nível 2.5 centro
+                    {x: 40, y: 300, w: 120}, {x: 320, y: 300, w: 120}, // Nível 3 (esq/dir)
+                    {x: 190, y: 240, w: 100}, // Nível 3.5 centro
+                    {x: 50, y: 170, w: 130}, {x: 300, y: 170, w: 130}, // Nível 4 topo (esq/dir)
+                    {x: 190, y: 110, w: 100}, // Patamar superior
+                    {x: 210, y: 110, w: 60, hidden: true} // Base da gaiola
                 ];
 
+                // Exactamente 8 Escadas mapeadas simetricamente para garantir fluidez e acesso total ao lado direito
                 ladders = [
-                    {x: 100, y: 530, h: 90}, {x: 60, y: 440, h: 84}, {x: 200, y: 440, h: 100},
-                    {x: 280, y: 320, h: 180}, {x: 340, y: 240, h: 140}, {x: 420, y: 280, h: 100},
-                    {x: 100, y: 280, h: 160}, {x: 240, y: 160, h: 80}
+                    {x: 80, y: 590, h: 150}, // Escada base inicial para subir à esquerda
+                    {x: 380, y: 590, h: 150}, // Escada base para subir à direita
+                    {x: 100, y: 440, h: 150}, // Conexão esq mid
+                    {x: 360, y: 440, h: 150}, // Conexão dir mid
+                    {x: 220, y: 380, h: 120}, // Conexão centro
+                    {x: 80, y: 300, h: 140},  // Conexão superior esq
+                    {x: 380, y: 300, h: 140}, // Conexão superior dir
+                    {x: 230, y: 110, h: 130}  // Acesso final à gaiola
                 ];
 
                 elevators = [
-                    {x: 200, y: 300, w: 40, h: 10, vy: 1, minY: 200, maxY: 500},
-                    {x: 200, y: 450, w: 40, h: 10, vy: -1, minY: 200, maxY: 500}
+                    {x: 160, y: 250, w: 40, h: 10, vy: 1, minY: 180, maxY: 420},
+                    {x: 280, y: 400, w: 40, h: 10, vy: -1, minY: 180, maxY: 420}
                 ];
 
+                // Exactamente 10 Ovos distribuídos estrategicamente (incluindo o lado direito)
                 eggs = [
-                    {x: 100, baseY: 620 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 200, baseY: 640 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 80, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 250, baseY: 400 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 380, baseY: 480 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 420, baseY: 370 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 430, baseY: 280 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 300, baseY: 240 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 250, baseY: 240 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 90, baseY: 280 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
+                    {x: 50, baseY: 590 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 400, baseY: 590 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 220, baseY: 520 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 60, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 390, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 200, baseY: 380 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 80, baseY: 300 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 350, baseY: 300 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 90, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 340, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
                 ];
 
+                // Exactamente 7 Sementes
                 seeds = [
-                    {x: 30, baseY: 620 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 150, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 240, baseY: 400 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 230, baseY: 240 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 410, baseY: 280 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 440, baseY: 370 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 370, baseY: 480 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
+                    {x: 100, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 370, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 80, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 380, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 130, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 330, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 220, baseY: 170 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
                 ];
 
+                // Exactamente 3 Avestruzes patrulhando zonas distintas (incluindo o lado direito)
                 ostriches = [
-                    {x: 20, y: 580, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 0, maxX: 120},
-                    {x: 260, y: 340, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 230, maxX: 350},
-                    {x: 380, baseY: 480 - 24, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 330, maxX: 430}
+                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 10, maxX: 120},
+                    {x: 350, y: 406, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 350, maxX: 460},
+                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 320, maxX: 440}
                 ];
 
             } else {
+                // ==========================================
+                // VERSÃO DESKTOP (Clássica 640x510)
+                // ==========================================
                 player.x = 300; player.y = 440;
 
                 platformData = [
@@ -903,7 +922,7 @@
                 
                 let cageScale = isMobile ? 1.3 : 1.0;
                 let cageX = 60;
-                let cageY = isMobile ? 130 : 120;
+                let cageY = isMobile ? 80 : 120;
                 
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
@@ -929,7 +948,7 @@
                 redFlashAlpha = 0.8;
                 triggerShake(12, 16);
                 player.x = isMobile ? 240 : 300; 
-                player.y = isMobile ? 730 : 440; 
+                player.y = isMobile ? 710 : 440; 
                 player.vx = 0; player.vy = 0;
             }
 
