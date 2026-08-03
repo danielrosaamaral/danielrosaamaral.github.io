@@ -22,7 +22,7 @@
       "@type": "Person",
       "name": "Daniel da Rosa Amaral",
       "jobTitle": ["Designer Gráfico", "Director de Arte", "Especialista em Branding", "Consultor SEO & AEO"],
-      "description": "Desenvolvo projectos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.",
+      "description": "Desenvolvo projectos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, institutions e organizações.",
       "url": "https://danielrosaamaral.github.io/",
       "address": {
         "@type": "PostalAddress",
@@ -54,6 +54,11 @@
       gtag('js', new Date());
       gtag('config', 'G-4X7D309RVX');
     </script>
+
+    <!-- Google Fonts - Retro Aesthetics Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -169,14 +174,30 @@
         .brand-item {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        .brand-item:not(:last-child)::after {
+            content: " •";
+            margin-left: 0.875rem;
+            margin-right: 0.875rem;
+            color: rgb(115, 115, 115);
+            opacity: 0.6;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
         .brand-item.dimmed {
             opacity: 0.15;
             filter: grayscale(100%);
+        }
+        .brand-item.dimmed::after {
+            opacity: 0.15;
         }
         .brand-item.highlighted {
             opacity: 1;
             color: #ffffff;
             font-weight: 400;
+        }
+        .brand-item.highlighted::after {
+            opacity: 0.8;
+            color: rgb(0, 17, 255);
         }
         .filter-btn {
             background-color: rgba(255, 255, 255, 0.02);
@@ -355,39 +376,39 @@
                     <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
                     <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
                 </div>
-                <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span> •
-                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span> •
-                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span> •
-                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span> •
-                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span> •
+                <div id="brands-container" class="flex flex-wrap gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Bayer</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Bolodoce</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara de Comércio</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Cruzfer</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">EMEL</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">EPUL</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">European Association for Internal Communication</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Exdoo</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Fresenius Medical Care</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Galp Energia</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Gelpeixe</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Grupo E.T.E.</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Il Pizzaiollo</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Câmara Municipal de Lisboa</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Lisbon Partners</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metro de Lisboa</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Metrocom</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">MOBI.E</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Nestlé</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Novartis</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Os Mosqueteiros</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">OTLIS</span>
+                    <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">Santa Casa da Misericórdia</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Sara Lee</span>
+                    <span class="brand-item health hover:text-white transition-colors cursor-default" data-cat="health">Shiseido</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Teleperformance</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Transinsular</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Vitra</span>
+                    <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">Zapp Mobile</span>
+                    <span class="brand-item services hover:text-white transition-colors cursor-default" data-cat="services">Refrige</span>
                     <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">24 Sete</span>
                 </div>
             </div>
@@ -548,10 +569,12 @@
 
             const pressJump = (e) => {
                 if(e.cancelable) e.preventDefault();
+                e.stopPropagation(); // Previne borbulhar para o control-ring
                 keys['Space'] = true;
             };
             const releaseJump = (e) => {
                 if(e.cancelable) e.preventDefault();
+                e.stopPropagation();
                 keys['Space'] = false;
             };
 
@@ -626,7 +649,7 @@
             const ctx = canvas.getContext('2d');
             
             const isMobile = window.innerWidth < 768;
-            canvas.width = isMobile ? 480 : 640;
+            canvas.width = isMobile ? 480 : 800; // Ajustado rácio visual
             canvas.height = isMobile ? 800 : 510;
 
             const gfxScale = isMobile ? 1.45 : 1.0;
@@ -788,7 +811,7 @@
                 ostriches = [
                     {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
                     {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
-                    {x: 480, baseY: 400 - 24, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
+                    {x: 480, y: 400 - 24, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560} // Corrigido de baseY para y
                 ];
             }
 
@@ -825,6 +848,7 @@
                 }
             }
 
+            // Mapeia escadas clássicas
             function drawLadder(x, y, h) {
                 let ladderWidth = Math.round(20 * gfxScale);
                 let railWidth = Math.max(2, Math.round(4 * gfxScale));
@@ -914,7 +938,7 @@
                 } else {
                     ctx.fillStyle = C_RED;
                 }
-                ctx.fillText('TIME ' + Math.floor(timer), canvas.width - (isMobile ? 190 : 170), topOffset);
+                ctx.fillText('TIME ' + Math.max(0, Math.floor(timer)), canvas.width - (isMobile ? 190 : 170), topOffset);
 
                 let subOffset = isMobile ? 75 : 70;
                 ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, subOffset);
@@ -955,6 +979,13 @@
             function update() {
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
+
+                // Reinicia se o tempo acabar
+                if (timer <= 0) {
+                    resetLevel();
+                    timer = 893;
+                    addFloatingText('TEMPO ESGOTADO!', player.x, player.y - 10);
+                }
 
                 let targetTilt = 0;
                 if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
