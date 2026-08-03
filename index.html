@@ -215,7 +215,7 @@
     <!-- OVERLAY DO JOGO CHUCKIE EGG (COM FUNDO SÓLIDO) -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo (Sem o texto Retro Arcade Mode) -->
+        <!-- Cabeçalho Topo -->
         <div class="w-full flex justify-end items-center z-50 px-4 py-2 shrink-0">
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-neutral-500 cursor-pointer">
                 SKIP [ ⏭ ]
@@ -231,7 +231,7 @@
             </div>
             <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Sessão Interrompida</h2>
             <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
-                O acesso foi iniciado num novo dispositivo ou separador. Por razões de integridade, apenas uma instância simultânea é permitida.
+                O acesso foi iniciado noutro dispositivo ou separador. Por razões de integridade, apenas uma instância simultânea é permitida.
             </p>
             <div class="pt-4 flex justify-center">
                 <button onclick="skipGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
@@ -264,8 +264,6 @@
 
         <!-- Ecrã Principal de Jogo -->
         <div id="game-screen" class="hidden flex-col w-full h-full justify-between overflow-hidden">
-            
-            <!-- Canvas do Jogo (Altura expandida para alojar as instruções alinhadas sob a plataforma base) -->
             <div class="w-full flex-1 flex items-center justify-center p-2 overflow-hidden shrink-0">
                 <canvas id="chuckieCanvas" width="640" height="510" class="w-full max-w-full h-full max-h-full aspect-[640/510] object-contain block bg-transparent rounded-lg"></canvas>
             </div>
@@ -764,7 +762,6 @@
                 {x: 190, y: 320, w: 40, h: 10, vy: -1, minY: 180, maxY: 380}
             ];
 
-            // Ovos assentes na superfície superior exata das plataformas (y = plataforma.y - altura_ovo)
             let eggs = [
                 {x: 90, baseY: 224 - 12, w: 14, h: 12, collected: false}, 
                 {x: 150, baseY: 240 - 12, w: 14, h: 12, collected: false},
@@ -778,7 +775,6 @@
                 {x: 480, baseY: 400 - 12, w: 14, h: 12, collected: false}
             ];
 
-            // Triângulos (seeds) devidamente alinhados e assentes sobre as plataformas
             let seeds = [
                 {x: 40, baseY: 224 - 12, w: 12, h: 12, collected: false}, 
                 {x: 130, baseY: 320 - 12, w: 12, h: 12, collected: false}, 
@@ -910,7 +906,7 @@
                 } else {
                     ctx.fillStyle = C_RED;
                 }
-                ctx.fillText('TIME ' + Math.floor(timer), 470, 35);
+                ctx.fillText('TIME ' + Math.max(0, Math.floor(timer)), 470, 35);
 
                 ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, 70);
                 ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', 160, 70);
@@ -931,7 +927,12 @@
 
             function update() {
                 if(isGameOver || isVictory) return;
+                
                 timer -= 0.02;
+                if (timer <= 0) {
+                    resetLevel();
+                    timer = 893;
+                }
 
                 let targetTilt = 0;
                 if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
@@ -1120,7 +1121,6 @@
 
                 drawUI();
 
-                // Instruções de controlo reposicionadas exatamente sob a plataforma base do jogo (dentro do canvas)
                 ctx.fillStyle = '#999999';
                 ctx.font = '11px "Courier New", monospace';
                 ctx.textAlign = 'center';
