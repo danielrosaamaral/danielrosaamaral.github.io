@@ -206,17 +206,14 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo -->
         <div class="w-full flex justify-end items-center z-50 px-4 py-2 shrink-0">
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-neutral-500 cursor-pointer">
                 SKIP [ ⏭ ]
             </button>
         </div>
 
-        <!-- Ecrã de Conflito de Sessão (LIFO) -->
         <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-neutral-900 border border-red-900/50 p-6 md:p-8 rounded-2xl shadow-2xl text-center flex-col items-center gap-4 z-50 mx-auto">
             <div class="inline-flex p-3 rounded-full bg-red-500/10 text-red-500 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -234,7 +231,6 @@
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-full bg-neutral-800 text-neutral-300 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -242,12 +238,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Aviso de Acesso / Disclaimer</h2>
+            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Aviso de Acesso</h2>
             <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
-                Please note: if you don't recognize this game, it's probably because you are younger than me.
-            </p>
-            <p class="text-xs text-neutral-400 font-mono">
-                [ Desafio: Apanha todos os ovos para desbloquear o portefólio ]
+                Nota: se não reconhece este jogo, é provável que seja mais novo do que eu.
             </p>
             <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
                 <button onclick="startChuckieGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
@@ -256,7 +249,6 @@
             </div>
         </div>
 
-        <!-- Ecrã Principal de Jogo -->
         <div id="game-screen" class="hidden flex-col w-full h-full justify-between overflow-hidden">
             <div class="w-full flex-1 flex items-center justify-center p-2 overflow-hidden shrink-0">
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
@@ -267,16 +259,15 @@
                     <button id="btn-jump" class="touch-btn absolute w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-transform active:scale-95">
                         JUMP
                     </button>
-                    <span class="absolute top-2 text-neutral-500 text-xs font-mono pointer-events-none">▲</span>
-                    <span class="absolute bottom-2 text-neutral-500 text-xs font-mono pointer-events-none">▼</span>
-                    <span class="absolute left-2 text-neutral-500 text-xs font-mono pointer-events-none">◄</span>
-                    <span class="absolute right-2 text-neutral-500 text-xs font-mono pointer-events-none">►</span>
+                    <span id="arrow-up" class="absolute top-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▲</span>
+                    <span id="arrow-down" class="absolute bottom-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▼</span>
+                    <span id="arrow-left" class="absolute left-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">◄</span>
+                    <span id="arrow-right" class="absolute right-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">►</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- LANDING PAGE PRINCIPAL -->
     <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
         <div class="max-w-2xl w-full">
             <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
@@ -421,7 +412,7 @@
     <script>
         const SESSION_ID = Math.random().toString(36).substring(2, 15);
         const SESSION_KEY = 'da_active_game_session';
-        
+
         window.addEventListener('storage', (e) => {
             if (e.key === SESSION_KEY && e.newValue !== SESSION_ID && document.getElementById('game-overlay')) {
                 forceDisconnect();
@@ -429,7 +420,7 @@
         });
 
         function forceDisconnect() {
-            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            if(typeof animationFrameId !== 'undefined' && animationFrameId) cancelAnimationFrame(animationFrameId);
             const gameScreen = document.getElementById('game-screen');
             const disclaimerScreen = document.getElementById('disclaimer-screen');
             const conflictScreen = document.getElementById('session-conflict-screen');
@@ -469,13 +460,16 @@
         let animationFrameId;
         const keys = {};
 
-        window.addEventListener('keydown', e => { 
+        window.addEventListener('keydown', e => {
             if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
             }
-            keys[e.code] = true; 
+            keys[e.code] = true;
         });
-        window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+        window.addEventListener('keyup', e => {
+            keys[e.code] = false;
+        });
 
         function triggerChat() {
             if (typeof gtag === 'function') {
@@ -488,668 +482,304 @@
             }
         }
 
-        function filterBrands(category, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+        function filterBrands(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
             const items = document.querySelectorAll('.brand-item');
             items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                if (category === 'all' || item.dataset.cat === category) {
                     item.classList.remove('dimmed');
-                    if (category !== 'all') { item.classList.add('highlighted'); } 
-                    else { item.classList.remove('highlighted'); }
+                    item.classList.add('highlighted');
                 } else {
                     item.classList.add('dimmed');
                     item.classList.remove('highlighted');
                 }
             });
-            if (typeof gtag === 'function') {
-                gtag('event', 'filter_brands', {'event_category': 'Engagement', 'event_label': category});
-            }
         }
 
-        function copyToClipboard(text, element, label) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text);
+        function copyToClipboard(text, element, type) {
+            navigator.clipboard.writeText(text).then(() => {
                 const feedback = element.nextElementSibling;
-                if (feedback && feedback.classList.contains('copy-feedback')) {
-                    feedback.innerText = '✓ Copiado';
+                if(feedback && feedback.classList.contains('copy-feedback')) {
+                    feedback.textContent = 'Copiado!';
                     feedback.style.opacity = '1';
-                    setTimeout(() => { feedback.style.opacity = '0'; }, 2000);
+                    setTimeout(() => {
+                        feedback.style.opacity = '0';
+                    }, 2000);
                 }
-            }
+                if (typeof gtag === 'function') {
+                    gtag('event', 'copy_contact', {'event_category': 'Contact', 'event_label': type});
+                }
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+            });
         }
 
         function skipGame() {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
+            localStorage.setItem(SESSION_KEY, SESSION_ID);
             const overlay = document.getElementById('game-overlay');
             if (overlay) {
                 overlay.style.opacity = '0';
-                setTimeout(() => overlay.remove(), 500);
-            }
-            if (typeof gtag === 'function') {
-                gtag('event', 'skip_game', {'event_category': 'Engagement'});
+                setTimeout(() => {
+                    overlay.remove();
+                }, 500);
             }
         }
 
         function startChuckieGame() {
             localStorage.setItem(SESSION_KEY, SESSION_ID);
             document.getElementById('disclaimer-screen').classList.add('hidden');
-            document.getElementById('game-screen').classList.remove('hidden');
-            document.getElementById('game-screen').classList.add('flex');
-            initCircularControls();
-            initChuckieEgg();
+            const gameScreen = document.getElementById('game-screen');
+            gameScreen.classList.remove('hidden');
+            gameScreen.classList.add('flex');
+            initChuckieEggEngine();
         }
 
-        function initCircularControls() {
+        function initChuckieEggEngine() {
+            const canvas = document.getElementById('chuckieCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 384;
+            canvas.height = 256;
+
+            const C_BG = '#0d0d0d';
+            const C_FLOOR = '#ffffff';
+            const C_LADDER = '#3b82f6';
+            const C_EGG = '#eab308';
+            const C_PLAYER = '#3b82f6';
+            const C_ENEMY = '#ef4444';
+            const C_RED = '#ef4444';
+            const C_GREEN = '#22c55e';
+            const C_YELLOW = '#eab308';
+            const C_CYAN = '#06b6d4';
+            const C_MAGENTA = '#ec4899';
+
+            let player = {
+                x: 32,
+                y: 200,
+                w: 10,
+                h: 16,
+                vx: 0,
+                vy: 0,
+                speed: 1.5,
+                jumpPower: -5.2,
+                grounded: false,
+                onLadder: false,
+                dir: 1
+            };
+
+            const floors = [
+                {x: 0, y: 240, w: 384, h: 8},
+                {x: 32, y: 192, w: 320, h: 6},
+                {x: 32, y: 144, w: 320, h: 6},
+                {x: 32, y: 96, w: 320, h: 6},
+                {x: 64, y: 48, w: 256, h: 6}
+            ];
+
+            const ladders = [
+                {x: 64, y: 192, w: 16, h: 48},
+                {x: 304, y: 144, w: 16, h: 48},
+                {x: 96, y: 96, w: 16, h: 48},
+                {x: 256, y: 48, w: 16, h: 48}
+            ];
+
+            let eggs = [
+                {x: 180, y: 228, collected: false},
+                {x: 80, y: 180, collected: false},
+                {x: 200, y: 180, collected: false},
+                {x: 300, y: 132, collected: false},
+                {x: 120, y: 132, collected: false},
+                {x: 150, y: 84, collected: false},
+                {x: 280, y: 84, collected: false},
+                {x: 180, y: 36, collected: false}
+            ];
+
+            let enemies = [
+                {x: 100, y: 224, vx: 1, w: 12, h: 16},
+                {x: 200, y: 176, vx: -1.2, w: 12, h: 16},
+                {x: 150, y: 128, vx: 1, w: 12, h: 16}
+            ];
+
+            let isVictory = false;
+            let victoryTimer = 0;
+            let redFlashAlpha = 0;
+
+            const activeTouches = {};
             const ring = document.getElementById('control-ring');
-            const jumpBtn = document.getElementById('btn-jump');
+            const mobileControls = document.getElementById('mobile-controls');
 
-            const pressJump = (e) => {
-                if(e.cancelable) e.preventDefault();
-                keys['Space'] = true;
-            };
-            const releaseJump = (e) => {
-                if(e.cancelable) e.preventDefault();
+            if(mobileControls) {
+                mobileControls.addEventListener('touchstart', handleTouch, {passive: false});
+                mobileControls.addEventListener('touchmove', handleTouch, {passive: false});
+                mobileControls.addEventListener('touchend', handleTouch, {passive: false});
+                mobileControls.addEventListener('touchcancel', handleTouch, {passive: false});
+            }
+
+            function handleTouch(e) {
+                e.preventDefault();
+                keys['ArrowUp'] = false;
+                keys['ArrowDown'] = false;
+                keys['ArrowLeft'] = false;
+                keys['ArrowRight'] = false;
                 keys['Space'] = false;
-            };
 
-            jumpBtn.addEventListener('touchstart', pressJump, { passive: false });
-            jumpBtn.addEventListener('touchend', releaseJump, { passive: false });
-            jumpBtn.addEventListener('touchcancel', releaseJump, { passive: false });
-            jumpBtn.addEventListener('mousedown', pressJump);
-            jumpBtn.addEventListener('mouseup', releaseJump);
-            jumpBtn.addEventListener('mouseleave', releaseJump);
-
-            const handleRingTouch = (clientX, clientY) => {
                 const rect = ring.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
-                const dx = clientX - centerX;
-                const dy = clientY - centerY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const innerRadius = rect.width * 0.22;
 
-                keys['ArrowLeft'] = false;
-                keys['ArrowRight'] = false;
-                keys['ArrowUp'] = false;
-                keys['ArrowDown'] = false;
+                for (let i = 0; i < e.touches.length; i++) {
+                    const t = e.touches[i];
+                    const jumpBtn = document.getElementById('btn-jump');
+                    const jumpRect = jumpBtn.getBoundingClientRect();
 
-                if (distance > innerRadius) {
-                    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-                    if (angle >= -45 && angle < 45) {
-                        keys['ArrowRight'] = true;
-                    } else if (angle >= 45 && angle < 135) {
-                        keys['ArrowDown'] = true;
-                    } else if (angle >= -135 && angle < -45) {
-                        keys['ArrowUp'] = true;
-                    } else {
-                        keys['ArrowLeft'] = true;
+                    if (t.clientX >= jumpRect.left && t.clientX <= jumpRect.right &&
+                        t.clientY >= jumpRect.top && t.clientY <= jumpRect.bottom) {
+                        keys['Space'] = true;
+                        continue;
+                    }
+
+                    const dx = t.clientX - centerX;
+                    const dy = t.clientY - centerY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist > 15 && dist < 120) {
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            if (dx > 0) keys['ArrowRight'] = true;
+                            else keys['ArrowLeft'] = true;
+                        } else {
+                            if (dy > 0) keys['ArrowDown'] = true;
+                            else keys['ArrowUp'] = true;
+                        }
                     }
                 }
-            };
-
-            const resetRing = () => {
-                keys['ArrowLeft'] = false;
-                keys['ArrowRight'] = false;
-                keys['ArrowUp'] = false;
-                keys['ArrowDown'] = false;
-            };
-
-            ring.addEventListener('touchstart', (e) => {
-                if(e.cancelable) e.preventDefault();
-                const touch = e.touches[0];
-                handleRingTouch(touch.clientX, touch.clientY);
-            }, { passive: false });
-
-            ring.addEventListener('touchmove', (e) => {
-                if(e.cancelable) e.preventDefault();
-                const touch = e.touches[0];
-                handleRingTouch(touch.clientX, touch.clientY);
-            }, { passive: false });
-
-            ring.addEventListener('touchend', resetRing);
-            ring.addEventListener('touchcancel', resetRing);
-
-            ring.addEventListener('mousemove', (e) => {
-                if (e.buttons === 1) {
-                    handleRingTouch(e.clientX, e.clientY);
-                }
-            });
-            ring.addEventListener('mouseleave', resetRing);
-            ring.addEventListener('mouseup', resetRing);
-        }
-
-        function initChuckieEgg() {
-            const canvas = document.getElementById('chuckieCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            const isMobile = window.innerWidth < 768;
-            canvas.width = isMobile ? 480 : 640;
-            canvas.height = isMobile ? 800 : 510;
-
-            const gfxScale = isMobile ? 1.45 : 1.0;
-
-            const GRAVITY = 0.45;
-            const JUMP_FORCE = -8.5;
-            const SPEED = 3.5;
-            const CLIMB_SPEED = 2.75;
-            const FRICTION = 0.78;
-
-            const C_GREEN = '#00CC00';
-            const C_MAGENTA = '#FF00FF';
-            const C_CYAN = '#00FFFF';
-            const C_YELLOW = '#FFFF00';
-            const C_WHITE = '#FFFFFF';
-            const C_RED = '#FF0000';
-            const C_BLUE = '#0033FF';
-
-            let score = 0;
-            let timer = 893;
-            let isGameOver = false;
-            let isVictory = false;
-            let victoryTimer = 0;
-            
-            let shakeTime = 0;
-            let shakeIntensity = 0;
-            let redFlashAlpha = 0;
-            let particles = [];
-            let floatingTexts = [];
-
-            let player = {
-                x: 0, y: 0, 
-                w: Math.round(18 * gfxScale), 
-                h: Math.round(24 * gfxScale),
-                vx: 0, vy: 0,
-                onGround: false, onLadder: false, climbing: false,
-                facingRight: true, tiltAngle: 0
-            };
-
-            let platformData, ladders, elevators, eggs, seeds, ostriches;
-
-            if (isMobile) {
-                // Posição de início adaptada com acesso por escada direta à base
-                player.x = 240; player.y = 710;
-
-                // 14 Plataformas (equivalente exato ao desktop, equilibrando esquerda, centro e direita)
-                platformData = [
-                    {x: 0, y: 740, w: 480}, // Solo Base
-                    {x: 10, y: 590, w: 120}, {x: 350, y: 590, w: 120}, // Nível 1 (esq/dir)
-                    {x: 180, y: 520, w: 120}, // Nível 1.5 centro
-                    {x: 20, y: 440, w: 110}, {x: 350, y: 440, w: 110}, // Nível 2 (esq/dir)
-                    {x: 170, y: 380, w: 140}, // Nível 2.5 centro
-                    {x: 40, y: 300, w: 120}, {x: 320, y: 300, w: 120}, // Nível 3 (esq/dir)
-                    {x: 190, y: 240, w: 100}, // Nível 3.5 centro
-                    {x: 50, y: 170, w: 130}, {x: 300, y: 170, w: 130}, // Nível 4 topo (esq/dir)
-                    {x: 190, y: 110, w: 100}, // Patamar superior
-                    {x: 210, y: 110, w: 60, hidden: true} // Base da gaiola
-                ];
-
-                // Exactamente 8 Escadas mapeadas simetricamente para garantir fluidez e acesso total ao lado direito
-                ladders = [
-                    {x: 80, y: 590, h: 150}, // Escada base inicial para subir à esquerda
-                    {x: 380, y: 590, h: 150}, // Escada base para subir à direita
-                    {x: 100, y: 440, h: 150}, // Conexão esq mid
-                    {x: 360, y: 440, h: 150}, // Conexão dir mid
-                    {x: 220, y: 380, h: 120}, // Conexão centro
-                    {x: 80, y: 300, h: 140},  // Conexão superior esq
-                    {x: 380, y: 300, h: 140}, // Conexão superior dir
-                    {x: 230, y: 110, h: 130}  // Acesso final à gaiola
-                ];
-
-                elevators = [
-                    {x: 160, y: 250, w: 40, h: 10, vy: 1, minY: 180, maxY: 420},
-                    {x: 280, y: 400, w: 40, h: 10, vy: -1, minY: 180, maxY: 420}
-                ];
-
-                // Exactamente 10 Ovos distribuídos estrategicamente (incluindo o lado direito)
-                eggs = [
-                    {x: 50, baseY: 590 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 400, baseY: 590 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 220, baseY: 520 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 60, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 390, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 200, baseY: 380 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 80, baseY: 300 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 350, baseY: 300 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
-                    {x: 90, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 340, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
-                ];
-
-                // Exactamente 7 Sementes
-                seeds = [
-                    {x: 100, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 370, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 80, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 380, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 130, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 330, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 220, baseY: 170 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
-                ];
-
-                // Exactamente 3 Avestruzes patrulhando zonas distintas (incluindo o lado direito)
-                ostriches = [
-                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 10, maxX: 120},
-                    {x: 350, y: 406, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 350, maxX: 460},
-                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 320, maxX: 440}
-                ];
-
-            } else {
-                // ==========================================
-                // VERSÃO DESKTOP (Clássica 640x510)
-                // ==========================================
-                player.x = 300; player.y = 440;
-
-                platformData = [
-                    {x: 0, y: 464, w: 640},
-                    {x: 0, y: 224, w: 120}, {x: 150, y: 240, w: 90}, {x: 120, y: 160, w: 80},
-                    {x: 60, y: 320, w: 120}, {x: 230, y: 368, w: 110}, {x: 350, y: 384, w: 80},
-                    {x: 460, y: 400, w: 120}, {x: 410, y: 336, w: 80}, {x: 520, y: 288, w: 100},
-                    {x: 350, y: 272, w: 80}, {x: 340, y: 192, w: 100}, {x: 400, y: 144, w: 110},
-                    {x: 520, y: 160, w: 100},
-                    {x: 30, y: 160, w: 60, hidden: true}
-                ];
-
-                ladders = [
-                    {x: 100, y: 224, h: 240}, {x: 60, y: 160, h: 64}, {x: 180, y: 160, h: 80},
-                    {x: 260, y: 120, h: 248}, {x: 310, y: 120, h: 248}, {x: 370, y: 80, h: 112},
-                    {x: 550, y: 160, h: 128}, {x: 520, y: 304, h: 160}
-                ];
-
-                elevators = [
-                    {x: 190, y: 200, w: 40, h: 10, vy: 1, minY: 180, maxY: 380},
-                    {x: 190, y: 320, w: 40, h: 10, vy: -1, minY: 180, maxY: 380}
-                ];
-
-                eggs = [
-                    {x: 90, baseY: 224 - 12, w: 14, h: 12, collected: false}, 
-                    {x: 150, baseY: 240 - 12, w: 14, h: 12, collected: false},
-                    {x: 70, baseY: 320 - 12, w: 14, h: 12, collected: false}, 
-                    {x: 260, baseY: 368 - 12, w: 14, h: 12, collected: false},
-                    {x: 430, baseY: 336 - 12, w: 14, h: 12, collected: false}, 
-                    {x: 480, baseY: 288 - 12, w: 14, h: 12, collected: false},
-                    {x: 550, baseY: 160 - 12, w: 14, h: 12, collected: false}, 
-                    {x: 440, baseY: 144 - 12, w: 14, h: 12, collected: false},
-                    {x: 370, baseY: 192 - 12, w: 14, h: 12, collected: false}, 
-                    {x: 480, baseY: 400 - 12, w: 14, h: 12, collected: false}
-                ];
-
-                seeds = [
-                    {x: 40, baseY: 224 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 130, baseY: 320 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 230, baseY: 368 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 340, baseY: 192 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 420, baseY: 144 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 530, baseY: 288 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 390, baseY: 384 - 12, w: 12, h: 12, collected: false}
-                ];
-
-                ostriches = [
-                    {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
-                    {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
-                    {x: 480, baseY: 400 - 24, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
-                ];
+                updateArrowsUI();
             }
 
-            function triggerShake(intensity, duration) {
-                shakeIntensity = intensity;
-                shakeTime = duration;
-            }
-
-            function addParticles(x, y) {
-                for(let i = 0; i < 10; i++) {
-                    particles.push({
-                        x: x, y: y,
-                        vx: (Math.random() - 0.5) * 5,
-                        vy: (Math.random() - 0.5) * 5,
-                        life: 18, color: i % 2 === 0 ? C_YELLOW : C_WHITE
-                    });
-                }
-            }
-
-            function addFloatingText(text, x, y) {
-                floatingTexts.push({ text: text, x: x, y: y, life: 25 });
-            }
-
-            function drawPlatform(x, y, w) {
-                let thickness = Math.round(16 * gfxScale);
-                ctx.fillStyle = C_GREEN;
-                ctx.fillRect(x, y, w, thickness);
-                ctx.fillStyle = '#000000';
-                let blockW = Math.round(12 * gfxScale);
-                let blockH = Math.round(3 * gfxScale);
-                for(let i = 0; i < w; i += blockW) {
-                    ctx.fillRect(x + i, y + Math.round(2 * gfxScale), Math.round(6 * gfxScale), blockH);
-                    ctx.fillRect(x + i + Math.round(3 * gfxScale), y + Math.round(9 * gfxScale), Math.round(6 * gfxScale), blockH);
-                }
-            }
-
-            function drawLadder(x, y, h) {
-                let ladderWidth = Math.round(20 * gfxScale);
-                let railWidth = Math.max(2, Math.round(4 * gfxScale));
-                ctx.fillStyle = C_MAGENTA;
-                ctx.fillRect(x, y, railWidth, h); 
-                ctx.fillRect(x + ladderWidth - railWidth, y, railWidth, h);
-                
-                let stepHeight = Math.round(8 * gfxScale);
-                let stepBarH = Math.max(2, Math.round(4 * gfxScale));
-                for(let i = y + Math.round(4 * gfxScale); i < y + h; i += stepHeight) { 
-                    ctx.fillRect(x + railWidth, i, ladderWidth - (railWidth * 2), stepBarH); 
-                }
-            }
-
-            function drawPlayer() {
-                ctx.save();
-                ctx.translate(player.x + player.w/2, player.y + player.h/2);
-                ctx.rotate(player.tiltAngle);
-
-                let px = -player.w/2;
-                let py = -player.h/2;
-                let s = gfxScale;
-
-                ctx.fillStyle = C_CYAN;
-                ctx.fillRect(px - Math.round(1*s), py - Math.round(3*s), Math.round(16*s), Math.round(4*s));
-                ctx.fillRect(px + Math.round(2*s), py - Math.round(7*s), Math.round(10*s), Math.round(4*s));
-
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px + Math.round(3*s), py - Math.round(3*s), Math.round(8*s), Math.round(6*s));
-                ctx.fillStyle = '#000000';
-                if(player.facingRight) ctx.fillRect(px + Math.round(8*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
-                else ctx.fillRect(px + Math.round(3*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
-
-                ctx.fillStyle = C_RED;
-                ctx.fillRect(px + Math.round(1*s), py + Math.round(3*s), Math.round(12*s), Math.round(11*s));
-
-                ctx.fillStyle = C_BLUE;
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
-
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px, py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
-
-                ctx.restore();
-            }
-
-            function drawOstrich(o) {
-                ctx.save();
-                let s = gfxScale;
-                ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(6*s), Math.round(14*s), Math.round(12*s));
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(8*s), Math.round(8*s), Math.round(6*s));
-                
-                ctx.fillStyle = C_CYAN;
-                if (o.vx > 0) {
-                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
-                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + Math.round(17*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
-                } else {
-                    ctx.fillRect(o.x, o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
-                    ctx.fillRect(o.x - Math.round(4*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - Math.round(9*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - Math.round(2*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
-                }
-                
-                ctx.fillStyle = C_WHITE;
-                let legOffset = Math.sin(Date.now() * 0.02) * 3;
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) + legOffset);
-                ctx.fillRect(o.x + Math.round(11*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) - legOffset);
-                ctx.restore();
-            }
-
-            function drawUI() {
-                let fontSize = isMobile ? '18px' : '15px';
-                ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
-                if(document.fonts) ctx.font = `bold ${fontSize} "Press Start 2P", monospace`;
-                
-                let topOffset = isMobile ? 40 : 35;
-                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, topOffset);
-                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 115 : 105, topOffset);
-                
-                if (timer < 100) {
-                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
-                } else {
-                    ctx.fillStyle = C_RED;
-                }
-                ctx.fillText('TIME ' + Math.floor(timer), canvas.width - (isMobile ? 190 : 170), topOffset);
-
-                let subOffset = isMobile ? 75 : 70;
-                ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, subOffset);
-                ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', isMobile ? 180 : 160, subOffset);
-                
-                let cageScale = isMobile ? 1.3 : 1.0;
-                let cageX = 60;
-                let cageY = isMobile ? 80 : 120;
-                
-                ctx.fillStyle = C_YELLOW;
-                ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
-                ctx.beginPath(); ctx.arc(cageX, cageY, Math.round(30 * cageScale), Math.PI, 0); ctx.stroke();
-                for(let i = Math.round(35 * cageScale); i <= Math.round(85 * cageScale); i += Math.round(10 * cageScale)) {
-                    ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
-                }
-                ctx.fillRect(cageX - Math.round(30 * cageScale), cageY + Math.round(40 * cageScale), Math.round(60 * cageScale), Math.max(3, Math.round(4 * cageScale)));
-
-                let birdAnim = Math.sin(Date.now() * 0.005) > 0 ? 1 : 0;
-                let birdX = cageX - Math.round(12 * cageScale);
-                let birdY = cageY + Math.round(20 * cageScale) - birdAnim;
-                ctx.fillStyle = C_CYAN;
-                ctx.fillRect(birdX, birdY, Math.round(14 * cageScale), Math.round(10 * cageScale));
-                ctx.fillRect(birdX + Math.round(8 * cageScale), birdY - Math.round(8 * cageScale), Math.round(8 * cageScale), Math.round(8 * cageScale));
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(birdX + Math.round(14 * cageScale), birdY - Math.round(6 * cageScale), Math.round(4 * cageScale), Math.round(3 * cageScale));
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(birdX + Math.round(10 * cageScale), birdY - Math.round(6 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
-            }
-
-            function resetLevel() {
-                redFlashAlpha = 0.8;
-                triggerShake(12, 16);
-                player.x = isMobile ? 240 : 300; 
-                player.y = isMobile ? 710 : 440; 
-                player.vx = 0; player.vy = 0;
+            function updateArrowsUI() {
+                const up = document.getElementById('arrow-up');
+                const down = document.getElementById('arrow-down');
+                const left = document.getElementById('arrow-left');
+                const right = document.getElementById('arrow-right');
+                if(up) up.style.color = keys['ArrowUp'] ? '#3b82f6' : '#737373';
+                if(down) down.style.color = keys['ArrowDown'] ? '#3b82f6' : '#737373';
+                if(left) left.style.color = keys['ArrowLeft'] ? '#3b82f6' : '#737373';
+                if(right) right.style.color = keys['ArrowRight'] ? '#3b82f6' : '#737373';
             }
 
             function update() {
-                if(isGameOver || isVictory) return;
-                timer -= 0.02;
+                if(isVictory) return;
 
-                let targetTilt = 0;
-                if(player.vx > 0.5) { targetTilt = 0.16; player.facingRight = true; }
-                else if(player.vx < -0.5) { targetTilt = -0.16; player.facingRight = false; }
-                player.tiltAngle += (targetTilt - player.tiltAngle) * 0.25;
+                player.vx = 0;
+                if (keys['ArrowLeft']) { player.vx = -player.speed; player.dir = -1; }
+                if (keys['ArrowRight']) { player.vx = player.speed; player.dir = 1; }
 
-                let playerCenterX = player.x + player.w/2;
-                let activeLadder = null;
-
-                for(let l of ladders) {
-                    if(playerCenterX >= l.x && playerCenterX <= l.x + Math.round(20 * gfxScale) &&
-                       player.y + player.h >= l.y && player.y <= l.y + l.h) {
-                        activeLadder = l;
+                player.onLadder = false;
+                for (let l of ladders) {
+                    if (player.x + player.w > l.x && player.x < l.x + l.w &&
+                        player.y + player.h >= l.y && player.y <= l.y + l.h) {
+                        player.onLadder = true;
                         break;
                     }
                 }
 
-                player.onLadder = activeLadder !== null;
-
-                if(player.onLadder) {
-                    if(keys['ArrowUp']) {
-                        player.climbing = true;
-                        player.vy = -CLIMB_SPEED;
-                        player.x += (activeLadder.x + Math.round(10 * gfxScale) - playerCenterX) * 0.3;
-                    } else if(keys['ArrowDown']) {
-                        player.climbing = true;
-                        player.vy = CLIMB_SPEED;
-                        player.x += (activeLadder.x + Math.round(10 * gfxScale) - playerCenterX) * 0.3;
-                    } else if(player.climbing) {
-                        player.vy = 0;
-                    }
+                if (player.onLadder) {
+                    if (keys['ArrowUp']) player.vy = -player.speed;
+                    else if (keys['ArrowDown']) player.vy = player.speed;
+                    else player.vy = 0;
+                    player.grounded = false;
                 } else {
-                    player.climbing = false;
-                }
-
-                if(keys['ArrowLeft']) {
-                    player.vx = -SPEED;
-                } else if(keys['ArrowRight']) {
-                    player.vx = SPEED;
-                } else {
-                    player.vx *= FRICTION;
-                    if(Math.abs(player.vx) < 0.05) player.vx = 0;
-                }
-
-                if(!player.climbing) {
-                    player.vy += GRAVITY;
-                    if(keys['Space'] && player.onGround) {
-                        player.vy = JUMP_FORCE;
-                        player.onGround = false;
-                    }
+                    player.vy += 0.25; // gravidade
                 }
 
                 player.x += player.vx;
                 player.y += player.vy;
 
-                if(player.x < 0) player.x = 0;
-                if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
-
-                player.onGround = false;
-                let platformThickness = Math.round(16 * gfxScale);
-                if(!player.climbing && player.vy >= 0) {
-                    for(let p of platformData) {
-                        if(player.x + player.w > p.x && player.x < p.x + p.w &&
-                           player.y + player.h >= p.y && player.y + player.h <= p.y + platformThickness) {
-                            player.y = p.y - player.h;
-                            player.vy = 0; 
-                            player.onGround = true;
-                        }
-                    }
-                    for(let e of elevators) {
-                        if(player.x + player.w > e.x && player.x < e.x + e.w &&
-                           player.y + player.h >= e.y && player.y + player.h <= e.y + e.h + 2) {
-                            player.y = e.y - player.h;
-                            player.vy = e.vy; 
-                            player.onGround = true;
+                // Colisão com plataformas
+                player.grounded = false;
+                if (!player.onLadder) {
+                    for (let f of floors) {
+                        if (player.x + player.w > f.x && player.x < f.x + f.w &&
+                            player.y + player.h >= f.y && player.y + player.h <= f.y + 10 && player.vy >= 0) {
+                            player.y = f.y - player.h;
+                            player.vy = 0;
+                            player.grounded = true;
                         }
                     }
                 }
 
-                for(let e of elevators) {
-                    e.y += e.vy;
-                    if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
+                if (player.grounded && keys['Space']) {
+                    player.vy = player.jumpPower;
+                    player.grounded = false;
                 }
 
-                for(let o of ostriches) {
-                    o.x += o.vx;
-                    if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
-                    if(player.x < o.x + o.w && player.x + player.w > o.x &&
-                       player.y < o.y + o.h && player.y + player.h > o.y) {
-                        resetLevel();
-                    }
-                }
+                // Limites de ecrã
+                if (player.x < 0) player.x = 0;
+                if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                let eggsLeft = 0;
-                for(let egg of eggs) {
-                    if(!egg.collected) {
-                        let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
-                        let currentEggY = egg.baseY + bobOffset;
-
-                        if(player.x < egg.x + egg.w && player.x + player.w > egg.x &&
-                           player.y < currentEggY + egg.h && player.y + player.h > currentEggY) {
-                            egg.collected = true; score += 100;
-                            addParticles(egg.x + 7, currentEggY + 6);
-                            addFloatingText('+100', egg.x, currentEggY - 10);
-                        } else { eggsLeft++; }
-                    }
-                }
-
-                for(let s of seeds) {
-                    if(!s.collected) {
-                        if(player.x < s.x + s.w && player.x + player.w > s.x &&
-                           player.y < s.baseY + s.h && player.y + player.h > s.baseY) {
-                            s.collected = true; score += 50; timer += 40;
-                            addFloatingText('+50', s.x, s.baseY - 10);
+                // Recolha de Ovos
+                for (let egg of eggs) {
+                    if (!egg.collected) {
+                        if (player.x < egg.x + 8 && player.x + player.w > egg.x - 8 &&
+                            player.y < egg.y + 8 && player.y + player.h > egg.y - 8) {
+                            egg.collected = true;
                         }
                     }
                 }
 
-                if(eggsLeft === 0 && !isVictory) {
+                // Verificar Vitória
+                if (eggs.every(e => e.collected)) {
                     isVictory = true;
-                    victoryTimer = 0;
-                    triggerShake(8, 20);
+                }
+
+                // Inimigos
+                for (let en of enemies) {
+                    en.x += en.vx;
+                    if (en.x < 32 || en.x > 350) en.vx *= -1;
+
+                    if (player.x < en.x + en.w && player.x + player.w > en.x &&
+                        player.y < en.y + en.h && player.y + player.h > en.y) {
+                        // Reset player position on hit
+                        player.x = 32;
+                        player.y = 200;
+                        redFlashAlpha = 0.6;
+                    }
                 }
             }
 
             function draw() {
-                ctx.save();
-                
-                if(shakeTime > 0) {
-                    let rx = (Math.random() - 0.5) * shakeIntensity;
-                    let ry = (Math.random() - 0.5) * shakeIntensity;
-                    ctx.translate(rx, ry);
-                    shakeTime--;
-                }
-
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                for(let p of platformData) {
-                    if (!p.hidden) drawPlatform(p.x, p.y, p.w);
-                }
-                
-                for(let l of ladders) drawLadder(l.x, l.y, l.h);
-                
-                for(let e of elevators) {
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
+
+                // Desenhar Escadas
+                ctx.fillStyle = C_LADDER;
+                for (let l of ladders) {
+                    ctx.fillRect(l.x, l.y, l.w, l.h);
                 }
 
-                let seedAlpha = (Math.sin(Date.now() * 0.01) + 1) / 2;
-                for(let s of seeds) {
-                    if(!s.collected) {
-                        ctx.fillStyle = seedAlpha > 0.3 ? C_MAGENTA : C_WHITE;
+                // Desenhar Pisos
+                ctx.fillStyle = C_FLOOR;
+                for (let f of floors) {
+                    ctx.fillRect(f.x, f.y, f.w, f.h);
+                }
+
+                // Desenhar Ovos
+                ctx.fillStyle = C_EGG;
+                for (let egg of eggs) {
+                    if (!egg.collected) {
                         ctx.beginPath();
-                        ctx.moveTo(s.x + Math.round(6*gfxScale), s.baseY); 
-                        ctx.lineTo(s.x + Math.round(12*gfxScale), s.baseY + s.h); 
-                        ctx.lineTo(s.x, s.baseY + s.h); 
+                        ctx.arc(egg.x, egg.y, 4, 0, Math.PI * 2);
                         ctx.fill();
                     }
                 }
 
-                for(let egg of eggs) {
-                    if(!egg.collected) {
-                        let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
-                        let renderY = egg.baseY + bobOffset;
-                        ctx.fillStyle = C_WHITE; 
-                        ctx.beginPath();
-                        ctx.ellipse(egg.x + Math.round(7*gfxScale), renderY + Math.round(6*gfxScale), Math.round(7*gfxScale), Math.round(5*gfxScale), 0, 0, Math.PI*2); 
-                        ctx.fill();
-                    }
+                // Desenhar Inimigos
+                ctx.fillStyle = C_ENEMY;
+                for (let en of enemies) {
+                    ctx.fillRect(en.x, en.y, en.w, en.h);
                 }
 
-                for(let o of ostriches) drawOstrich(o);
-                if(!isGameOver && !isVictory) drawPlayer();
-
-                for(let i = particles.length - 1; i >= 0; i--) {
-                    let p = particles[i];
-                    p.x += p.vx; p.y += p.vy; p.life--;
-                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, Math.max(2, Math.round(3*gfxScale)), Math.max(2, Math.round(3*gfxScale)));
-                    if(p.life <= 0) particles.splice(i, 1);
-                }
-
-                ctx.font = `${Math.max(9, Math.round(10*gfxScale))}px "Courier New", monospace`;
-                for(let i = floatingTexts.length - 1; i >= 0; i--) {
-                    let ft = floatingTexts[i];
-                    ft.y -= 0.8; ft.life--;
-                    ctx.fillStyle = C_YELLOW; ctx.fillText(ft.text, ft.x, ft.y);
-                    if(ft.life <= 0) floatingTexts.splice(i, 1);
-                }
-
-                drawUI();
-
-                ctx.fillStyle = '#999999';
-                ctx.font = `${isMobile ? '12px' : '11px'} "Courier New", monospace`;
-                ctx.textAlign = 'center';
-                ctx.fillText('Setas (Mover / Escadas) • Barra de Espaço (Salto)', canvas.width / 2, canvas.height - 15);
-                ctx.textAlign = 'left';
+                // Desenhar Jogador
+                ctx.fillStyle = C_PLAYER;
+                ctx.fillRect(player.x, player.y, player.w, player.h);
 
                 if(redFlashAlpha > 0) {
                     ctx.fillStyle = `rgba(255, 0, 0, ${redFlashAlpha})`;
@@ -1175,12 +805,11 @@
                         skipGame();
                     }
                 }
-
-                ctx.restore();
             }
 
             function loop() {
-                update(); draw();
+                update(); 
+                draw();
                 if(document.getElementById('game-overlay')) {
                     animationFrameId = requestAnimationFrame(loop);
                 }
