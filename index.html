@@ -276,7 +276,7 @@
                 </button>
                 <button onclick="triggerChat()" class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
                     <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
-                        Olá <span>👋</span> Vamos conversar?
+                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
                     </span>
                     <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
                         Clica em mim para começar.
@@ -604,7 +604,6 @@
             let victoryTimer = 0;
             let redFlashAlpha = 0;
 
-            const activeTouches = {};
             const ring = document.getElementById('control-ring');
             const mobileControls = document.getElementById('mobile-controls');
 
@@ -688,13 +687,12 @@
                     else player.vy = 0;
                     player.grounded = false;
                 } else {
-                    player.vy += 0.25; // gravidade
+                    player.vy += 0.25;
                 }
 
                 player.x += player.vx;
                 player.y += player.vy;
 
-                // Colisão com plataformas
                 player.grounded = false;
                 if (!player.onLadder) {
                     for (let f of floors) {
@@ -712,11 +710,9 @@
                     player.grounded = false;
                 }
 
-                // Limites de ecrã
                 if (player.x < 0) player.x = 0;
                 if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                // Recolha de Ovos
                 for (let egg of eggs) {
                     if (!egg.collected) {
                         if (player.x < egg.x + 8 && player.x + player.w > egg.x - 8 &&
@@ -726,19 +722,16 @@
                     }
                 }
 
-                // Verificar Vitória
                 if (eggs.every(e => e.collected)) {
                     isVictory = true;
                 }
 
-                // Inimigos
                 for (let en of enemies) {
                     en.x += en.vx;
                     if (en.x < 32 || en.x > 350) en.vx *= -1;
 
                     if (player.x < en.x + en.w && player.x + player.w > en.x &&
                         player.y < en.y + en.h && player.y + player.h > en.y) {
-                        // Reset player position on hit
                         player.x = 32;
                         player.y = 200;
                         redFlashAlpha = 0.6;
@@ -749,19 +742,16 @@
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Desenhar Escadas
                 ctx.fillStyle = C_LADDER;
                 for (let l of ladders) {
                     ctx.fillRect(l.x, l.y, l.w, l.h);
                 }
 
-                // Desenhar Pisos
                 ctx.fillStyle = C_FLOOR;
                 for (let f of floors) {
                     ctx.fillRect(f.x, f.y, f.w, f.h);
                 }
 
-                // Desenhar Ovos
                 ctx.fillStyle = C_EGG;
                 for (let egg of eggs) {
                     if (!egg.collected) {
@@ -771,13 +761,11 @@
                     }
                 }
 
-                // Desenhar Inimigos
                 ctx.fillStyle = C_ENEMY;
                 for (let en of enemies) {
                     ctx.fillRect(en.x, en.y, en.w, en.h);
                 }
 
-                // Desenhar Jogador
                 ctx.fillStyle = C_PLAYER;
                 ctx.fillRect(player.x, player.y, player.w, player.h);
 
