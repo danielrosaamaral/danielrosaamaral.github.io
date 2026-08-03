@@ -206,7 +206,7 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
+    <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100svh] w-screen">
         
         <div class="w-full flex justify-end items-center z-50 px-4 py-2 shrink-0">
             <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-neutral-500 cursor-pointer">
@@ -254,15 +254,19 @@
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
-            <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
-                <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-neutral-800 bg-neutral-950/90 flex items-center justify-center backdrop-blur-md">
-                    <button id="btn-jump" class="touch-btn absolute w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-transform active:scale-95">
+            <div id="mobile-controls" class="w-full md:hidden flex items-center justify-around pb-6 px-4 select-none touch-none shrink-0">
+                <div class="grid grid-cols-3 gap-2 w-40 h-28">
+                    <div></div>
+                    <button id="touch-up" class="touch-btn bg-neutral-800/90 active:bg-blue-600 border border-neutral-700 text-white rounded-lg flex items-center justify-center text-lg font-mono">▲</button>
+                    <div></div>
+                    <button id="touch-left" class="touch-btn bg-neutral-800/90 active:bg-blue-600 border border-neutral-700 text-white rounded-lg flex items-center justify-center text-lg font-mono">◄</button>
+                    <button id="touch-down" class="touch-btn bg-neutral-800/90 active:bg-blue-600 border border-neutral-700 text-white rounded-lg flex items-center justify-center text-lg font-mono">▼</button>
+                    <button id="touch-right" class="touch-btn bg-neutral-800/90 active:bg-blue-600 border border-neutral-700 text-white rounded-lg flex items-center justify-center text-lg font-mono">►</button>
+                </div>
+                <div>
+                    <button id="touch-jump" class="touch-btn w-24 h-24 bg-blue-700/80 active:bg-blue-500 border border-blue-500 text-white font-mono font-bold text-sm tracking-wider rounded-full shadow-lg flex items-center justify-center">
                         JUMP
                     </button>
-                    <span id="arrow-up" class="absolute top-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▲</span>
-                    <span id="arrow-down" class="absolute bottom-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">▼</span>
-                    <span id="arrow-left" class="absolute left-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">◄</span>
-                    <span id="arrow-right" class="absolute right-2 text-neutral-500 text-xs font-mono pointer-events-none transition-all duration-100">►</span>
                 </div>
             </div>
         </div>
@@ -542,7 +546,6 @@
             canvas.width = 384;
             canvas.height = 256;
 
-            const C_BG = '#0d0d0d';
             const C_FLOOR = '#ffffff';
             const C_LADDER = '#3b82f6';
             const C_EGG = '#eab308';
@@ -562,7 +565,7 @@
                 vx: 0,
                 vy: 0,
                 speed: 1.5,
-                jumpPower: -5.2,
+                jumpPower: -5.0,
                 grounded: false,
                 onLadder: false,
                 dir: 1
@@ -604,66 +607,24 @@
             let victoryTimer = 0;
             let redFlashAlpha = 0;
 
-            const ring = document.getElementById('control-ring');
-            const mobileControls = document.getElementById('mobile-controls');
+            // Configuração dos botões táteis discretos (D-Pad)
+            const bindTouchButton = (id, code) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[code] = true; }, {passive: false});
+                el.addEventListener('touchend', (e) => { e.preventDefault(); keys[code] = false; }, {passive: false});
+                el.addEventListener('touchcancel', (e) => { e.preventDefault(); keys[code] = false; }, {passive: false});
+                
+                el.addEventListener('mousedown', (e) => { e.preventDefault(); keys[code] = true; });
+                el.addEventListener('mouseup', (e) => { e.preventDefault(); keys[code] = false; });
+                el.addEventListener('mouseleave', (e) => { e.preventDefault(); keys[code] = false; });
+            };
 
-            if(mobileControls) {
-                mobileControls.addEventListener('touchstart', handleTouch, {passive: false});
-                mobileControls.addEventListener('touchmove', handleTouch, {passive: false});
-                mobileControls.addEventListener('touchend', handleTouch, {passive: false});
-                mobileControls.addEventListener('touchcancel', handleTouch, {passive: false});
-            }
-
-            function handleTouch(e) {
-                e.preventDefault();
-                keys['ArrowUp'] = false;
-                keys['ArrowDown'] = false;
-                keys['ArrowLeft'] = false;
-                keys['ArrowRight'] = false;
-                keys['Space'] = false;
-
-                const rect = ring.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-
-                for (let i = 0; i < e.touches.length; i++) {
-                    const t = e.touches[i];
-                    const jumpBtn = document.getElementById('btn-jump');
-                    const jumpRect = jumpBtn.getBoundingClientRect();
-
-                    if (t.clientX >= jumpRect.left && t.clientX <= jumpRect.right &&
-                        t.clientY >= jumpRect.top && t.clientY <= jumpRect.bottom) {
-                        keys['Space'] = true;
-                        continue;
-                    }
-
-                    const dx = t.clientX - centerX;
-                    const dy = t.clientY - centerY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist > 15 && dist < 120) {
-                        if (Math.abs(dx) > Math.abs(dy)) {
-                            if (dx > 0) keys['ArrowRight'] = true;
-                            else keys['ArrowLeft'] = true;
-                        } else {
-                            if (dy > 0) keys['ArrowDown'] = true;
-                            else keys['ArrowUp'] = true;
-                        }
-                    }
-                }
-                updateArrowsUI();
-            }
-
-            function updateArrowsUI() {
-                const up = document.getElementById('arrow-up');
-                const down = document.getElementById('arrow-down');
-                const left = document.getElementById('arrow-left');
-                const right = document.getElementById('arrow-right');
-                if(up) up.style.color = keys['ArrowUp'] ? '#3b82f6' : '#737373';
-                if(down) down.style.color = keys['ArrowDown'] ? '#3b82f6' : '#737373';
-                if(left) left.style.color = keys['ArrowLeft'] ? '#3b82f6' : '#737373';
-                if(right) right.style.color = keys['ArrowRight'] ? '#3b82f6' : '#737373';
-            }
+            bindTouchButton('touch-up', 'ArrowUp');
+            bindTouchButton('touch-down', 'ArrowDown');
+            bindTouchButton('touch-left', 'ArrowLeft');
+            bindTouchButton('touch-right', 'ArrowRight');
+            bindTouchButton('touch-jump', 'Space');
 
             function update() {
                 if(isVictory) return;
@@ -675,7 +636,7 @@
                 player.onLadder = false;
                 for (let l of ladders) {
                     if (player.x + player.w > l.x && player.x < l.x + l.w &&
-                        player.y + player.h >= l.y && player.y <= l.y + l.h) {
+                        player.y + player.h >= l.y && player.y <= l.y + l.h + l.w) {
                         player.onLadder = true;
                         break;
                     }
@@ -687,20 +648,22 @@
                     else player.vy = 0;
                     player.grounded = false;
                 } else {
-                    player.vy += 0.25;
+                    player.vy += 0.22; // gravidade ajustada
                 }
 
                 player.x += player.vx;
                 player.y += player.vy;
 
+                // Colisão de solo corrigida para evitar clipping por velocidade
                 player.grounded = false;
                 if (!player.onLadder) {
                     for (let f of floors) {
-                        if (player.x + player.w > f.x && player.x < f.x + f.w &&
-                            player.y + player.h >= f.y && player.y + player.h <= f.y + 10 && player.vy >= 0) {
-                            player.y = f.y - player.h;
-                            player.vy = 0;
-                            player.grounded = true;
+                        if (player.x + player.w > f.x && player.x < f.x + f.w) {
+                            if (player.vy >= 0 && player.y + player.h >= f.y && player.y + player.h <= f.y + 12) {
+                                player.y = f.y - player.h;
+                                player.vy = 0;
+                                player.grounded = true;
+                            }
                         }
                     }
                 }
