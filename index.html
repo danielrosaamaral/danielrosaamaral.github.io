@@ -8,17 +8,14 @@
     <meta name="author" content="Daniel da Rosa Amaral">
     <meta name="keywords" content="Designer Gráfico, Director de Arte, Branding, Identidade Visual, Design Editorial, Publicidade, SEO, AEO, Google Ads, Web Design, Rebranding, Comunicação Corporativa, Oeiras">
 
-    <!-- Favicon Dinâmico Base -->
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Daniel da Rosa Amaral - Designer Gráfico & Director de Arte">
     <meta property="og:description" content="Há mais de 25 anos a ajudar marcas a comunicar melhor, reforçar a sua identidade e aumentar a sua presença digital.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://danielrosaamaral.github.io/">
 
-    <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -50,7 +47,6 @@
     }
     </script>
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -59,10 +55,8 @@
       gtag('config', 'G-4X7D309RVX');
     </script>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Chatbase Config & Script -->
     <script>
         window.embeddedChatbotConfig = {
             chatbotId: "4Xp1KrkvShDv2af8eykrm",
@@ -212,7 +206,7 @@
 </head>
 <body class="bg-[#0d0d0d] text-[#e5e5e5] font-sans antialiased selection:bg-[rgb(0,17,255)] selection:text-white">
 
-    <!-- OVERLAY DO JOGO CHUCKIE EGG (COM FUNDO SÓLIDO) -->
+    <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
         <!-- Cabeçalho Topo -->
@@ -231,7 +225,7 @@
             </div>
             <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Sessão Interrompida</h2>
             <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
-                O acesso foi iniciado num novo dispositivo ou separador. Por razões de integridade, apenas uma instância simultânea é permitida.
+                O acesso foi iniciado noutro dispositivo ou separador. Apenas uma instância simultânea é permitida.
             </p>
             <div class="pt-4 flex justify-center">
                 <button onclick="skipGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
@@ -253,7 +247,7 @@
                 Please note: if you don't recognize this game, it's probably because you are younger than me.
             </p>
             <p class="text-xs text-neutral-400 font-mono">
-                [ Desafio: Apanha todos os ovos no nível clássico para desbloquear o portefólio ]
+                [ Desafio: Apanha todos os ovos para desbloquear o portefólio ]
             </p>
             <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
                 <button onclick="startChuckieGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
@@ -264,13 +258,10 @@
 
         <!-- Ecrã Principal de Jogo -->
         <div id="game-screen" class="hidden flex-col w-full h-full justify-between overflow-hidden">
-            
-            <!-- Canvas do Jogo Dinâmico -->
             <div class="w-full flex-1 flex items-center justify-center p-2 overflow-hidden shrink-0">
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
-            <!-- Anel Tátil Neutro para Mobile -->
             <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
                 <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-neutral-800 bg-neutral-950/90 flex items-center justify-center backdrop-blur-md">
                     <button id="btn-jump" class="touch-btn absolute w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-transform active:scale-95">
@@ -288,35 +279,20 @@
     <!-- LANDING PAGE PRINCIPAL -->
     <main class="min-h-screen flex items-center justify-center p-6 md:p-12 my-4 md:my-8">
         <div class="max-w-2xl w-full">
-            
-            <!-- Avatar Video + Callout -->
             <div class="flex flex-col items-start mb-12 md:mb-14 animate-reveal">
-                <button 
-                    onclick="triggerChat()" 
-                    class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" 
-                    aria-label="Abrir conversa">
-                    <video 
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" 
-                        autoplay loop muted playsinline 
-                        class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110">
-                    </video>
+                <button onclick="triggerChat()" class="rounded-full overflow-hidden w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transition-transform duration-500 transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] cursor-pointer shadow-2xl mb-4 group relative" aria-label="Abrir conversa">
+                    <video src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grok-video-dd1c2fb1-c5ac-406f-bdf3-f63b9335b316%20%2810%29-PSXStSW2ieK0fUPJ616nARIwrKQNWS.mp4" autoplay loop muted playsinline class="object-cover w-full h-full rotate-180 pointer-events-none transition-filter duration-300 group-hover:brightness-110"></video>
                 </button>
-
-                <button 
-                    onclick="triggerChat()" 
-                    class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
-                    
+                <button onclick="triggerChat()" class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
                     <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
                         Olá <span>👋</span> Vamos conversar?
                     </span>
-                    
                     <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
                         Clica em mim para começar.
                     </span>
                 </button>
             </div>
 
-            <!-- Título & Subtítulo Principal -->
             <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
                 Daniel da Rosa Amaral
             </h1>
@@ -326,7 +302,6 @@
                 </p>
             </div>
 
-            <!-- Conteúdo Introdutório -->
             <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
                 <p>
                     Desenvolvo projectos de branding, identidade visual, design gráfico, design editorial, publicidade, comunicação corporativa, SEO, AEO e Google Ads para empresas, instituições e organizações.
@@ -336,82 +311,43 @@
                 </p>
             </div>
 
-            <!-- Especialidades -->
             <div class="mt-16 pt-12 border-t border-neutral-800/60 space-y-8 animate-reveal delay-4">
                 <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
                     Especialidades
                 </h2>
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-10 text-base text-neutral-400">
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Design Gráfico
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direcção de arte.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">Design Gráfico</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">Comunicação corporativa, publicidade, campanhas, artes finais, comunicação impressa e digital, materiais institucionais, infografia, apresentações e direcção de arte.</p>
                     </div>
-
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Branding & Identidade Visual
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitectura de marca e comunicação visual.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">Branding & Identidade Visual</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">Branding, identidade visual, logótipos, rebranding, sistemas de identidade, normas gráficas, arquitectura de marca e comunicação visual.</p>
                     </div>
-
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Design Editorial
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">Design Editorial</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">Revistas, livros, relatórios, newsletters, brochuras, catálogos, propostas comerciais, documentação institucional e publicações empresariais.</p>
                     </div>
-
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Publicidade
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">Publicidade</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">Campanhas ATL, campanhas BTL, packaging, PLV, expositores, sinalética, stands, eventos, comunicação de produto e marketing visual.</p>
                     </div>
-
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            SEO, AEO & Google Ads
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            SEO técnico, SEO on-page, arquitectura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">SEO, AEO & Google Ads</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">SEO técnico, SEO on-page, arquitectura de informação, estratégia de conteúdos, Answer Engine Optimization (AEO), Google Ads, pesquisa de palavras-chave e posicionamento orgânico.</p>
                     </div>
-
                     <div class="group cursor-default">
-                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">
-                            Web Design
-                        </h3>
-                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">
-                            Arquitectura de informação, wireframes, UX, UI, layouts para websites, landing pages e direcção de arte para projectos digitais.
-                        </p>
+                        <h3 class="text-white text-lg font-medium mb-2 group-hover:text-[rgb(0,17,255)] transition-colors duration-300">Web Design</h3>
+                        <p class="font-extralight text-neutral-400 leading-relaxed text-sm md:text-base">Arquitectura de informação, wireframes, UX, UI, layouts para websites, landing pages e direcção de arte para projectos digitais.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Marcas & Instituições -->
             <div id="brands-section" class="mt-16 pt-12 border-t border-neutral-800/60 space-y-6 animate-reveal delay-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">
-                        Marcas & Instituições
-                    </h2>
+                    <h2 class="text-[rgb(0,17,255)] font-medium text-xs md:text-sm tracking-[0.2em] uppercase">Marcas & Instituições</h2>
                 </div>
-                
-                <p class="text-sm text-neutral-400 font-extralight mb-3">
-                    Projectos e colaborações desenvolvidos ao longo do percurso profissional:
-                </p>
-
-                <!-- Filtros -->
+                <p class="text-sm text-neutral-400 font-extralight mb-3">Projectos e colaborações desenvolvidos ao longo do percurso profissional:</p>
                 <div class="flex flex-wrap gap-2 mb-6 text-xs font-light">
                     <button onclick="filterBrands('all', this)" class="filter-btn active border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Todos</button>
                     <button onclick="filterBrands('corp', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Corporativo & Institucional</button>
@@ -419,7 +355,6 @@
                     <button onclick="filterBrands('mobility', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Transportes & Mobilidade</button>
                     <button onclick="filterBrands('services', this)" class="filter-btn border border-neutral-800 px-3.5 py-1.5 rounded-full text-neutral-400 hover:text-white hover:border-neutral-600 transition-all cursor-pointer">Consumo & Serviços</button>
                 </div>
-                
                 <div id="brands-container" class="flex flex-wrap gap-x-3.5 gap-y-3 text-sm md:text-base text-neutral-400 font-extralight leading-relaxed">
                     <span class="brand-item mobility hover:text-white transition-colors cursor-default" data-cat="mobility">ALD Automotive</span> •
                     <span class="brand-item corp hover:text-white transition-colors cursor-default" data-cat="corp">APCE</span> •
@@ -457,52 +392,33 @@
                 </div>
             </div>
 
-            <!-- CTA Portefólio -->
             <div class="mt-16 animate-reveal delay-6">
-                <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}"
-                   class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]">
+                <a href="https://www.dropbox.com/scl/fi/vr01ys1mjw7ufqfd6ae7d/Portfolio-Daniel-Rosa-Amaral-2025.pdf?rlkey=lawqfoc38vkmxyfxy2bx8ueao&dl=0" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function'){gtag('event','download_pdf',{'event_category':'Conversion'});}" class="btn-electric-pulse inline-block border-2 px-8 py-3.5 text-base md:text-lg rounded font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]">
                     Ver Portefólio Completo
                 </a>
             </div>
 
-            <!-- Contactos -->
             <div class="mt-10 flex flex-col gap-3.5 font-light text-base md:text-lg animate-reveal delay-7">
                 <div class="flex items-center gap-3">
-                    <a href="mailto:daniel.rosa.amaral@gmail.com" 
-                       onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')"
-                       class="interactive-link text-neutral-300 transition-colors w-max">
+                    <a href="mailto:daniel.rosa.amaral@gmail.com" onclick="copyToClipboard('daniel.rosa.amaral@gmail.com', this, 'email')" class="interactive-link text-neutral-300 transition-colors w-max">
                         daniel.rosa.amaral@gmail.com
                     </a>
                     <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
                 </div>
-
                 <div class="flex items-center gap-3">
-                    <a href="tel:+351919958423" 
-                       onclick="copyToClipboard('+351919958423', this, 'phone')"
-                       class="interactive-link text-neutral-300 transition-colors w-max">
+                    <a href="tel:+351919958423" onclick="copyToClipboard('+351919958423', this, 'phone')" class="interactive-link text-neutral-300 transition-colors w-max">
                         +351 919 958 423
                     </a>
                     <span class="copy-feedback text-xs text-[rgb(0,17,255)] opacity-0 transition-opacity duration-300 font-mono"></span>
                 </div>
-
-                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'linkedin'});}"
-                   class="interactive-link text-neutral-300 transition-colors w-max">
+                <a href="https://www.linkedin.com/in/daniel-da-rosa-amaral/" target="_blank" rel="noopener noreferrer" onclick="if(typeof gtag==='function'){gtag('event','click_contact',{'event_category':'Contact','event_label':'linkedin'});}" class="interactive-link text-neutral-300 transition-colors w-max">
                     linkedin.com/in/daniel-da-rosa-amaral
                 </a>
             </div>
-
         </div>
     </main>
 
-    <!-- SCRIPTS DE INTERATIVIDADE & MOTOR DE JOGO CHUCKIE EGG -->
     <script>
-        // --- 1. Lógica de Gestão de Sessão (LIFO) ---
         const SESSION_ID = Math.random().toString(36).substring(2, 15);
         const SESSION_KEY = 'da_active_game_session';
         
@@ -514,14 +430,11 @@
 
         function forceDisconnect() {
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
-            
             const gameScreen = document.getElementById('game-screen');
             const disclaimerScreen = document.getElementById('disclaimer-screen');
             const conflictScreen = document.getElementById('session-conflict-screen');
-            
             if(gameScreen) gameScreen.classList.add('hidden');
             if(disclaimerScreen) disclaimerScreen.classList.add('hidden');
-            
             if(conflictScreen) {
                 conflictScreen.classList.remove('hidden');
                 conflictScreen.classList.add('flex');
@@ -533,14 +446,12 @@
             canvas.width = 32;
             canvas.height = 32;
             const ctx = canvas.getContext('2d');
-            
             let favicon = document.querySelector("link[rel*='icon']");
             if (!favicon) {
                 favicon = document.createElement('link');
                 favicon.rel = 'shortcut icon';
                 document.head.appendChild(favicon);
             }
-
             let angle = 0;
             function renderFrame() {
                 ctx.clearRect(0, 0, 32, 32);
@@ -549,7 +460,6 @@
                 ctx.arc(16, 16, Math.max(1, radius), 0, Math.PI * 2);
                 ctx.fillStyle = 'rgb(0, 17, 255)';
                 ctx.fill();
-
                 favicon.href = canvas.toDataURL('image/png');
                 angle += 0.12;
             }
@@ -625,7 +535,6 @@
 
         function startChuckieGame() {
             localStorage.setItem(SESSION_KEY, SESSION_ID);
-            
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             document.getElementById('game-screen').classList.add('flex');
@@ -633,7 +542,6 @@
             initChuckieEgg();
         }
 
-        // --- Gestão do Anel Circular Tátil (Neutro) ---
         function initCircularControls() {
             const ring = document.getElementById('control-ring');
             const jumpBtn = document.getElementById('btn-jump');
@@ -658,7 +566,6 @@
                 const rect = ring.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
-
                 const dx = clientX - centerX;
                 const dy = clientY - centerY;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -671,7 +578,6 @@
 
                 if (distance > innerRadius) {
                     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-                    
                     if (angle >= -45 && angle < 45) {
                         keys['ArrowRight'] = true;
                     } else if (angle >= 45 && angle < 135) {
@@ -719,10 +625,11 @@
             const canvas = document.getElementById('chuckieCanvas');
             const ctx = canvas.getContext('2d');
             
-            // Avaliação do contexto e definição de área lógica
             const isMobile = window.innerWidth < 768;
             canvas.width = isMobile ? 480 : 640;
             canvas.height = isMobile ? 800 : 510;
+
+            const gfxScale = isMobile ? 1.45 : 1.0;
 
             const GRAVITY = 0.45;
             const JUMP_FORCE = -8.5;
@@ -751,7 +658,9 @@
             let floatingTexts = [];
 
             let player = {
-                x: 0, y: 0, w: 18, h: 24,
+                x: 0, y: 0, 
+                w: Math.round(18 * gfxScale), 
+                h: Math.round(24 * gfxScale),
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
                 facingRight: true, tiltAngle: 0
@@ -760,38 +669,57 @@
             let platformData, ladders, elevators, eggs, seeds, ostriches;
 
             if (isMobile) {
-                // ==========================================
-                // VERSÃO MOBILE (Eixo Y expandido para 800px)
-                // ==========================================
                 player.x = 240; player.y = 730;
 
                 platformData = [
-                    {x: 0, y: 760, w: 480}, // Base do solo vertical
-                    // Plataformas de exemplo estrutural (Deverá desenhar o seu labirinto aqui)
-                    {x: 60, y: 600, w: 120},
-                    {x: 200, y: 450, w: 100},
-                    {x: 30, y: 160, w: 60, hidden: true} // Base da gaiola mantém-se aqui
+                    {x: 0, y: 760, w: 480},
+                    {x: 0, y: 620, w: 140}, {x: 180, y: 640, w: 110}, {x: 140, y: 530, w: 100},
+                    {x: 60, y: 440, w: 130}, {x: 230, y: 400, w: 120}, {x: 360, y: 370, w: 90},
+                    {x: 330, y: 480, w: 100}, {x: 400, y: 280, w: 90}, {x: 220, y: 240, w: 110},
+                    {x: 60, y: 280, w: 110}, {x: 30, y: 160, w: 60, hidden: true}
                 ];
 
                 ladders = [
-                    {x: 100, y: 600, h: 160},
-                    {x: 250, y: 450, h: 310}
+                    {x: 100, y: 530, h: 90}, {x: 60, y: 440, h: 84}, {x: 200, y: 440, h: 100},
+                    {x: 280, y: 320, h: 180}, {x: 340, y: 240, h: 140}, {x: 420, y: 280, h: 100},
+                    {x: 100, y: 280, h: 160}, {x: 240, y: 160, h: 80}
                 ];
 
-                elevators = [];
-                
-                eggs = [
-                    {x: 80, baseY: 600 - 12, w: 14, h: 12, collected: false},
-                    {x: 230, baseY: 450 - 12, w: 14, h: 12, collected: false}
+                elevators = [
+                    {x: 200, y: 300, w: 40, h: 10, vy: 1, minY: 200, maxY: 500},
+                    {x: 200, y: 450, w: 40, h: 10, vy: -1, minY: 200, maxY: 500}
                 ];
-                
-                seeds = [];
-                ostriches = [];
+
+                eggs = [
+                    {x: 100, baseY: 620 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 200, baseY: 640 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 80, baseY: 440 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 250, baseY: 400 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 380, baseY: 480 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 420, baseY: 370 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 430, baseY: 280 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 300, baseY: 240 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false},
+                    {x: 250, baseY: 240 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 90, baseY: 280 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
+                ];
+
+                seeds = [
+                    {x: 30, baseY: 620 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 150, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 240, baseY: 400 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 230, baseY: 240 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 410, baseY: 280 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 440, baseY: 370 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 370, baseY: 480 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
+                ];
+
+                ostriches = [
+                    {x: 20, y: 580, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 0, maxX: 120},
+                    {x: 260, y: 340, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 230, maxX: 350},
+                    {x: 380, baseY: 480 - 24, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 330, maxX: 430}
+                ];
 
             } else {
-                // ==========================================
-                // VERSÃO DESKTOP (Clássica 640x510 corrigida)
-                // ==========================================
                 player.x = 300; player.y = 440;
 
                 platformData = [
@@ -801,7 +729,7 @@
                     {x: 460, y: 400, w: 120}, {x: 410, y: 336, w: 80}, {x: 520, y: 288, w: 100},
                     {x: 350, y: 272, w: 80}, {x: 340, y: 192, w: 100}, {x: 400, y: 144, w: 110},
                     {x: 520, y: 160, w: 100},
-                    {x: 30, y: 160, w: 60, hidden: true} // Colisor invisível para a base da gaiola
+                    {x: 30, y: 160, w: 60, hidden: true}
                 ];
 
                 ladders = [
@@ -866,19 +794,30 @@
             }
 
             function drawPlatform(x, y, w) {
+                let thickness = Math.round(16 * gfxScale);
                 ctx.fillStyle = C_GREEN;
-                ctx.fillRect(x, y, w, 16);
+                ctx.fillRect(x, y, w, thickness);
                 ctx.fillStyle = '#000000';
-                for(let i = 0; i < w; i += 12) {
-                    ctx.fillRect(x + i, y + 2, 6, 3);
-                    ctx.fillRect(x + i + 3, y + 9, 6, 3);
+                let blockW = Math.round(12 * gfxScale);
+                let blockH = Math.round(3 * gfxScale);
+                for(let i = 0; i < w; i += blockW) {
+                    ctx.fillRect(x + i, y + Math.round(2 * gfxScale), Math.round(6 * gfxScale), blockH);
+                    ctx.fillRect(x + i + Math.round(3 * gfxScale), y + Math.round(9 * gfxScale), Math.round(6 * gfxScale), blockH);
                 }
             }
 
             function drawLadder(x, y, h) {
+                let ladderWidth = Math.round(20 * gfxScale);
+                let railWidth = Math.max(2, Math.round(4 * gfxScale));
                 ctx.fillStyle = C_MAGENTA;
-                ctx.fillRect(x, y, 4, h); ctx.fillRect(x + 16, y, 4, h);
-                for(let i = y + 4; i < y + h; i += 8) { ctx.fillRect(x + 4, i, 12, 4); }
+                ctx.fillRect(x, y, railWidth, h); 
+                ctx.fillRect(x + ladderWidth - railWidth, y, railWidth, h);
+                
+                let stepHeight = Math.round(8 * gfxScale);
+                let stepBarH = Math.max(2, Math.round(4 * gfxScale));
+                for(let i = y + Math.round(4 * gfxScale); i < y + h; i += stepHeight) { 
+                    ctx.fillRect(x + railWidth, i, ladderWidth - (railWidth * 2), stepBarH); 
+                }
             }
 
             function drawPlayer() {
@@ -888,91 +827,102 @@
 
                 let px = -player.w/2;
                 let py = -player.h/2;
+                let s = gfxScale;
 
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(px - 1, py - 3, 16, 4);
-                ctx.fillRect(px + 2, py - 7, 10, 4);
+                ctx.fillRect(px - Math.round(1*s), py - Math.round(3*s), Math.round(16*s), Math.round(4*s));
+                ctx.fillRect(px + Math.round(2*s), py - Math.round(7*s), Math.round(10*s), Math.round(4*s));
 
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px + 3, py - 3, 8, 6);
+                ctx.fillRect(px + Math.round(3*s), py - Math.round(3*s), Math.round(8*s), Math.round(6*s));
                 ctx.fillStyle = '#000000';
-                if(player.facingRight) ctx.fillRect(px + 8, py - 1, 2, 2);
-                else ctx.fillRect(px + 3, py - 1, 2, 2);
+                if(player.facingRight) ctx.fillRect(px + Math.round(8*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
+                else ctx.fillRect(px + Math.round(3*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
 
                 ctx.fillStyle = C_RED;
-                ctx.fillRect(px + 1, py + 3, 12, 11);
+                ctx.fillRect(px + Math.round(1*s), py + Math.round(3*s), Math.round(12*s), Math.round(11*s));
 
                 ctx.fillStyle = C_BLUE;
-                ctx.fillRect(px + 2, py + 14, 4, 7);
-                ctx.fillRect(px + 8, py + 14, 4, 7);
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
+                ctx.fillRect(px + Math.round(8*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
 
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px, py + 21, 5, 3);
-                ctx.fillRect(px + 8, py + 21, 5, 3);
+                ctx.fillRect(px, py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(8*s), py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
 
                 ctx.restore();
             }
 
             function drawOstrich(o) {
                 ctx.save();
+                let s = gfxScale;
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x + 3, o.y + 6, 14, 12);
+                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(6*s), Math.round(14*s), Math.round(12*s));
                 ctx.fillStyle = C_WHITE;
-                ctx.fillRect(o.x + 5, o.y + 8, 8, 6);
+                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(8*s), Math.round(8*s), Math.round(6*s));
                 
                 ctx.fillStyle = C_CYAN;
                 if (o.vx > 0) {
-                    ctx.fillRect(o.x + 13, o.y - 2, 4, 10);
-                    ctx.fillRect(o.x + 13, o.y - 6, 8, 6);
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + 21, o.y - 4, 5, 3);
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + 17, o.y - 5, 2, 2);
+                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
+                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + Math.round(17*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 } else {
-                    ctx.fillRect(o.x, o.y - 2, 4, 10);
-                    ctx.fillRect(o.x - 4, o.y - 6, 8, 6);
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - 9, o.y - 4, 5, 3);
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - 2, o.y - 5, 2, 2);
+                    ctx.fillRect(o.x, o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
+                    ctx.fillRect(o.x - Math.round(4*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - Math.round(9*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - Math.round(2*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 }
                 
                 ctx.fillStyle = C_WHITE;
                 let legOffset = Math.sin(Date.now() * 0.02) * 3;
-                ctx.fillRect(o.x + 5, o.y + 18, 2, 6 + legOffset);
-                ctx.fillRect(o.x + 11, o.y + 18, 2, 6 - legOffset);
+                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) + legOffset);
+                ctx.fillRect(o.x + Math.round(11*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) - legOffset);
                 ctx.restore();
             }
 
             function drawUI() {
-                ctx.font = 'bold 15px "Courier New", monospace, sans-serif';
-                if(document.fonts) ctx.font = 'bold 15px "Press Start 2P", monospace';
+                let fontSize = isMobile ? '18px' : '15px';
+                ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
+                if(document.fonts) ctx.font = `bold ${fontSize} "Press Start 2P", monospace`;
                 
-                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, 35);
-                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), 105, 35);
+                let topOffset = isMobile ? 40 : 35;
+                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, topOffset);
+                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 115 : 105, topOffset);
                 
                 if (timer < 100) {
                     ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
                 } else {
                     ctx.fillStyle = C_RED;
                 }
-                ctx.fillText('TIME ' + Math.floor(timer), canvas.width - 170, 35);
+                ctx.fillText('TIME ' + Math.floor(timer), canvas.width - (isMobile ? 190 : 170), topOffset);
 
-                ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, 70);
-                ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', 160, 70);
+                let subOffset = isMobile ? 75 : 70;
+                ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, subOffset);
+                ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', isMobile ? 180 : 160, subOffset);
                 
-                // Renderização da Gaiola
+                let cageScale = isMobile ? 1.3 : 1.0;
+                let cageX = 60;
+                let cageY = isMobile ? 130 : 120;
+                
                 ctx.fillStyle = C_YELLOW;
-                ctx.strokeStyle = C_YELLOW; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.arc(60, 120, 30, Math.PI, 0); ctx.stroke();
-                for(let i = 35; i <= 85; i += 10) ctx.fillRect(i, 120, 2, 40);
-                ctx.fillRect(30, 160, 60, 4);
+                ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
+                ctx.beginPath(); ctx.arc(cageX, cageY, Math.round(30 * cageScale), Math.PI, 0); ctx.stroke();
+                for(let i = Math.round(35 * cageScale); i <= Math.round(85 * cageScale); i += Math.round(10 * cageScale)) {
+                    ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
+                }
+                ctx.fillRect(cageX - Math.round(30 * cageScale), cageY + Math.round(40 * cageScale), Math.round(60 * cageScale), Math.max(3, Math.round(4 * cageScale)));
 
-                // Micro-animação do pássaro na gaiola
                 let birdAnim = Math.sin(Date.now() * 0.005) > 0 ? 1 : 0;
+                let birdX = cageX - Math.round(12 * cageScale);
+                let birdY = cageY + Math.round(20 * cageScale) - birdAnim;
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(48, 140 - birdAnim, 14, 10);
-                ctx.fillRect(56, 132 - birdAnim, 8, 8);
+                ctx.fillRect(birdX, birdY, Math.round(14 * cageScale), Math.round(10 * cageScale));
+                ctx.fillRect(birdX + Math.round(8 * cageScale), birdY - Math.round(8 * cageScale), Math.round(8 * cageScale), Math.round(8 * cageScale));
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(64, 134 - birdAnim, 4, 3);
+                ctx.fillRect(birdX + Math.round(14 * cageScale), birdY - Math.round(6 * cageScale), Math.round(4 * cageScale), Math.round(3 * cageScale));
                 ctx.fillStyle = '#000000';
-                ctx.fillRect(60, 134 - birdAnim, 2, 2);
+                ctx.fillRect(birdX + Math.round(10 * cageScale), birdY - Math.round(6 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
             }
 
             function resetLevel() {
@@ -996,7 +946,7 @@
                 let activeLadder = null;
 
                 for(let l of ladders) {
-                    if(playerCenterX >= l.x && playerCenterX <= l.x + 20 &&
+                    if(playerCenterX >= l.x && playerCenterX <= l.x + Math.round(20 * gfxScale) &&
                        player.y + player.h >= l.y && player.y <= l.y + l.h) {
                         activeLadder = l;
                         break;
@@ -1009,11 +959,11 @@
                     if(keys['ArrowUp']) {
                         player.climbing = true;
                         player.vy = -CLIMB_SPEED;
-                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
+                        player.x += (activeLadder.x + Math.round(10 * gfxScale) - playerCenterX) * 0.3;
                     } else if(keys['ArrowDown']) {
                         player.climbing = true;
                         player.vy = CLIMB_SPEED;
-                        player.x += (activeLadder.x + 10 - playerCenterX) * 0.3;
+                        player.x += (activeLadder.x + Math.round(10 * gfxScale) - playerCenterX) * 0.3;
                     } else if(player.climbing) {
                         player.vy = 0;
                     }
@@ -1032,7 +982,6 @@
 
                 if(!player.climbing) {
                     player.vy += GRAVITY;
-                    
                     if(keys['Space'] && player.onGround) {
                         player.vy = JUMP_FORCE;
                         player.onGround = false;
@@ -1046,10 +995,11 @@
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
                 player.onGround = false;
+                let platformThickness = Math.round(16 * gfxScale);
                 if(!player.climbing && player.vy >= 0) {
                     for(let p of platformData) {
                         if(player.x + player.w > p.x && player.x < p.x + p.w &&
-                           player.y + player.h >= p.y && player.y + player.h <= p.y + 16) {
+                           player.y + player.h >= p.y && player.y + player.h <= p.y + platformThickness) {
                             player.y = p.y - player.h;
                             player.vy = 0; 
                             player.onGround = true;
@@ -1057,7 +1007,7 @@
                     }
                     for(let e of elevators) {
                         if(player.x + player.w > e.x && player.x < e.x + e.w &&
-                           player.y + player.h >= e.y && player.y + player.h <= e.y + 12) {
+                           player.y + player.h >= e.y && player.y + player.h <= e.y + e.h + 2) {
                             player.y = e.y - player.h;
                             player.vy = e.vy; 
                             player.onGround = true;
@@ -1138,9 +1088,9 @@
                     if(!s.collected) {
                         ctx.fillStyle = seedAlpha > 0.3 ? C_MAGENTA : C_WHITE;
                         ctx.beginPath();
-                        ctx.moveTo(s.x + 6, s.baseY); 
-                        ctx.lineTo(s.x + 12, s.baseY + 12); 
-                        ctx.lineTo(s.x, s.baseY + 12); 
+                        ctx.moveTo(s.x + Math.round(6*gfxScale), s.baseY); 
+                        ctx.lineTo(s.x + Math.round(12*gfxScale), s.baseY + s.h); 
+                        ctx.lineTo(s.x, s.baseY + s.h); 
                         ctx.fill();
                     }
                 }
@@ -1149,10 +1099,9 @@
                     if(!egg.collected) {
                         let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
                         let renderY = egg.baseY + bobOffset;
-
                         ctx.fillStyle = C_WHITE; 
                         ctx.beginPath();
-                        ctx.ellipse(egg.x + 7, renderY + 6, 7, 5, 0, 0, Math.PI*2); 
+                        ctx.ellipse(egg.x + Math.round(7*gfxScale), renderY + Math.round(6*gfxScale), Math.round(7*gfxScale), Math.round(5*gfxScale), 0, 0, Math.PI*2); 
                         ctx.fill();
                     }
                 }
@@ -1163,11 +1112,11 @@
                 for(let i = particles.length - 1; i >= 0; i--) {
                     let p = particles[i];
                     p.x += p.vx; p.y += p.vy; p.life--;
-                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 3, 3);
+                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, Math.max(2, Math.round(3*gfxScale)), Math.max(2, Math.round(3*gfxScale)));
                     if(p.life <= 0) particles.splice(i, 1);
                 }
 
-                ctx.font = '10px "Courier New", monospace';
+                ctx.font = `${Math.max(9, Math.round(10*gfxScale))}px "Courier New", monospace`;
                 for(let i = floatingTexts.length - 1; i >= 0; i--) {
                     let ft = floatingTexts[i];
                     ft.y -= 0.8; ft.life--;
@@ -1177,9 +1126,8 @@
 
                 drawUI();
 
-                // Instruções de rodapé relativas à altura dinâmica
                 ctx.fillStyle = '#999999';
-                ctx.font = '11px "Courier New", monospace';
+                ctx.font = `${isMobile ? '12px' : '11px'} "Courier New", monospace`;
                 ctx.textAlign = 'center';
                 ctx.fillText('Setas (Mover / Escadas) • Barra de Espaço (Salto)', canvas.width / 2, canvas.height - 15);
                 ctx.textAlign = 'left';
@@ -1195,7 +1143,6 @@
                     const retroColors = [C_RED, C_GREEN, C_YELLOW, C_CYAN, C_MAGENTA];
                     ctx.fillStyle = retroColors[victoryTimer % retroColors.length];
                     
-                    // Quadro de vitória centralizado
                     let vx = (canvas.width / 2) - 160;
                     let vy = (canvas.height / 2) - 50;
                     ctx.fillRect(vx, vy, 320, 100);
