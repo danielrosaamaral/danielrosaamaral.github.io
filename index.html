@@ -1314,4 +1314,270 @@
                         }
                     }
                 } else {
-                    play
+                    player.climbing = false;
+                }
+
+                if(keys['ArrowLeft']) {
+                    player.vx = -SPEED;
+                } else if(keys['ArrowRight']) {
+                    player.vx = SPEED;
+                } else {
+                    player.vx *= FRICTION;
+                    if(Math.abs(player.vx) < 0.05) player.vx = 0;
+                }
+
+                if (player.onGround) {
+                    coyoteCounter = 8;
+                } else if (coyoteCounter > 0) {
+                    coyoteCounter--;
+                }
+
+                if (keys['Space']) {
+                    jumpBufferCounter = 8;
+                } else if (jumpBufferCounter > 0) {
+                    jumpBufferCounter--;
+                }
+
+                if(!player.climbing) {
+                    player.vy += GRAVITY;
+                    if(jumpBufferCounter > 0 && coyoteCounter > 0) {
+                        player.vy = JUMP_FORCE;
+                        player.onGround = false;
+                        coyoteCounter = 0;
+                        jumpBufferCounter = 0;
+                        playJumpSound();
+                    }
+                    if (!keys['Space'] && player.vy < -3) {
+                        player.vy = -3;
+                    }
+                }
+
+                player.x += player.vx;
+                player.y += player.vy;
+
+                if(player.x < 0) player.x = 0;
+                if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+                // ALINHAMENTO PRECISO DOS PÉS DO HARRY SOBRE OS TIJOLOS DA PLATAFORMA BASE
+                let floorLimitY = isMobile ? 740 - player.h : 464 - player.h;
+                if (player.y > floorLimitY) {
+                    player.y = floorLimitY;
+                    player.vy = 0;
+                    player.onGround = true;
+                    player.climbing = false;
+                }
+
+                player.onGround = false;
+                let platformThickness = Math.round(16 * gfxScale);
+                if(!player.climbing && player.vy >= 0) {
+                    for(let p of platformData) {
+                        if(player.x + player.w > p.x && player.x < p.x + p.w &&
+                           player.y + player.h >= p.y && player.y + player.h <= p.y + platformThickness) {
+                            player.y = p.y - player.h;
+                            player.vy = 0; 
+                            player.onGround = true;
+                        }
+                    }
+                    for(let e of elevators) {
+                        if(player.x + player.w > e.x && player.x < e.x + e.w &&
+                           player.y + player.h >= e.y && player.y + player.h <= e.y + e.h + 2) {
+                            player.y = e.y - player.h;
+                            player.vy = e.vy; 
+                            player.onGround = true;
+                        }
+                    }
+                }
+
+                for(let e of elevators) {
+                    e.y += e.vy;
+                    if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
+                }
+
+                // INTELIGÊNCIA ARTIFICIAL DAS AVESTRUZES: MOVIMENTO NAS PLATAFORMAS E SUBIDA/DESCIDA DE ESCADAS
+                for(let o of ostriches) {
+                    if (o.state === 'climbing') {
+                        o.y += o.vy;
+                        if (o.y <= o.targetLadderY1 || o.y + o.h >= o.targetLadderY2) {
+                            o.state = 'walking';
+                            o.vy = 0;
+                            o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
+                        }
+                    } else {
+                        o.x += o.vx;
+                        if(o.x <= o.minX || o.x + o.w >= o.maxX) o.vx *= -1;
+
+                        let oCenterX = o.x + o.w / 2;
+                        for(let l of ladders) {
+                            let lCenterX = l.x + Math.round(10 * gfxScale);
+                            if (Math.abs(oCenterX - lCenterX) < 6 * gfxScale && Math.random() < 0.012) {
+                                o.state = 'climbing';
+                                o.x = lCenterX - o.w / 2;
+                                o.vy = Math.random() > 0.5 ? 1.0 : -1.0;
+                                o.targetLadderY1 = l.y - o.h;
+                                o.targetLadderY2 = l.y + l.h;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(player.x < o.x + o.w && player.x + player.w > o.x &&
+                       player.y < o.y + o.h && player.y + player.h > o.y) {
+                        resetLevel();
+                    }
+                }
+
+                let eggsLeft = 0;
+                for(let egg of eggs) {
+                    if(!egg.collected) {
+                        let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
+                        let currentEggY = egg.baseY + bobOffset;
+
+                        if(player.x < egg.x + egg.w && player.x + player.w > egg.x &&
+                           player.y < currentEggY + egg.h && player.y + player.h > currentEggY) {
+                            egg.collected = true; score += 100;
+                            playEggSound();
+                            addParticles(egg.x + 7, currentEggY + 6);
+                            addFloatingText('+100', egg.x, currentEggY - 10);
+                        } else { eggsLeft++; }
+                    }
+                }
+
+                for(let s of seeds) {
+                    if(!s.collected) {
+                        if(player.x < s.x + s.w && player.x + player.w > s.x &&
+                           player.y < s.baseY + s.h && player.y + player.h > s.baseY) {
+                            s.collected = true; score += 50; timer += 40;
+                            playEggSound();
+                            addFloatingText('+50', s.x, s.baseY - 10);
+                        }
+                    }
+                }
+
+                if(eggsLeft === 0 && !isVictory) {
+                    isVictory = true;
+                    victoryTimer = 0;
+                    cagedDuck.isFlying = true;
+                    playWinSound();
+                    triggerShake(8, 20);
+                }
+            }
+
+            function draw() {
+                ctx.save();
+                
+                if(shakeTime > 0) {
+                    let rx = (Math.random() - 0.5) * shakeIntensity;
+                    let ry = (Math.random() - 0.5) * shakeIntensity;
+                    ctx.translate(rx, ry);
+                    shakeTime--;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for(let p of platformData) {
+                    if (!p.hidden) drawPlatform(p.x, p.y, p.w);
+                }
+                
+                for(let l of ladders) drawLadder(l.x, l.y, l.h);
+                
+                for(let e of elevators) {
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
+                }
+
+                // Desenho das Sementes (`gfx_item_corn` $8510)
+                for(let s of seeds) {
+                    if(!s.collected) {
+                        drawBitmap(ctx, s.x, s.baseY, SKOOL_SPRITES.corn, 8, gfxScale * 1.5, C_MAGENTA);
+                    }
+                }
+
+                // Desenho dos Ovos (`gfx_item_egg` $8508)
+                for(let egg of eggs) {
+                    if(!egg.collected) {
+                        let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
+                        let renderY = egg.baseY + bobOffset;
+                        drawBitmap(ctx, egg.x, renderY, SKOOL_SPRITES.egg, 8, gfxScale * 1.5, C_WHITE);
+                    }
+                }
+
+                for(let o of ostriches) drawOstrich(o);
+                if(!isGameOver && !isVictory) drawPlayer();
+
+                for(let i = particles.length - 1; i >= 0; i--) {
+                    let p = particles[i];
+                    p.x += p.vx; p.y += p.vy; p.life--;
+                    ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, Math.max(2, Math.round(3*gfxScale)), Math.max(2, Math.round(3*gfxScale)));
+                    if(p.life <= 0) particles.splice(i, 1);
+                }
+
+                ctx.font = `${Math.max(9, Math.round(10*gfxScale))}px "Courier New", monospace`;
+                for(let i = floatingTexts.length - 1; i >= 0; i--) {
+                    let ft = floatingTexts[i];
+                    ft.y -= 0.8; ft.life--;
+                    ctx.fillStyle = C_YELLOW; ctx.fillText(ft.text, ft.x, ft.y);
+                    if(ft.life <= 0) floatingTexts.splice(i, 1);
+                }
+
+                drawUI();
+
+                ctx.fillStyle = '#999999';
+                ctx.font = `${isMobile ? '12px' : '11px'} "Courier New", monospace`;
+                ctx.textAlign = 'center';
+                ctx.fillText('Setas (Mover / Escadas) • Barra de Espaço (Salto)', canvas.width / 2, canvas.height - 15);
+                ctx.textAlign = 'left';
+
+                if(redFlashAlpha > 0) {
+                    ctx.fillStyle = `rgba(255, 0, 0, ${redFlashAlpha})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    redFlashAlpha -= 0.05;
+                }
+
+                if(isGameOver) {
+                    let boxW = 320, boxH = 100;
+                    let vx = (canvas.width / 2) - (boxW / 2);
+                    let vy = (canvas.height / 2) - (boxH / 2);
+                    ctx.fillStyle = C_RED;
+                    ctx.fillRect(vx, vy, boxW, boxH);
+                    ctx.fillStyle = C_WHITE;
+                    ctx.font = '14px "Courier New", monospace';
+                    if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                    ctx.fillText('GAME OVER', vx + 100, vy + 45);
+                    ctx.font = '11px "Courier New", monospace';
+                    ctx.fillText('CLICA PARA REINICIAR', vx + 65, vy + 70);
+                }
+
+                if(isVictory) {
+                    victoryTimer++;
+                    const retroColors = [C_RED, C_GREEN, C_YELLOW, C_CYAN, C_MAGENTA];
+                    ctx.fillStyle = retroColors[victoryTimer % retroColors.length];
+                    
+                    let vx = (canvas.width / 2) - 160;
+                    let vy = (canvas.height / 2) - 50;
+                    ctx.fillRect(vx, vy, 320, 100);
+                    
+                    ctx.fillStyle = '#000000';
+                    ctx.font = '14px "Courier New", monospace';
+                    if(document.fonts) ctx.font = '12px "Press Start 2P", monospace';
+                    ctx.fillText('NÍVEL CONCLUÍDO!', vx + 50, vy + 55);
+
+                    if(victoryTimer > 80) {
+                        skipGame();
+                    }
+                }
+
+                ctx.restore();
+            }
+
+            function loop() {
+                update(); draw();
+                if(document.getElementById('game-overlay')) {
+                    animationFrameId = requestAnimationFrame(loop);
+                }
+            }
+            
+            cancelAnimationFrame(animationFrameId);
+            loop();
+        }
+    </script>
+</body>
+</html>
