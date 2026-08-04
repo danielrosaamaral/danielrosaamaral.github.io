@@ -1058,7 +1058,7 @@
                 }
             }
 
-            // Réplica 1:1 Pixel-Art do Personagem Principal "Harry" (100% Amarelo Puro #FFFF00 do ZX Spectrum Original)
+            // Réplica 1:1 Pixel-Art de Harry (100% Amarelo #FFFF00 com Animação de Corrida de 2 Fotogramas)
             function drawPlayer() {
                 ctx.save();
                 ctx.translate(player.x + player.w/2, player.y + player.h/2);
@@ -1070,72 +1070,67 @@
 
                 ctx.fillStyle = C_YELLOW;
 
-                // 1. Chapéu de abas largas do ZX Spectrum
-                ctx.fillRect(px - Math.round(2*s), py - Math.round(8*s), Math.round(22*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(3*s), py - Math.round(13*s), Math.round(12*s), Math.round(5*s));
+                // 1. Chapéu de abas largas duplo
+                ctx.fillRect(px - Math.round(3*s), py - Math.round(8*s), Math.round(24*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(2*s), py - Math.round(14*s), Math.round(14*s), Math.round(6*s));
 
-                // 2. Cabeça / Rosto
+                // 2. Rosto / Cabeça
                 ctx.fillRect(px + Math.round(3*s), py - Math.round(5*s), Math.round(12*s), Math.round(7*s));
 
-                // 3. Olho com pormenor retro
+                // 3. Olho
                 ctx.fillStyle = '#000000';
                 if(player.facingRight) ctx.fillRect(px + Math.round(10*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
                 else ctx.fillRect(px + Math.round(4*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
 
-                // 4. Tronco / Corpo oval totalmente Amarelo
+                // 4. Tronco
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(2*s), Math.round(14*s), Math.round(12*s));
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(2*s), Math.round(14*s), Math.round(11*s));
+                // Cinto
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(12*s), Math.round(14*s), Math.round(1*s));
 
-                // 5. Pernas articuladas em movimento
-                let legOffset = Math.sin(Date.now() * 0.02) * (2 * s);
-                ctx.fillRect(px + Math.round(3*s), py + Math.round(14*s), Math.round(3*s), Math.round(8*s) + legOffset);
-                ctx.fillRect(px + Math.round(11*s), py + Math.round(14*s), Math.round(3*s), Math.round(8*s) - legOffset);
+                // 5. Animação de Corrida de 2 fotogramas para as pernas
+                ctx.fillStyle = C_YELLOW;
+                let isMoving = Math.abs(player.vx) > 0.1 || player.climbing;
+                let runFrame = isMoving ? (Math.floor(Date.now() / 90) % 2) : 0;
 
-                // 6. Pés horizontais
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(21*s) + legOffset, Math.round(5*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(10*s), py + Math.round(21*s) - legOffset, Math.round(5*s), Math.round(3*s));
+                let leg1X = runFrame === 0 ? px + Math.round(1*s) : px + Math.round(5*s);
+                let leg2X = runFrame === 0 ? px + Math.round(13*s) : px + Math.round(9*s);
+
+                ctx.fillRect(leg1X, py + Math.round(13*s), Math.round(4*s), Math.round(8*s));
+                ctx.fillRect(leg2X, py + Math.round(13*s), Math.round(4*s), Math.round(8*s));
+
+                // 6. Pés
+                ctx.fillRect(leg1X - Math.round(1*s), py + Math.round(21*s), Math.round(6*s), Math.round(3*s));
+                ctx.fillRect(leg2X - Math.round(1*s), py + Math.round(21*s), Math.round(6*s), Math.round(3*s));
 
                 ctx.restore();
             }
 
-            // Réplica 1:1 Pixel-Art da Avestruz / Pato de Patrulha (Ciano #00FFFF com Pescoço em S, Asas Brancas e Bico Amarelo)
             function drawOstrich(o) {
                 ctx.save();
                 let s = gfxScale;
-
-                // 1. Corpo Ciano Puro
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x + Math.round(2*s), o.y + Math.round(8*s), Math.round(16*s), Math.round(10*s));
-
-                // 2. Cauda
-                ctx.fillRect(o.x - Math.round(2*s), o.y + Math.round(6*s), Math.round(5*s), Math.round(5*s));
-
-                // 3. Pescoço curvo em "S" e Cabeça
+                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(6*s), Math.round(14*s), Math.round(12*s));
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(8*s), Math.round(8*s), Math.round(6*s));
+                
+                ctx.fillStyle = C_CYAN;
                 if (o.vx > 0) {
                     ctx.fillRect(o.x + Math.round(12*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
                     ctx.fillRect(o.x + Math.round(14*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
-                    // Bico Amarelo
-                    ctx.fillStyle = C_YELLOW;
-                    ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
-                    // Olho Preto
-                    ctx.fillStyle = '#000000';
-                    ctx.fillRect(o.x + Math.round(18*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + Math.round(18*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 } else {
                     ctx.fillRect(o.x + Math.round(1*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
                     ctx.fillRect(o.x - Math.round(3*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
-                    // Bico Amarelo
-                    ctx.fillStyle = C_YELLOW;
-                    ctx.fillRect(o.x - Math.round(8*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
-                    // Olho Preto
-                    ctx.fillStyle = '#000000';
-                    ctx.fillRect(o.x - Math.round(1*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
+                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - Math.round(8*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
+                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - Math.round(1*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 }
-
-                // 4. Asa Branca de contraste
+                
                 ctx.fillStyle = C_WHITE;
                 ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(10*s), Math.round(7*s), Math.round(5*s));
 
-                // 5. Pernas finas de 2 pixéis com articulação
                 ctx.fillStyle = C_CYAN;
                 let legOffset = Math.sin(Date.now() * 0.02) * (3 * s);
                 ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) + legOffset);
@@ -1146,55 +1141,39 @@
                 ctx.restore();
             }
 
-            // Réplica 1:1 do Cabeçalho ZX Spectrum com Faixas Vermelhas de Fundo e Ícones de Chapéu de Vida
+            // Cabeçalho de UI sem caixas vermelhas (Texto limpo sobre o fundo do jogo)
             function drawUI() {
-                let fontSize = isMobile ? '16px' : '14px';
+                let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
                 if(document.fonts) ctx.font = `bold ${fontSize} "Press Start 2P", monospace`;
                 
-                let topOffset = isMobile ? 38 : 32;
+                let topOffset = isMobile ? 40 : 35;
 
-                // Faixa Vermelha de Fundo do SCORE e TIME
-                ctx.fillStyle = C_RED;
-                ctx.fillRect(15, topOffset - 18, isMobile ? 180 : 160, 22);
-                ctx.fillRect(canvas.width - (isMobile ? 200 : 180), topOffset - 18, isMobile ? 185 : 165, 22);
+                // 1. SCORE
+                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, topOffset);
+                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 115 : 105, topOffset);
 
-                ctx.fillStyle = C_WHITE; 
-                ctx.fillText('SCORE', 20, topOffset);
-                ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 110 : 100, topOffset);
-                
+                // 2. TIME
                 if (timer < 100) {
-                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_YELLOW : C_WHITE;
+                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_YELLOW : C_RED;
                 } else {
-                    ctx.fillStyle = C_WHITE;
+                    ctx.fillStyle = C_RED;
                 }
-                ctx.fillText('TIME ' + Math.floor(timer), canvas.width - (isMobile ? 190 : 170), topOffset);
+                let timeX = canvas.width - (isMobile ? 190 : 170);
+                ctx.fillText('TIME ' + Math.floor(timer), timeX, topOffset);
 
-                // Ícones de Chapéu Amarelo a representar as vidas por baixo do Score
+                // 3. Ícones de Chapéu Amarelo a representar as vidas por baixo do Score
                 for(let v = 0; v < lives; v++) {
                     let hX = 20 + (v * 22);
-                    let hY = topOffset + 8;
+                    let hY = topOffset + 12;
                     ctx.fillStyle = C_YELLOW;
                     ctx.fillRect(hX, hY + 3, 14, 2);
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                let subOffset = isMobile ? 85 : 78;
-
-                // Faixas Vermelhas da Segunda Linha de Informação
-                ctx.fillStyle = C_RED;
-                ctx.fillRect(15, subOffset - 18, 110, 22);
-                ctx.fillRect(140, subOffset - 18, 120, 22);
-                ctx.fillRect(270, subOffset - 18, 110, 22);
-
-                ctx.fillStyle = C_WHITE; 
-                ctx.fillText('PLAYER 1', 20, subOffset);
-                ctx.fillText('LEVEL 01', 145, subOffset);
-                ctx.fillText('BONUS ' + Math.floor(timer * 3), 275, subOffset);
-
                 let cageScale = isMobile ? 1.3 : 1.0;
                 let cageX = 60;
-                let cageY = isMobile ? 100 : 125;
+                let cageY = isMobile ? 90 : 105;
                 
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
@@ -1208,49 +1187,52 @@
                 // Parede vertical do lado esquerdo (fechada)
                 ctx.fillRect(cageX - Math.round(30 * cageScale), cageY, Math.max(2, Math.round(3 * cageScale)), Math.round(40 * cageScale));
 
-                // Grade interior (lado esquerdo)
+                // Grade interior
                 for(let i = Math.round(35 * cageScale); i <= Math.round(58 * cageScale); i += Math.round(10 * cageScale)) {
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
 
-                // Animação do Pássaro Gigante da Gaiola
+                // Pássaro Gigante da Gaiola Detalhado e Nítido com Contornos
                 let animFrame = Math.floor(Date.now() / 150) % 4;
                 let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(1.5 * cageScale) : 0;
                 let wingUp = (animFrame === 0 || animFrame === 1);
 
-                let bX = cageX - Math.round(15 * cageScale);
-                let bY = cageY + Math.round(12 * cageScale);
+                let bX = cageX - Math.round(16 * cageScale);
+                let bY = cageY + Math.round(10 * cageScale);
 
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(bX, bY + headBob, Math.round(24 * cageScale), Math.round(16 * cageScale));
+                ctx.fillRect(bX, bY + headBob, Math.round(26 * cageScale), Math.round(18 * cageScale));
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = Math.max(1, Math.round(1 * cageScale));
+                ctx.strokeRect(bX, bY + headBob, Math.round(26 * cageScale), Math.round(18 * cageScale));
 
-                let headX = bX + Math.round(12 * cageScale);
-                let headY = bY - Math.round(11 * cageScale) + headBob;
-                ctx.fillRect(headX, headY, Math.round(14 * cageScale), Math.round(12 * cageScale));
+                let headX = bX + Math.round(13 * cageScale);
+                let headY = bY - Math.round(12 * cageScale) + headBob;
+                ctx.fillStyle = C_YELLOW;
+                ctx.fillRect(headX, headY, Math.round(15 * cageScale), Math.round(13 * cageScale));
+                ctx.strokeRect(headX, headY, Math.round(15 * cageScale), Math.round(13 * cageScale));
 
                 ctx.fillStyle = C_RED;
                 let beakOpen = (animFrame === 2) ? Math.round(2 * cageScale) : 0;
-                ctx.fillRect(headX + Math.round(14 * cageScale), headY + Math.round(4 * cageScale), Math.round(7 * cageScale), Math.round(4 * cageScale) + beakOpen);
+                ctx.fillRect(headX + Math.round(15 * cageScale), headY + Math.round(4 * cageScale), Math.round(8 * cageScale), Math.round(4 * cageScale) + beakOpen);
 
                 ctx.fillStyle = C_WHITE;
-                ctx.fillRect(headX + Math.round(6 * cageScale), headY + Math.round(2 * cageScale), Math.round(4 * cageScale), Math.round(4 * cageScale));
+                ctx.fillRect(headX + Math.round(6 * cageScale), headY + Math.round(2 * cageScale), Math.round(5 * cageScale), Math.round(5 * cageScale));
                 ctx.fillStyle = '#000000';
                 ctx.fillRect(headX + Math.round(8 * cageScale), headY + Math.round(3 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
 
                 ctx.fillStyle = C_YELLOW;
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, Math.round(1.5 * cageScale));
-                let wingY = wingUp ? bY - Math.round(4 * cageScale) + headBob : bY + Math.round(3 * cageScale) + headBob;
-                ctx.fillRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
-                ctx.strokeRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
+                let wingY = wingUp ? bY - Math.round(4 * cageScale) + headBob : bY + Math.round(4 * cageScale) + headBob;
+                ctx.fillRect(bX + Math.round(3 * cageScale), wingY, Math.round(13 * cageScale), Math.round(9 * cageScale));
+                ctx.strokeRect(bX + Math.round(3 * cageScale), wingY, Math.round(13 * cageScale), Math.round(9 * cageScale));
 
                 ctx.fillStyle = C_YELLOW;
-                let legY = bY + Math.round(16 * cageScale) + headBob;
+                let legY = bY + Math.round(18 * cageScale) + headBob;
                 let floorTargetY = cageY + Math.round(40 * cageScale);
                 let legH = floorTargetY - legY;
                 if (legH > 0) {
-                    ctx.fillRect(bX + Math.round(6 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
-                    ctx.fillRect(bX + Math.round(16 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
+                    ctx.fillRect(bX + Math.round(7 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
+                    ctx.fillRect(bX + Math.round(17 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
                 }
             }
 
@@ -1477,7 +1459,6 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
-                // Desenho das Sementes em Triângulo Magenta (#FF00FF) da réplica original
                 for(let s of seeds) {
                     if(!s.collected) {
                         ctx.fillStyle = C_MAGENTA;
@@ -1489,7 +1470,6 @@
                     }
                 }
 
-                // Desenho dos Ovos Brancos (#FFFFFF)
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
