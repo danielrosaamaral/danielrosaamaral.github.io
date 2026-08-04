@@ -437,7 +437,7 @@
         </div>
     </main>
 
-    <!-- SINTETIZADOR WEB AUDIO API & MOTOR HÁPTICO (100% JS NATIVO E AUTÓNOMO) -->
+    <!-- SINTETIZADOR WEB AUDIO API & MOTOR HÁPTICO -->
     <script>
         const SESSION_ID = Math.random().toString(36).substring(2, 15);
         const SESSION_KEY = 'da_active_game_session';
@@ -869,7 +869,7 @@
                 facingRight: true, tiltAngle: 0
             };
 
-            let platformData, ladders, elevators, eggs, ostriches;
+            let platformData, ladders, elevators, eggs, seeds, ostriches;
 
             function restartGame() {
                 score = 0;
@@ -883,6 +883,7 @@
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
+                for(let s of seeds) s.collected = false;
                 startBGM();
             }
 
@@ -936,6 +937,16 @@
                     {x: 340, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
                 ];
 
+                seeds = [
+                    {x: 100, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 370, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 80, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 380, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 130, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 330, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
+                    {x: 220, baseY: 170 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
+                ];
+
                 ostriches = [
                     {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120},
                     {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 40, maxX: 150},
@@ -979,6 +990,16 @@
                     {x: 440, baseY: 144 - 12, w: 14, h: 12, collected: false},
                     {x: 370, baseY: 192 - 12, w: 14, h: 12, collected: false}, 
                     {x: 480, baseY: 400 - 12, w: 14, h: 12, collected: false}
+                ];
+
+                seeds = [
+                    {x: 40, baseY: 224 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 130, baseY: 320 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 230, baseY: 368 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 340, baseY: 192 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 420, baseY: 144 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 530, baseY: 288 - 12, w: 12, h: 12, collected: false}, 
+                    {x: 390, baseY: 384 - 12, w: 12, h: 12, collected: false}
                 ];
 
                 ostriches = [
@@ -1037,6 +1058,7 @@
                 }
             }
 
+            // Réplica 1:1 Pixel-Art do Personagem Principal "Harry" (100% Amarelo Puro #FFFF00 do ZX Spectrum Original)
             function drawPlayer() {
                 ctx.save();
                 ctx.translate(player.x + player.w/2, player.y + player.h/2);
@@ -1046,82 +1068,133 @@
                 let py = -player.h/2;
                 let s = gfxScale;
 
-                ctx.fillStyle = C_CYAN;
-                ctx.fillRect(px - Math.round(1*s), py - Math.round(3*s), Math.round(16*s), Math.round(4*s));
-                ctx.fillRect(px + Math.round(2*s), py - Math.round(7*s), Math.round(10*s), Math.round(4*s));
-
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px + Math.round(3*s), py - Math.round(3*s), Math.round(8*s), Math.round(6*s));
+
+                // 1. Chapéu de abas largas do ZX Spectrum
+                ctx.fillRect(px - Math.round(2*s), py - Math.round(8*s), Math.round(22*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(3*s), py - Math.round(13*s), Math.round(12*s), Math.round(5*s));
+
+                // 2. Cabeça / Rosto
+                ctx.fillRect(px + Math.round(3*s), py - Math.round(5*s), Math.round(12*s), Math.round(7*s));
+
+                // 3. Olho com pormenor retro
                 ctx.fillStyle = '#000000';
-                if(player.facingRight) ctx.fillRect(px + Math.round(8*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
-                else ctx.fillRect(px + Math.round(3*s), py - Math.round(1*s), Math.round(2*s), Math.round(2*s));
+                if(player.facingRight) ctx.fillRect(px + Math.round(10*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
+                else ctx.fillRect(px + Math.round(4*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
 
-                ctx.fillStyle = C_RED;
-                ctx.fillRect(px + Math.round(1*s), py + Math.round(3*s), Math.round(12*s), Math.round(11*s));
-
-                ctx.fillStyle = C_BLUE;
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(14*s), Math.round(4*s), Math.round(7*s));
-
+                // 4. Tronco / Corpo oval totalmente Amarelo
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px, py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(8*s), py + Math.round(21*s), Math.round(5*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(2*s), Math.round(14*s), Math.round(12*s));
+
+                // 5. Pernas articuladas em movimento
+                let legOffset = Math.sin(Date.now() * 0.02) * (2 * s);
+                ctx.fillRect(px + Math.round(3*s), py + Math.round(14*s), Math.round(3*s), Math.round(8*s) + legOffset);
+                ctx.fillRect(px + Math.round(11*s), py + Math.round(14*s), Math.round(3*s), Math.round(8*s) - legOffset);
+
+                // 6. Pés horizontais
+                ctx.fillRect(px + Math.round(2*s), py + Math.round(21*s) + legOffset, Math.round(5*s), Math.round(3*s));
+                ctx.fillRect(px + Math.round(10*s), py + Math.round(21*s) - legOffset, Math.round(5*s), Math.round(3*s));
 
                 ctx.restore();
             }
 
+            // Réplica 1:1 Pixel-Art da Avestruz / Pato de Patrulha (Ciano #00FFFF com Pescoço em S, Asas Brancas e Bico Amarelo)
             function drawOstrich(o) {
                 ctx.save();
                 let s = gfxScale;
+
+                // 1. Corpo Ciano Puro
                 ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(6*s), Math.round(14*s), Math.round(12*s));
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(8*s), Math.round(8*s), Math.round(6*s));
-                
-                ctx.fillStyle = C_CYAN;
+                ctx.fillRect(o.x + Math.round(2*s), o.y + Math.round(8*s), Math.round(16*s), Math.round(10*s));
+
+                // 2. Cauda
+                ctx.fillRect(o.x - Math.round(2*s), o.y + Math.round(6*s), Math.round(5*s), Math.round(5*s));
+
+                // 3. Pescoço curvo em "S" e Cabeça
                 if (o.vx > 0) {
-                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
-                    ctx.fillRect(o.x + Math.round(13*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + Math.round(17*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
+                    ctx.fillRect(o.x + Math.round(12*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
+                    ctx.fillRect(o.x + Math.round(14*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
+                    // Bico Amarelo
+                    ctx.fillStyle = C_YELLOW;
+                    ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
+                    // Olho Preto
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(o.x + Math.round(18*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 } else {
-                    ctx.fillRect(o.x, o.y - Math.round(2*s), Math.round(4*s), Math.round(10*s));
-                    ctx.fillRect(o.x - Math.round(4*s), o.y - Math.round(6*s), Math.round(8*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - Math.round(9*s), o.y - Math.round(4*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - Math.round(2*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
+                    ctx.fillRect(o.x + Math.round(1*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
+                    ctx.fillRect(o.x - Math.round(3*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
+                    // Bico Amarelo
+                    ctx.fillStyle = C_YELLOW;
+                    ctx.fillRect(o.x - Math.round(8*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
+                    // Olho Preto
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(o.x - Math.round(1*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
                 }
-                
+
+                // 4. Asa Branca de contraste
                 ctx.fillStyle = C_WHITE;
-                let legOffset = Math.sin(Date.now() * 0.02) * 3;
+                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(10*s), Math.round(7*s), Math.round(5*s));
+
+                // 5. Pernas finas de 2 pixéis com articulação
+                ctx.fillStyle = C_CYAN;
+                let legOffset = Math.sin(Date.now() * 0.02) * (3 * s);
                 ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) + legOffset);
                 ctx.fillRect(o.x + Math.round(11*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) - legOffset);
+                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(24*s) + legOffset, Math.round(5*s), Math.round(2*s));
+                ctx.fillRect(o.x + Math.round(9*s), o.y + Math.round(24*s) - legOffset, Math.round(5*s), Math.round(2*s));
+
                 ctx.restore();
             }
 
+            // Réplica 1:1 do Cabeçalho ZX Spectrum com Faixas Vermelhas de Fundo e Ícones de Chapéu de Vida
             function drawUI() {
-                let fontSize = isMobile ? '18px' : '15px';
+                let fontSize = isMobile ? '16px' : '14px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
                 if(document.fonts) ctx.font = `bold ${fontSize} "Press Start 2P", monospace`;
                 
-                let topOffset = isMobile ? 40 : 35;
-                ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, topOffset);
-                ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 115 : 105, topOffset);
+                let topOffset = isMobile ? 38 : 32;
+
+                // Faixa Vermelha de Fundo do SCORE e TIME
+                ctx.fillStyle = C_RED;
+                ctx.fillRect(15, topOffset - 18, isMobile ? 180 : 160, 22);
+                ctx.fillRect(canvas.width - (isMobile ? 200 : 180), topOffset - 18, isMobile ? 185 : 165, 22);
+
+                ctx.fillStyle = C_WHITE; 
+                ctx.fillText('SCORE', 20, topOffset);
+                ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 110 : 100, topOffset);
                 
                 if (timer < 100) {
-                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_RED : C_WHITE;
+                    ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_YELLOW : C_WHITE;
                 } else {
-                    ctx.fillStyle = C_RED;
+                    ctx.fillStyle = C_WHITE;
                 }
                 ctx.fillText('TIME ' + Math.floor(timer), canvas.width - (isMobile ? 190 : 170), topOffset);
 
-                let subOffset = isMobile ? 75 : 70;
-                ctx.fillStyle = C_WHITE; ctx.fillText('PLAYER 1', 20, subOffset);
-                ctx.fillStyle = C_RED; ctx.fillText('LEVEL 01', isMobile ? 180 : 160, subOffset);
-                ctx.fillStyle = C_RED; ctx.fillText('LIVES ' + lives, isMobile ? 320 : 290, subOffset);
-                
+                // Ícones de Chapéu Amarelo a representar as vidas por baixo do Score
+                for(let v = 0; v < lives; v++) {
+                    let hX = 20 + (v * 22);
+                    let hY = topOffset + 8;
+                    ctx.fillStyle = C_YELLOW;
+                    ctx.fillRect(hX, hY + 3, 14, 2);
+                    ctx.fillRect(hX + 3, hY, 8, 3);
+                }
+
+                let subOffset = isMobile ? 85 : 78;
+
+                // Faixas Vermelhas da Segunda Linha de Informação
+                ctx.fillStyle = C_RED;
+                ctx.fillRect(15, subOffset - 18, 110, 22);
+                ctx.fillRect(140, subOffset - 18, 120, 22);
+                ctx.fillRect(270, subOffset - 18, 110, 22);
+
+                ctx.fillStyle = C_WHITE; 
+                ctx.fillText('PLAYER 1', 20, subOffset);
+                ctx.fillText('LEVEL 01', 145, subOffset);
+                ctx.fillText('BONUS ' + Math.floor(timer * 3), 275, subOffset);
+
                 let cageScale = isMobile ? 1.3 : 1.0;
                 let cageX = 60;
-                let cageY = isMobile ? 80 : 120;
+                let cageY = isMobile ? 100 : 125;
                 
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
@@ -1135,12 +1208,12 @@
                 // Parede vertical do lado esquerdo (fechada)
                 ctx.fillRect(cageX - Math.round(30 * cageScale), cageY, Math.max(2, Math.round(3 * cageScale)), Math.round(40 * cageScale));
 
-                // Grade interior (apenas do lado esquerdo para manter o lado direito aberto)
+                // Grade interior (lado esquerdo)
                 for(let i = Math.round(35 * cageScale); i <= Math.round(58 * cageScale); i += Math.round(10 * cageScale)) {
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
 
-                // Animação de movimento do pássaro gigante da gaiola
+                // Animação do Pássaro Gigante da Gaiola
                 let animFrame = Math.floor(Date.now() / 150) % 4;
                 let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(1.5 * cageScale) : 0;
                 let wingUp = (animFrame === 0 || animFrame === 1);
@@ -1148,27 +1221,22 @@
                 let bX = cageX - Math.round(15 * cageScale);
                 let bY = cageY + Math.round(12 * cageScale);
 
-                // 1. Corpo principal do Pássaro Gigante (Amarelo #FFFF00)
                 ctx.fillStyle = C_YELLOW;
                 ctx.fillRect(bX, bY + headBob, Math.round(24 * cageScale), Math.round(16 * cageScale));
 
-                // 2. Cabeça Aumentada
                 let headX = bX + Math.round(12 * cageScale);
                 let headY = bY - Math.round(11 * cageScale) + headBob;
                 ctx.fillRect(headX, headY, Math.round(14 * cageScale), Math.round(12 * cageScale));
 
-                // 3. Bico Detalhado (Vermelho)
                 ctx.fillStyle = C_RED;
                 let beakOpen = (animFrame === 2) ? Math.round(2 * cageScale) : 0;
                 ctx.fillRect(headX + Math.round(14 * cageScale), headY + Math.round(4 * cageScale), Math.round(7 * cageScale), Math.round(4 * cageScale) + beakOpen);
 
-                // 4. Olho Detalhado (Branco com Pupila Preta)
                 ctx.fillStyle = C_WHITE;
                 ctx.fillRect(headX + Math.round(6 * cageScale), headY + Math.round(2 * cageScale), Math.round(4 * cageScale), Math.round(4 * cageScale));
                 ctx.fillStyle = '#000000';
                 ctx.fillRect(headX + Math.round(8 * cageScale), headY + Math.round(3 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
 
-                // 5. Asa Animada em Batimento
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = '#000000';
                 ctx.lineWidth = Math.max(1, Math.round(1.5 * cageScale));
@@ -1176,7 +1244,6 @@
                 ctx.fillRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
                 ctx.strokeRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
 
-                // 6. Pernas Detalhadas assentes na base da gaiola
                 ctx.fillStyle = C_YELLOW;
                 let legY = bY + Math.round(16 * cageScale) + headBob;
                 let floorTargetY = cageY + Math.round(40 * cageScale);
@@ -1369,6 +1436,17 @@
                     }
                 }
 
+                for(let s of seeds) {
+                    if(!s.collected) {
+                        if(player.x < s.x + s.w && player.x + player.w > s.x &&
+                           player.y < s.baseY + s.h && player.y + player.h > s.baseY) {
+                            s.collected = true; score += 50; timer += 40;
+                            playEggSound();
+                            addFloatingText('+50', s.x, s.baseY - 10);
+                        }
+                    }
+                }
+
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
@@ -1399,6 +1477,19 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
+                // Desenho das Sementes em Triângulo Magenta (#FF00FF) da réplica original
+                for(let s of seeds) {
+                    if(!s.collected) {
+                        ctx.fillStyle = C_MAGENTA;
+                        ctx.beginPath();
+                        ctx.moveTo(s.x + Math.round(6*gfxScale), s.baseY); 
+                        ctx.lineTo(s.x + Math.round(12*gfxScale), s.baseY + s.h); 
+                        ctx.lineTo(s.x, s.baseY + s.h); 
+                        ctx.fill();
+                    }
+                }
+
+                // Desenho dos Ovos Brancos (#FFFFFF)
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
