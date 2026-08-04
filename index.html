@@ -1134,7 +1134,7 @@
                 }
             }
 
-            // DESENHO DO HARRY AUMENTADO EM 1/3 (36x36px) COM BITSCALE DE 2.25x
+            // DESENHO DO HARRY AUMENTADO EM +33% (36x36px - BITSCALE 2.25x)
             function drawPlayer() {
                 ctx.save();
                 let bitScale = (player.w / 16);
@@ -1163,7 +1163,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA AUMENTADA EM 3X E PÁSSARO GIGANTE AMARELO COM ANIMAÇÃO DE PASSEIO E FUGA
+            // GAIOLA AUMENTADA EM 3X E PÁSSARO GIGANTE REDUZIDO EM 1/4 (100% NO INTERIOR)
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1194,9 +1194,9 @@
                 }
 
                 // GAIOLA AUMENTADA EM 3X (TAMANHO ~100x90px)
-                let cScale = isMobile ? 3.0 : 2.6;
-                let cX = isMobile ? 25 : 35;
-                let cY = isMobile ? 80 : 90;
+                let cScale = isMobile ? 3.0 : 2.5;
+                let cX = isMobile ? 20 : 30;
+                let cY = isMobile ? 75 : 85;
 
                 // Pega do topo da gaiola ($8A30)
                 drawBitmap(ctx, cX + 8 * cScale, cY - 8 * cScale, SKOOL_SPRITES.cage_handle, 16, cScale, C_YELLOW);
@@ -1204,7 +1204,6 @@
                 // Matriz de 32x24 bits da Gaiola ($8A40)
                 for (let r = 0; r < SKOOL_SPRITES.birdcage.length; r++) {
                     let rowBytes = SKOOL_SPRITES.birdcage[r];
-                    // Se estiver em vitória, abre o lado direito da gaiola (tile 3 abre)
                     let lastTile = isVictory ? 3 : 4;
                     for (let tileIdx = 0; tileIdx < lastTile; tileIdx++) {
                         let byteVal = rowBytes[tileIdx];
@@ -1219,63 +1218,63 @@
                     }
                 }
 
-                // PÁSSARO GIGANTE AMARELO VISÍVEL COM ANIMAÇÃO DE PASSEIO E DE FUGA DE VITÓRIA
-                let duckScale = cScale * 0.9;
+                // PÁSSARO GIGANTE REDUZIDO EM 1/4 (0.65x) PARA FICAR TOTALMENTE CONTIDO DENTRO DA GAIOLA
+                let duckScale = cScale * 0.65;
                 let animFrame = Math.floor(Date.now() / 120) % 4;
-                let legWalk = Math.sin(Date.now() * 0.012) * (3 * duckScale);
                 let wingUp = (animFrame === 0 || animFrame === 1);
 
                 let dX, dY;
                 if (!cagedDuck.isFlying) {
-                    // Pássaro a passear de um lado para o outro dentro da gaiola
-                    dX = cX + (12 * cScale) + (cagedDuck.offsetRel * cScale * 0.4);
-                    dY = cY + (10 * cScale);
+                    // Posição estritamente contida dentro da cúpula da gaiola
+                    let currentOffset = 8 * cScale + (cagedDuck.offsetRel * cScale * 0.22);
+                    dX = cX + currentOffset;
+                    dY = cY + (8 * cScale);
                 } else {
-                    // Pássaro a voar para fora da gaiola na vitória do jogo
-                    dX = cX + (12 * cScale) + (cagedDuck.flyX * cScale);
-                    dY = cY + (10 * cScale) - (cagedDuck.flyY * cScale);
+                    // Animação de fuga a voar para fora da gaiola na vitória
+                    dX = cX + (8 * cScale) + (cagedDuck.flyX * cScale);
+                    dY = cY + (8 * cScale) - (cagedDuck.flyY * cScale);
                 }
 
                 // Corpo do Pássaro Amarelo
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(dX, dY, Math.round(18 * duckScale), Math.round(14 * duckScale));
+                ctx.fillRect(dX, dY, Math.round(15 * duckScale), Math.round(11 * duckScale));
                 ctx.strokeStyle = '#000000';
                 ctx.lineWidth = Math.max(1, Math.round(1 * duckScale));
-                ctx.strokeRect(dX, dY, Math.round(18 * duckScale), Math.round(14 * duckScale));
+                ctx.strokeRect(dX, dY, Math.round(15 * duckScale), Math.round(11 * duckScale));
 
                 // Cabeça
-                let headX = (cagedDuck.dir >= 0) ? dX + Math.round(10 * duckScale) : dX - Math.round(4 * duckScale);
-                let headY = dY - Math.round(10 * duckScale);
+                let headX = (cagedDuck.dir >= 0) ? dX + Math.round(8 * duckScale) : dX - Math.round(3 * duckScale);
+                let headY = dY - Math.round(8 * duckScale);
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(headX, headY, Math.round(12 * duckScale), Math.round(11 * duckScale));
-                ctx.strokeRect(headX, headY, Math.round(12 * duckScale), Math.round(11 * duckScale));
+                ctx.fillRect(headX, headY, Math.round(10 * duckScale), Math.round(9 * duckScale));
+                ctx.strokeRect(headX, headY, Math.round(10 * duckScale), Math.round(9 * duckScale));
 
-                // Bico Vermelho Grande
+                // Bico Vermelho
                 ctx.fillStyle = C_RED;
-                let beakX = (cagedDuck.dir >= 0) ? headX + Math.round(12 * duckScale) : headX - Math.round(6 * duckScale);
-                ctx.fillRect(beakX, headY + Math.round(3 * duckScale), Math.round(6 * duckScale), Math.round(4 * duckScale));
+                let beakX = (cagedDuck.dir >= 0) ? headX + Math.round(10 * duckScale) : headX - Math.round(5 * duckScale);
+                ctx.fillRect(beakX, headY + Math.round(2 * duckScale), Math.round(5 * duckScale), Math.round(3 * duckScale));
 
                 // Olho Branco/Preto
                 ctx.fillStyle = C_WHITE;
-                let eyeX = (cagedDuck.dir >= 0) ? headX + Math.round(5 * duckScale) : headX + Math.round(2 * duckScale);
-                ctx.fillRect(eyeX, headY + Math.round(2 * duckScale), Math.round(4 * duckScale), Math.round(4 * duckScale));
+                let eyeX = (cagedDuck.dir >= 0) ? headX + Math.round(4 * duckScale) : headX + Math.round(2 * duckScale);
+                ctx.fillRect(eyeX, headY + Math.round(1.5 * duckScale), Math.round(3 * duckScale), Math.round(3 * duckScale));
                 ctx.fillStyle = '#000000';
-                ctx.fillRect(eyeX + Math.round(1 * duckScale), headY + Math.round(3 * duckScale), Math.max(2, Math.round(2 * duckScale)), Math.max(2, Math.round(2 * duckScale)));
+                ctx.fillRect(eyeX + Math.round(1 * duckScale), headY + Math.round(2 * duckScale), Math.max(1, Math.round(1.5 * duckScale)), Math.max(1, Math.round(1.5 * duckScale)));
 
-                // Asa com Batimento
+                // Asa
                 ctx.fillStyle = C_YELLOW;
-                let wingY = wingUp ? dY - Math.round(3 * duckScale) : dY + Math.round(3 * duckScale);
-                ctx.fillRect(dX + Math.round(2 * duckScale), wingY, Math.round(10 * duckScale), Math.round(7 * duckScale));
-                ctx.strokeRect(dX + Math.round(2 * duckScale), wingY, Math.round(10 * duckScale), Math.round(7 * duckScale));
+                let wingY = wingUp ? dY - Math.round(2 * duckScale) : dY + Math.round(2 * duckScale);
+                ctx.fillRect(dX + Math.round(2 * duckScale), wingY, Math.round(8 * duckScale), Math.round(5 * duckScale));
+                ctx.strokeRect(dX + Math.round(2 * duckScale), wingY, Math.round(8 * duckScale), Math.round(5 * duckScale));
 
-                // Pernas a caminhar
+                // Pernas assentes na base da gaiola
                 if (!cagedDuck.isFlying) {
                     ctx.fillStyle = C_YELLOW;
-                    let legY = dY + Math.round(14 * duckScale);
-                    let floorY = cY + Math.round(24 * cScale);
+                    let legY = dY + Math.round(11 * duckScale);
+                    let floorY = cY + Math.round(23 * cScale);
                     let lH = Math.max(2, floorY - legY);
-                    ctx.fillRect(dX + Math.round(4 * duckScale), legY, Math.max(2, Math.round(2.5 * duckScale)), lH + legWalk);
-                    ctx.fillRect(dX + Math.round(12 * duckScale), legY, Math.max(2, Math.round(2.5 * duckScale)), lH - legWalk);
+                    ctx.fillRect(dX + Math.round(3 * duckScale), legY, Math.max(2, Math.round(2 * duckScale)), lH);
+                    ctx.fillRect(dX + Math.round(9 * duckScale), legY, Math.max(2, Math.round(2 * duckScale)), lH);
                 }
             }
 
@@ -1299,13 +1298,13 @@
                 updateMobileControlUI();
                 if(isGameOver) return;
 
-                // Animação de passeio do pássaro no interior da gaiola
+                // Animação de passeio do pássaro contido no interior da gaiola
                 if (!cagedDuck.isFlying) {
                     cagedDuck.offsetRel += cagedDuck.dir * 0.35;
                     if (cagedDuck.offsetRel > 14) cagedDuck.dir = -1;
                     if (cagedDuck.offsetRel < -14) cagedDuck.dir = 1;
                 } else {
-                    // Animação de fuga a voar para fora da gaiola quando o jogo é concluído
+                    // Animação de fuga a voar para fora da gaiola na vitória
                     cagedDuck.flyX += 3.5;
                     cagedDuck.flyY += 2.5;
                 }
@@ -1489,7 +1488,7 @@
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
-                    cagedDuck.isFlying = true; // Ativa a descolagem e fuga do Pássaro Gigante!
+                    cagedDuck.isFlying = true;
                     playWinSound();
                     triggerShake(8, 20);
                 }
