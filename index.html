@@ -819,7 +819,7 @@
             }
         }
 
-        // RENDERIZADOR DE MATRIZ DE BITS DO ZX SPECTRUM (DEFB / SKOOLKIT)
+        // FUNÇÃO DE RENDERIZAÇÃO DE MATRIZ DE BITS DO ZX SPECTRUM (DEFB / SKOOLKIT)
         function drawBitmap(ctx, x, y, bitmap, bitsPerRow, scale, color) {
             ctx.fillStyle = color;
             for (let r = 0; r < bitmap.length; r++) {
@@ -1146,7 +1146,7 @@
                 }
             }
 
-            // DESENHO DO HARRY AUMENTADO (28x28px - BITSCALE 1.75x)
+            // DESENHO DO HARRY AUMENTADO (28x28px - BITSCALE DE 1.75x)
             function drawPlayer() {
                 ctx.save();
                 let bitScale = (player.w / 16);
