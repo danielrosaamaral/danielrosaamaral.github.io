@@ -210,8 +210,11 @@
     <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo (Botão SKIP no Estilo Retro ZX Spectrum) -->
-        <div class="w-full flex justify-end items-center z-50 px-4 py-2 shrink-0">
+        <!-- Cabeçalho Topo (Botão SKIP e Botão de Som no Estilo Retro ZX Spectrum) -->
+        <div class="w-full flex justify-between items-center z-50 px-4 py-2 shrink-0">
+            <button id="btn-sound" onclick="toggleSound()" class="text-[#FFFF00] hover:text-black hover:bg-[#FFFF00] text-xs font-mono tracking-widest bg-black border-2 border-[#FFFF00] px-3 py-1.5 shadow-[2px_2px_0px_#FF0000] transition-none cursor-pointer">
+                🔊 SOUND ON
+            </button>
             <button onclick="skipGame()" class="text-[#00FFFF] hover:text-black hover:bg-[#00FFFF] text-xs font-mono tracking-widest bg-black border-2 border-[#00FFFF] px-3 py-1.5 shadow-[2px_2px_0px_#FF00FF] transition-none cursor-pointer">
                 SKIP [ &gt;&gt; ]
             </button>
@@ -235,7 +238,7 @@
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum com Fundo igual ao da Página) -->
+        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum) -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-[#00FFFF] p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF00FF] text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-none bg-black border border-[#00FFFF] text-[#FFFF00] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -434,9 +437,141 @@
         </div>
     </main>
 
+    <!-- SINTETIZADOR WEB AUDIO API & MOTOR HÁPTICO (100% JS NATIVO E AUTÓNOMO) -->
     <script>
         const SESSION_ID = Math.random().toString(36).substring(2, 15);
         const SESSION_KEY = 'da_active_game_session';
+
+        let audioCtx = null;
+        let isMuted = false;
+        let bgmTimer = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            initAudio();
+            isMuted = !isMuted;
+            const btn = document.getElementById('btn-sound');
+            if (btn) {
+                btn.innerText = isMuted ? '🔇 MUTE' : '🔊 SOUND ON';
+            }
+            if (isMuted) {
+                stopBGM();
+            } else {
+                startBGM();
+            }
+        }
+
+        function playTone(freq, duration, type = 'square', volume = 0.08) {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        function playJumpSound() {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12);
+            } catch(e){}
+        }
+
+        function playEggSound() {
+            playTone(987, 0.07, 'square', 0.1);
+            setTimeout(() => playTone(1318, 0.09, 'square', 0.1), 70);
+        }
+
+        function playStepSound() {
+            playTone(220, 0.03, 'triangle', 0.04);
+        }
+
+        function playHitSound() {
+            if (!isMuted && navigator.vibrate) {
+                try { navigator.vibrate([200, 50, 100]); } catch(e){}
+            }
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.35);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            } catch(e){}
+        }
+
+        function playWinSound() {
+            if (!isMuted && navigator.vibrate) {
+                try { navigator.vibrate([100, 50, 100, 50, 200]); } catch(e){}
+            }
+            const notes = [523, 659, 784, 1046, 1318];
+            notes.forEach((freq, idx) => {
+                setTimeout(() => playTone(freq, 0.12, 'square', 0.1), idx * 120);
+            });
+        }
+
+        function startBGM() {
+            if (isMuted || bgmTimer) return;
+            initAudio();
+            const bgmNotes = [
+                261, 293, 329, 349, 392, 349, 329, 293,
+                329, 349, 392, 440, 493, 440, 392, 349
+            ];
+            let noteIdx = 0;
+            bgmTimer = setInterval(() => {
+                if (!isMuted && audioCtx) {
+                    playTone(bgmNotes[noteIdx], 0.1, 'square', 0.025);
+                }
+                noteIdx = (noteIdx + 1) % bgmNotes.length;
+            }, 220);
+        }
+
+        function stopBGM() {
+            if (bgmTimer) {
+                clearInterval(bgmTimer);
+                bgmTimer = null;
+            }
+        }
         
         window.addEventListener('storage', (e) => {
             if (e.key === SESSION_KEY && e.newValue !== SESSION_ID && document.getElementById('game-overlay')) {
@@ -445,6 +580,7 @@
         });
 
         function forceDisconnect() {
+            stopBGM();
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
             const gameScreen = document.getElementById('game-screen');
             const disclaimerScreen = document.getElementById('disclaimer-screen');
@@ -486,6 +622,7 @@
         const keys = {};
 
         window.addEventListener('keydown', e => { 
+            initAudio();
             if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
             }
@@ -536,6 +673,7 @@
         }
 
         function skipGame() {
+            stopBGM();
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
             }
@@ -550,6 +688,8 @@
         }
 
         function startChuckieGame() {
+            initAudio();
+            startBGM();
             localStorage.setItem(SESSION_KEY, SESSION_ID);
             document.getElementById('disclaimer-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -563,6 +703,7 @@
             const jumpBtn = document.getElementById('btn-jump');
 
             const pressJump = (e) => {
+                initAudio();
                 if(e.cancelable) e.preventDefault();
                 keys['Space'] = true;
             };
@@ -579,6 +720,7 @@
             jumpBtn.addEventListener('mouseleave', releaseJump);
 
             const handleRingTouch = (clientX, clientY) => {
+                initAudio();
                 const rect = ring.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
@@ -710,6 +852,7 @@
             
             let coyoteCounter = 0;
             let jumpBufferCounter = 0;
+            let stepAudioTimer = 0;
             
             let shakeTime = 0;
             let shakeIntensity = 0;
@@ -740,9 +883,11 @@
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
+                startBGM();
             }
 
             canvas.onclick = function() {
+                initAudio();
                 if(isGameOver) restartGame();
             };
 
@@ -995,12 +1140,11 @@
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
 
-                // Animação de movimento do pássaro gigante da gaiola (batimento de asas, aceno de cabeça e bico)
+                // Animação de movimento do pássaro gigante da gaiola
                 let animFrame = Math.floor(Date.now() / 150) % 4;
                 let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(1.5 * cageScale) : 0;
                 let wingUp = (animFrame === 0 || animFrame === 1);
 
-                // Posição ajustada e tamanho AUMENTADO para preencher a gaiola de forma imponente
                 let bX = cageX - Math.round(15 * cageScale);
                 let bY = cageY + Math.round(12 * cageScale);
 
@@ -1044,11 +1188,13 @@
             }
 
             function resetLevel() {
+                playHitSound();
                 lives--;
                 redFlashAlpha = 0.8;
                 triggerShake(12, 16);
                 if (lives <= 0) {
                     isGameOver = true;
+                    stopBGM();
                 } else {
                     player.x = isMobile ? 240 : 300; 
                     player.y = isMobile ? 710 : 440; 
@@ -1091,13 +1237,19 @@
                         player.vy = -CLIMB_SPEED;
                         let lCenterX = activeLadder.x + Math.round(10 * gfxScale);
                         player.x += (lCenterX - playerCenterX) * 0.35;
+                        
+                        stepAudioTimer++;
+                        if (stepAudioTimer % 12 === 0) playStepSound();
+
                     } else if(keys['ArrowDown']) {
                         player.climbing = true;
                         player.vy = CLIMB_SPEED;
                         let lCenterX = activeLadder.x + Math.round(10 * gfxScale);
                         player.x += (lCenterX - playerCenterX) * 0.35;
 
-                        // Detetar chão da plataforma inferior para parar de descer a escada
+                        stepAudioTimer++;
+                        if (stepAudioTimer % 12 === 0) playStepSound();
+
                         let bottomFloorY = isMobile ? 740 : 464;
                         if (player.y + player.h >= bottomFloorY) {
                             player.y = bottomFloorY - player.h;
@@ -1110,6 +1262,7 @@
                         if(keys['Space']) {
                             player.climbing = false;
                             player.vy = JUMP_FORCE;
+                            playJumpSound();
                         }
                     }
                 } else {
@@ -1144,6 +1297,7 @@
                         player.onGround = false;
                         coyoteCounter = 0;
                         jumpBufferCounter = 0;
+                        playJumpSound();
                     }
                     if (!keys['Space'] && player.vy < -3) {
                         player.vy = -3;
@@ -1156,7 +1310,6 @@
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                // Limitar obrigatoriamente a posição Y para a plataforma do solo base
                 let floorLimitY = isMobile ? 740 - player.h : 464 - player.h;
                 if (player.y > floorLimitY) {
                     player.y = floorLimitY;
@@ -1209,6 +1362,7 @@
                         if(player.x < egg.x + egg.w && player.x + player.w > egg.x &&
                            player.y < currentEggY + egg.h && player.y + player.h > currentEggY) {
                             egg.collected = true; score += 100;
+                            playEggSound();
                             addParticles(egg.x + 7, currentEggY + 6);
                             addFloatingText('+100', egg.x, currentEggY - 10);
                         } else { eggsLeft++; }
@@ -1218,6 +1372,7 @@
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
+                    playWinSound();
                     triggerShake(8, 20);
                 }
             }
