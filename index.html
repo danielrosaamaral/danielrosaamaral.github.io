@@ -262,13 +262,13 @@
 
             <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
                 <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-neutral-800 bg-neutral-950/90 flex items-center justify-center backdrop-blur-md">
-                    <button id="btn-jump" class="touch-btn absolute w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-transform active:scale-95">
+                    <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-all duration-150 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
                         JUMP
                     </button>
-                    <span class="absolute top-1.5 text-neutral-400 text-lg font-bold font-mono pointer-events-none">▲</span>
-                    <span class="absolute bottom-1.5 text-neutral-400 text-lg font-bold font-mono pointer-events-none">▼</span>
-                    <span class="absolute left-1.5 text-neutral-400 text-lg font-bold font-mono pointer-events-none">◄</span>
-                    <span class="absolute right-1.5 text-neutral-400 text-lg font-bold font-mono pointer-events-none">►</span>
+                    <span id="arrow-up" class="absolute top-1 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">▲</span>
+                    <span id="arrow-down" class="absolute bottom-1 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">▼</span>
+                    <span id="arrow-left" class="absolute left-2 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">◄</span>
+                    <span id="arrow-right" class="absolute right-2 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">►</span>
                 </div>
             </div>
         </div>
@@ -283,7 +283,7 @@
                 </button>
                 <button onclick="triggerChat()" class="border border-[rgb(0,17,255)]/60 bg-neutral-900/50 hover:bg-[rgb(0,17,255)]/10 hover:border-[rgb(0,17,255)] text-white px-5 py-3.5 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-3xl shadow-[0_0_15px_rgba(0,17,255,0.12)] hover:shadow-[0_0_25px_rgba(0,17,255,0.25)] transition-all duration-300 transform hover:scale-[1.015] active:scale-95 cursor-pointer flex flex-col items-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(0,17,255)] select-none w-auto max-w-full backdrop-blur-md relative group">
                     <span class="text-base sm:text-lg font-medium tracking-wide text-white flex items-center gap-2">
-                        Olá <span>👋</span> Vamos conversar?
+                        Olá <span class="wave-emoji">👋</span> Vamos conversar?
                     </span>
                     <span class="text-xs sm:text-sm font-normal text-neutral-400 mt-0.5 tracking-wide">
                         Clica em mim para começar.
@@ -291,16 +291,16 @@
                 </button>
             </div>
 
-            <h1 class="text-4xl md:text-6xl mb-4 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
+            <h1 class="text-4xl md:text-6xl mb-2 font-extralight tracking-tight leading-tight animate-reveal delay-1 transition-transform duration-300 hover:translate-x-0.5 cursor-default inline-block">
                 Daniel da Rosa Amaral
             </h1>
             <div>
-                <p class="shimmer-electric text-lg md:text-2xl mb-10 font-light animate-reveal delay-2 inline-block cursor-default leading-relaxed tracking-normal">
+                <p class="shimmer-electric text-lg md:text-2xl mb-3 font-light animate-reveal delay-2 inline-block cursor-default leading-relaxed tracking-normal">
                     Designer Gráfico • Diretor de Arte • Branding • Comunicação Digital
                 </p>
             </div>
 
-            <div class="space-y-6 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
+            <div class="space-y-4 font-light text-base md:text-lg leading-relaxed animate-reveal delay-3 text-neutral-300/90 tracking-wide">
                 <p class="text-white font-normal text-lg md:text-xl">
                     Transformo estratégia em comunicação visual.
                 </p>
@@ -636,6 +636,44 @@
             ring.addEventListener('mouseup', resetRing);
         }
 
+        function updateMobileControlUI() {
+            const arrUp = document.getElementById('arrow-up');
+            const arrDown = document.getElementById('arrow-down');
+            const arrLeft = document.getElementById('arrow-left');
+            const arrRight = document.getElementById('arrow-right');
+            const btnJump = document.getElementById('btn-jump');
+
+            const setArrowActive = (el, isActive) => {
+                if (!el) return;
+                if (isActive) {
+                    el.style.color = 'rgb(0, 17, 255)';
+                    el.style.transform = 'scale(1.35)';
+                    el.style.textShadow = '0 0 10px rgba(0, 17, 255, 0.9)';
+                } else {
+                    el.style.color = '';
+                    el.style.transform = '';
+                    el.style.textShadow = '';
+                }
+            };
+
+            setArrowActive(arrUp, keys['ArrowUp']);
+            setArrowActive(arrDown, keys['ArrowDown']);
+            setArrowActive(arrLeft, keys['ArrowLeft']);
+            setArrowActive(arrRight, keys['ArrowRight']);
+
+            if (btnJump) {
+                if (keys['Space']) {
+                    btnJump.style.borderColor = 'rgb(0,17,255)';
+                    btnJump.style.boxShadow = '0 0 18px rgba(0,17,255,0.85)';
+                    btnJump.style.transform = 'scale(0.92)';
+                } else {
+                    btnJump.style.borderColor = '';
+                    btnJump.style.boxShadow = '';
+                    btnJump.style.transform = '';
+                }
+            }
+        }
+
         function initChuckieEgg() {
             const canvas = document.getElementById('chuckieCanvas');
             const ctx = canvas.getContext('2d');
@@ -685,7 +723,7 @@
                 facingRight: true, tiltAngle: 0
             };
 
-            let platformData, ladders, elevators, eggs, seeds, ostriches;
+            let platformData, ladders, elevators, eggs, ostriches;
 
             function restartGame() {
                 score = 0;
@@ -699,7 +737,6 @@
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
-                for(let s of seeds) s.collected = false;
             }
 
             canvas.onclick = function() {
@@ -751,20 +788,10 @@
                     {x: 340, baseY: 170 - 12, w: Math.round(14 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
                 ];
 
-                seeds = [
-                    {x: 100, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 370, baseY: 590 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 80, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 380, baseY: 440 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 130, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 330, baseY: 300 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}, 
-                    {x: 220, baseY: 170 - 12, w: Math.round(12 * gfxScale), h: Math.round(12 * gfxScale), collected: false}
-                ];
-
                 ostriches = [
                     {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120},
                     {x: 350, y: 406, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 350, maxX: 450},
-                    {x: 180, y: 486, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 180, maxX: 280},
+                    {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 170, maxX: 290},
                     {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 320, maxX: 430},
                     {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 50, maxX: 160}
                 ];
@@ -806,21 +833,11 @@
                     {x: 480, baseY: 400 - 12, w: 14, h: 12, collected: false}
                 ];
 
-                seeds = [
-                    {x: 40, baseY: 224 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 130, baseY: 320 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 230, baseY: 368 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 340, baseY: 192 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 420, baseY: 144 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 530, baseY: 288 - 12, w: 12, h: 12, collected: false}, 
-                    {x: 390, baseY: 384 - 12, w: 12, h: 12, collected: false}
-                ];
-
                 ostriches = [
                     {x: 20, y: 200, w: 22, h: 24, vx: 1.0, minX: 0, maxX: 100},
                     {x: 360, y: 168, w: 22, h: 24, vx: -1.0, minX: 340, maxX: 430},
-                    {x: 480, y: 376, w: 22, h: 24, vx: 1.0, minX: 460, maxX: 560},
-                    {x: 70, y: 296, w: 22, h: 24, vx: -1.0, minX: 60, maxX: 160},
+                    {x: 70, y: 296, w: 22, h: 24, vx: 1.0, minX: 60, maxX: 160},
+                    {x: 240, y: 344, w: 22, h: 24, vx: 1.0, minX: 230, maxX: 320},
                     {x: 530, y: 264, w: 22, h: 24, vx: 1.0, minX: 520, maxX: 610}
                 ];
             }
@@ -960,11 +977,20 @@
                 
                 ctx.fillStyle = C_YELLOW;
                 ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2 * cageScale));
+                
+                // Cúpula superior da gaiola
                 ctx.beginPath(); ctx.arc(cageX, cageY, Math.round(30 * cageScale), Math.PI, 0); ctx.stroke();
-                for(let i = Math.round(35 * cageScale); i <= Math.round(85 * cageScale); i += Math.round(10 * cageScale)) {
+                
+                // Base da gaiola
+                ctx.fillRect(cageX - Math.round(30 * cageScale), cageY + Math.round(40 * cageScale), Math.round(60 * cageScale), Math.max(3, Math.round(4 * cageScale)));
+
+                // Parede vertical do lado esquerdo (fechada)
+                ctx.fillRect(cageX - Math.round(30 * cageScale), cageY, Math.max(2, Math.round(3 * cageScale)), Math.round(40 * cageScale));
+
+                // Grade interior (apenas do lado esquerdo para manter o lado direito aberto)
+                for(let i = Math.round(35 * cageScale); i <= Math.round(58 * cageScale); i += Math.round(10 * cageScale)) {
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
-                ctx.fillRect(cageX - Math.round(30 * cageScale), cageY + Math.round(40 * cageScale), Math.round(60 * cageScale), Math.max(3, Math.round(4 * cageScale)));
 
                 let birdAnim = Math.sin(Date.now() * 0.005) > 0 ? 1 : 0;
                 let birdX = cageX - Math.round(12 * cageScale);
@@ -993,6 +1019,7 @@
             }
 
             function update() {
+                updateMobileControlUI();
                 if(isGameOver || isVictory) return;
                 timer -= 0.02;
 
@@ -1131,16 +1158,6 @@
                     }
                 }
 
-                for(let s of seeds) {
-                    if(!s.collected) {
-                        if(player.x < s.x + s.w && player.x + player.w > s.x &&
-                           player.y < s.baseY + s.h && player.y + player.h > s.baseY) {
-                            s.collected = true; score += 50; timer += 40;
-                            addFloatingText('+50', s.x, s.baseY - 10);
-                        }
-                    }
-                }
-
                 if(eggsLeft === 0 && !isVictory) {
                     isVictory = true;
                     victoryTimer = 0;
@@ -1168,18 +1185,6 @@
                 
                 for(let e of elevators) {
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
-                }
-
-                let seedAlpha = (Math.sin(Date.now() * 0.01) + 1) / 2;
-                for(let s of seeds) {
-                    if(!s.collected) {
-                        ctx.fillStyle = seedAlpha > 0.3 ? C_MAGENTA : C_WHITE;
-                        ctx.beginPath();
-                        ctx.moveTo(s.x + Math.round(6*gfxScale), s.baseY); 
-                        ctx.lineTo(s.x + Math.round(12*gfxScale), s.baseY + s.h); 
-                        ctx.lineTo(s.x, s.baseY + s.h); 
-                        ctx.fill();
-                    }
                 }
 
                 for(let egg of eggs) {
