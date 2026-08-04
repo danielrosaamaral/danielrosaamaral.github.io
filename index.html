@@ -235,7 +235,7 @@
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum com Fundo igual ao da Página) -->
+        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum) -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-[#00FFFF] p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF00FF] text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-none bg-black border border-[#00FFFF] text-[#FFFF00] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1060,6 +1060,15 @@
                         player.vy = CLIMB_SPEED;
                         let lCenterX = activeLadder.x + Math.round(10 * gfxScale);
                         player.x += (lCenterX - playerCenterX) * 0.35;
+
+                        // Detetar chão da plataforma inferior para parar de descer a escada
+                        let bottomFloorY = isMobile ? 740 : 464;
+                        if (player.y + player.h >= bottomFloorY) {
+                            player.y = bottomFloorY - player.h;
+                            player.climbing = false;
+                            player.onGround = true;
+                            player.vy = 0;
+                        }
                     } else if(player.climbing) {
                         player.vy = 0;
                         if(keys['Space']) {
@@ -1110,6 +1119,15 @@
 
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+
+                // Limitar obrigatoriamente a posição Y para a plataforma do solo base
+                let floorLimitY = isMobile ? 740 - player.h : 464 - player.h;
+                if (player.y > floorLimitY) {
+                    player.y = floorLimitY;
+                    player.vy = 0;
+                    player.onGround = true;
+                    player.climbing = false;
+                }
 
                 player.onGround = false;
                 let platformThickness = Math.round(16 * gfxScale);
