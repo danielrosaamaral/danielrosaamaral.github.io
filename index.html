@@ -234,7 +234,7 @@
             </div>
         </div>
 
-      <!-- Ecrã Disclaimer Inicial -->
+        <!-- Ecrã Disclaimer Inicial -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-full bg-neutral-800 text-neutral-300 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -727,11 +727,11 @@
 
                 // Exactamente 5 Avestruzes patrulhando zonas distintas
                 ostriches = [
-                      {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
-                    {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
-                    {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560},
-                    {x: 70, y: 296, w: 22, h: 24, vx: -1.5, minX: 60, maxX: 160},
-                    {x: 530, y: 264, w: 22, h: 24, vx: 1.5, minX: 520, maxX: 610}
+                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 10, maxX: 120},
+                    {x: 350, y: 406, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 350, maxX: 450},
+                    {x: 180, y: 486, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 180, maxX: 280},
+                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.5, minX: 320, maxX: 430},
+                    {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.5, minX: 50, maxX: 160}
                 ];
 
             } else {
@@ -787,7 +787,9 @@
                 ostriches = [
                     {x: 20, y: 200, w: 22, h: 24, vx: 1.5, minX: 0, maxX: 100},
                     {x: 360, y: 168, w: 22, h: 24, vx: -1.5, minX: 340, maxX: 430},
-                    {x: 480, baseY: 400 - 24, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560}
+                    {x: 480, y: 376, w: 22, h: 24, vx: 1.5, minX: 460, maxX: 560},
+                    {x: 70, y: 296, w: 22, h: 24, vx: -1.5, minX: 60, maxX: 160},
+                    {x: 530, y: 264, w: 22, h: 24, vx: 1.5, minX: 520, maxX: 610}
                 ];
             }
 
