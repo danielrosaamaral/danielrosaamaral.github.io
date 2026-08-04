@@ -873,7 +873,7 @@
                 [0x9e00, 0x7700, 0x3f00, 0x5f00, 0x8e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x39fe, 0x3fff, 0x3efd, 0x1ef2, 0x0f0e, 0x07fc, 0x01f0],
                 [0x1e00, 0x3700, 0xff00, 0x1f00, 0x0e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x390e, 0x3ef3, 0x3efd, 0x1ffe, 0x0ffe, 0x07fc, 0x01f0]
             ],
-            // Ostrich / Duck Climbing ($9050)
+            // Ostrich / Duck Climbing ($9050) - 16 linhas de 16 bits
             ostrich_climbing: [
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0260, 0x0200, 0x0200, 0x0600],
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0640, 0x0040, 0x0040, 0x0060]
@@ -884,17 +884,7 @@
             corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00],
             
             // Pega da Gaiola ($8A30) - 16x8 bits
-            cage_handle: [0x0000, 0x0000, 0x07c0, 0x0c60, 0x0820, 0x0c60, 0x07c0, 0x0100],
-            
-            // Gaiola Unificada ($8A40-$8A98) - 4x3 Tiles de 8x8 bits (32x24 bits total)
-            cage_tiles: [
-                // Linha 0 (Cúpula)
-                [[0x00, 0x00, 0x03, 0x05, 0x0a, 0x15, 0x29, 0x2a], [0x1f, 0xe0, 0x18, 0x67, 0x89, 0x11, 0x11, 0x21], [0xf0, 0x0e, 0x31, 0xcc, 0x22, 0x11, 0x11, 0x08], [0x00, 0x00, 0x80, 0x40, 0xa0, 0x50, 0x28, 0xa8]],
-                // Linha 1 (Grades do Meio)
-                [[0x52, 0x52, 0x52, 0x52, 0x72, 0x5a, 0x57, 0x52], [0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xdf], [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x09, 0xfe], [0x94, 0x94, 0x94, 0x94, 0x9c, 0xb4, 0xd4, 0x94]],
-                // Linha 2 (Base)
-                [[0x52, 0x52, 0x52, 0x52, 0x32, 0x0a, 0x07, 0x00], [0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xff], [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x09, 0xfe], [0x94, 0x94, 0x94, 0x94, 0x98, 0xb0, 0xc0, 0x00]]
-            ]
+            cage_handle: [0x0000, 0x0000, 0x07c0, 0x0c60, 0x0820, 0x0c60, 0x07c0, 0x0100]
         };
 
         function initChuckieEgg() {
@@ -938,7 +928,7 @@
                 flyY: 0
             };
 
-            // TAMANHO DO HARRY AUMENTADO EM +33% (36x36px)
+            // TAMANHO DO HARRY AUMENTADO (28x28px - BITSCALE DE 1.75x)
             let player = {
                 x: 0, y: 0, 
                 w: Math.round(28 * gfxScale), 
@@ -959,7 +949,7 @@
                 victoryTimer = 0;
                 cagedDuck = { offsetRel: 0, dir: 1, isFlying: false, flyX: 0, flyY: 0 };
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 704 : 436;
+                player.y = isMobile ? 712 : 436;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -1028,11 +1018,11 @@
                 ];
 
                 ostriches = [
-                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120, state: 'walking', climbCooldown: 0},
-                    {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 40, maxX: 150, state: 'walking', climbCooldown: 0},
-                    {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 170, maxX: 290, state: 'walking', climbCooldown: 0},
-                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 320, maxX: 430, state: 'walking', climbCooldown: 0},
-                    {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 50, maxX: 160, state: 'walking', climbCooldown: 0}
+                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0},
+                    {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 7, state: 'walking', climbCooldown: 0},
+                    {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 3, state: 'walking', climbCooldown: 0},
+                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 8, state: 'walking', climbCooldown: 0},
+                    {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, platformIdx: 10, state: 'walking', climbCooldown: 0}
                 ];
 
             } else {
@@ -1083,11 +1073,11 @@
                 ];
 
                 ostriches = [
-                    {x: 20, y: 200, w: 22, h: 24, vx: 1.0, minX: 0, maxX: 100, state: 'walking', climbCooldown: 0},
-                    {x: 360, y: 168, w: 22, h: 24, vx: -1.0, minX: 340, maxX: 430, state: 'walking', climbCooldown: 0},
-                    {x: 70, y: 296, w: 22, h: 24, vx: 1.0, minX: 60, maxX: 160, state: 'walking', climbCooldown: 0},
-                    {x: 240, y: 344, w: 22, h: 24, vx: 1.0, minX: 230, maxX: 320, state: 'walking', climbCooldown: 0},
-                    {x: 530, y: 264, w: 22, h: 24, vx: 1.0, minX: 520, maxX: 610, state: 'walking', climbCooldown: 0}
+                    {x: 20, y: 200, w: 22, h: 24, vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0},
+                    {x: 360, y: 168, w: 22, h: 24, vx: -1.0, platformIdx: 11, state: 'walking', climbCooldown: 0},
+                    {x: 70, y: 296, w: 22, h: 24, vx: 1.0, platformIdx: 4, state: 'walking', climbCooldown: 0},
+                    {x: 240, y: 344, w: 22, h: 24, vx: 1.0, platformIdx: 5, state: 'walking', climbCooldown: 0},
+                    {x: 530, y: 264, w: 22, h: 24, vx: 1.0, platformIdx: 9, state: 'walking', climbCooldown: 0}
                 ];
             }
 
@@ -1157,7 +1147,7 @@
                 ctx.restore();
             }
 
-            // DESENHO DA AVESTRUZ COM ESCALA CONSTANTE 1:1 EM QUALQUER ESTADO (A CAMINHAR OU A SUBIR ESCADAS)
+            // DESENHO DA AVESTRUZ COM ESCALA CONSTANTE 1:1 EM QUALQUER ESTADO
             function drawOstrich(o) {
                 ctx.save();
                 let bitScale = (o.w / 16);
@@ -1208,7 +1198,7 @@
                 let cageW = Math.round(48 * gfxScale);
                 let cageH = Math.round(40 * gfxScale);
                 let cageX = isMobile ? 50 : 60;
-                let cageY = 120; // Base fica perfeitamente a 120 + 40 = 160 (assente na escada)
+                let cageY = 120;
 
                 // Pega do topo
                 ctx.fillStyle = C_YELLOW;
@@ -1439,53 +1429,77 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO REVISADO DAS AVESTRUZES (MUDANÇA DE PLATAFORMA + PAUSA APÓS SAIR DE ESCADA)
+                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO DAS AVESTRUZES (VINCULADAS ÀS PLATAFORMAS, 0% NO AR)
                 for(let o of ostriches) {
+                    let curPlatform = platformData[o.platformIdx || 0];
+
                     if (o.climbCooldown > 0) {
                         o.climbCooldown--;
                     }
 
                     if (o.state === 'climbing') {
                         o.y += o.vy;
-                        // Chegou ao fim da escada no topo ou fundo
+                        // Ao chegar à plataforma de destino no topo ou no fundo
                         if ((o.vy < 0 && o.y <= o.targetY) || (o.vy > 0 && o.y >= o.targetY)) {
                             o.y = o.targetY;
                             o.state = 'walking';
                             o.vy = 0;
                             o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
-                            o.climbCooldown = 40; // Obriga a caminhar na plataforma antes de poder entrar noutra escada
+                            o.climbCooldown = 40; // Cooldown obrigatório de caminhada antes de tentar entrar noutra escada
+                            if (o.targetPlatformIdx !== undefined) {
+                                o.platformIdx = o.targetPlatformIdx;
+                            }
                         }
                     } else {
-                        // Caminhada normal na plataforma
+                        // Caminhada rigorosamente em cima da plataforma assinalada
+                        o.y = curPlatform.y - o.h;
                         o.x += o.vx;
-                        let isAtEdge = (o.vx > 0 && o.x + o.w >= o.maxX) || (o.vx < 0 && o.x <= o.minX);
+
+                        let pMinX = curPlatform.x;
+                        let pMaxX = curPlatform.x + curPlatform.w - o.w;
+
+                        let isAtEdge = (o.vx > 0 && o.x >= pMaxX) || (o.vx < 0 && o.x <= pMinX);
 
                         if (isAtEdge) {
+                            o.x = Math.max(pMinX, Math.min(pMaxX, o.x));
                             let oCenterX = o.x + o.w / 2;
                             let ladderFound = null;
+                            let nextPlatformIdx = -1;
 
-                            // Apenas procura escadas se o cooldown de subida tiver terminado
-                            if (o.climbCooldown <= 0) {
-                                for(let l of ladders) {
+                            if (o.climbCooldown <= 0 && Math.random() < 0.50) {
+                                for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
+                                    let l = ladders[lIdx];
                                     if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 15 * gfxScale) {
-                                        ladderFound = l;
-                                        break;
+                                        // Procurar plataforma ligada no outro extremo da escada
+                                        for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
+                                            let p = platformData[pIdx];
+                                            if (pIdx !== o.platformIdx && Math.abs((p.y - o.h) - o.y) > 20) {
+                                                if (Math.abs((l.y - o.h) - (p.y - o.h)) < 15 || Math.abs((l.y + l.h - o.h) - (p.y - o.h)) < 15) {
+                                                    ladderFound = l;
+                                                    nextPlatformIdx = pIdx;
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
+                                    if (ladderFound) break;
                                 }
                             }
 
-                            if (ladderFound) {
+                            if (ladderFound && nextPlatformIdx !== -1) {
+                                let targetP = platformData[nextPlatformIdx];
                                 o.state = 'climbing';
                                 o.x = ladderFound.x + 10 * gfxScale - o.w / 2;
-                                if (o.y > ladderFound.y) {
+                                o.targetPlatformIdx = nextPlatformIdx;
+                                if (targetP.y < curPlatform.y) {
                                     o.vy = -1.2;
-                                    o.targetY = ladderFound.y - o.h;
+                                    o.targetY = targetP.y - o.h;
                                 } else {
                                     o.vy = 1.2;
-                                    o.targetY = ladderFound.y + ladderFound.h - o.h;
+                                    o.targetY = targetP.y - o.h;
                                 }
                             } else {
-                                // Inverte a marcha na borda da plataforma (comportamento arcade original)
+                                // Inverte o sentido de caminhada na borda da plataforma
                                 o.vx *= -1;
                             }
                         }
