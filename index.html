@@ -819,7 +819,7 @@
             }
         }
 
-        // FUNÇÃO DE RENDERIZAÇÃO DE MATRIZ DE BITS DO ZX SPECTRUM (DEFB / SKOOLKIT)
+        // RENDERIZADOR DE MATRIZ DE BITS DO ZX SPECTRUM (DEFB / SKOOLKIT)
         function drawBitmap(ctx, x, y, bitmap, bitsPerRow, scale, color) {
             ctx.fillStyle = color;
             for (let r = 0; r < bitmap.length; r++) {
@@ -827,6 +827,32 @@
                 for (let c = 0; c < bitsPerRow; c++) {
                     if ((rowVal & (1 << (bitsPerRow - 1 - c))) !== 0) {
                         ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                    }
+                }
+            }
+        }
+
+        // RENDERIZADOR ESPECÍFICO DA GAIOLA E PÁSSARO MONOCROMÁTICO IGUAL À IMAGEM SPECTRUM (32x32)
+        function drawExactBirdcage(ctx, x, y, scale) {
+            const matrix = [
+                0x0003c000, 0x00066000, 0x00066000, 0x0003c000, 0x00018000, 0x0003c000, 0x001fe000, 0x00e18700,
+                0x038181c0, 0x06018060, 0x0c199830, 0x18199818, 0x10199f00, 0x201d9f80, 0x20199f80, 0x20199e00,
+                0x20199c00, 0x20399c00, 0x207f9c00, 0x20fff800, 0x23f7f800, 0x23e3f800, 0x23c1f800, 0x21c1f000,
+                0x20e3e000, 0x207fc000, 0x20199000, 0x20199000, 0x20199000, 0x3fffffe0, 0x3fffffe0, 0x00000000
+            ];
+
+            ctx.fillStyle = C_YELLOW;
+            for (let r = 0; r < matrix.length; r++) {
+                let rowVal = matrix[r];
+                for (let c = 0; c < 32; c++) {
+                    if ((rowVal & (1 << (31 - c))) !== 0) {
+                        if (r === 13 && c === 18) {
+                            ctx.fillStyle = '#000000';
+                            ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                            ctx.fillStyle = C_YELLOW;
+                        } else {
+                            ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                        }
                     }
                 }
             }
@@ -868,20 +894,7 @@
             // Item Egg ($8508)
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             // Item Corn ($8510)
-            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00],
-            
-            // Pega da Gaiola ($8A30) - 16x8 bits
-            cage_handle: [0x0000, 0x0000, 0x07c0, 0x0c60, 0x0820, 0x0c60, 0x07c0, 0x0100],
-            
-            // Gaiola Unificada ($8A40-$8A98) - Matriz exata de 32x24 bits
-            birdcage: [
-                [0x00, 0x1f, 0xf0, 0x00], [0x00, 0xe0, 0x0e, 0x00], [0x03, 0x18, 0x31, 0x80], [0x05, 0x67, 0xcc, 0x40],
-                [0x0a, 0x89, 0x22, 0xa0], [0x15, 0x11, 0x11, 0x50], [0x29, 0x11, 0x11, 0x28], [0x2a, 0x21, 0x08, 0xa8],
-                [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94],
-                [0x72, 0x21, 0x08, 0x9c], [0x5a, 0x21, 0x08, 0xb4], [0x57, 0x21, 0x09, 0xd4], [0x52, 0xdf, 0xfe, 0x94],
-                [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94],
-                [0x32, 0x21, 0x08, 0x98], [0x0a, 0x21, 0x08, 0xb0], [0x07, 0x21, 0x09, 0xc0], [0x00, 0xff, 0xfe, 0x00]
-            ]
+            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
         };
 
         function initChuckieEgg() {
@@ -925,7 +938,6 @@
             let particles = [];
             let floatingTexts = [];
 
-            // Estado do Pássaro Gigante no interior da Gaiola e animação de Fuga
             let cagedDuck = {
                 offsetRel: 0,
                 dir: 1,
@@ -934,11 +946,11 @@
                 flyY: 0
             };
 
-            // TAMANHO DO HARRY AUMENTADO EM +33% (36x36px)
+            // TAMANHO DO HARRY AUMENTADO (28x28px - BITSCALE DE 1.75x)
             let player = {
                 x: 0, y: 0, 
-                w: Math.round(36 * gfxScale), 
-                h: Math.round(36 * gfxScale),
+                w: Math.round(28 * gfxScale), 
+                h: Math.round(28 * gfxScale),
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
                 facingRight: true, tiltAngle: 0
@@ -955,7 +967,7 @@
                 victoryTimer = 0;
                 cagedDuck = { offsetRel: 0, dir: 1, isFlying: false, flyX: 0, flyY: 0 };
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 704 : 428;
+                player.y = isMobile ? 712 : 436;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -969,7 +981,7 @@
             };
 
             if (isMobile) {
-                player.x = 240; player.y = 704;
+                player.x = 240; player.y = 712;
 
                 platformData = [
                     {x: 0, y: 740, w: 480},
@@ -1032,7 +1044,7 @@
                 ];
 
             } else {
-                player.x = 300; player.y = 428;
+                player.x = 300; player.y = 436;
 
                 platformData = [
                     {x: 0, y: 464, w: 640},
@@ -1134,7 +1146,7 @@
                 }
             }
 
-            // DESENHO DO HARRY AUMENTADO EM +33% (36x36px - BITSCALE 2.25x)
+            // DESENHO DO HARRY AUMENTADO (28x28px - BITSCALE 1.75x)
             function drawPlayer() {
                 ctx.save();
                 let bitScale = (player.w / 16);
@@ -1163,7 +1175,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA AUMENTADA EM 3X E PÁSSARO GIGANTE REDUZIDO EM 1/4 (100% NO INTERIOR)
+            // GAIOLA E PÁSSARO MONOCROMÁTICO EM AMARELO 100% IGUAL À TUA IMAGEM SPECTRUM
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1193,89 +1205,12 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA AUMENTADA EM 3X (TAMANHO ~100x90px)
-                let cScale = isMobile ? 3.0 : 2.5;
-                let cX = isMobile ? 20 : 30;
-                let cY = isMobile ? 75 : 85;
+                // GAIOLA E PÁSSARO MONOCROMÁTICO A AMARELO PURO (#FFFF00)
+                let cScale = isMobile ? 2.2 : 1.8;
+                let cX = isMobile ? 30 : 40;
+                let cY = isMobile ? 70 : 80;
 
-                // Pega do topo da gaiola ($8A30)
-                drawBitmap(ctx, cX + 8 * cScale, cY - 8 * cScale, SKOOL_SPRITES.cage_handle, 16, cScale, C_YELLOW);
-
-                // Matriz de 32x24 bits da Gaiola ($8A40)
-                for (let r = 0; r < SKOOL_SPRITES.birdcage.length; r++) {
-                    let rowBytes = SKOOL_SPRITES.birdcage[r];
-                    let lastTile = isVictory ? 3 : 4;
-                    for (let tileIdx = 0; tileIdx < lastTile; tileIdx++) {
-                        let byteVal = rowBytes[tileIdx];
-                        let tileX = cX + (tileIdx * 8 * cScale);
-                        let tileY = cY + (r * cScale);
-                        for (let bit = 0; bit < 8; bit++) {
-                            if ((byteVal & (1 << (7 - bit))) !== 0) {
-                                ctx.fillStyle = C_YELLOW;
-                                ctx.fillRect(Math.round(tileX + bit * cScale), Math.round(tileY), Math.ceil(cScale), Math.ceil(cScale));
-                            }
-                        }
-                    }
-                }
-
-                // PÁSSARO GIGANTE REDUZIDO EM 1/4 (0.65x) PARA FICAR TOTALMENTE CONTIDO DENTRO DA GAIOLA
-                let duckScale = cScale * 0.65;
-                let animFrame = Math.floor(Date.now() / 120) % 4;
-                let wingUp = (animFrame === 0 || animFrame === 1);
-
-                let dX, dY;
-                if (!cagedDuck.isFlying) {
-                    // Posição estritamente contida dentro da cúpula da gaiola
-                    let currentOffset = 8 * cScale + (cagedDuck.offsetRel * cScale * 0.22);
-                    dX = cX + currentOffset;
-                    dY = cY + (8 * cScale);
-                } else {
-                    // Animação de fuga a voar para fora da gaiola na vitória
-                    dX = cX + (8 * cScale) + (cagedDuck.flyX * cScale);
-                    dY = cY + (8 * cScale) - (cagedDuck.flyY * cScale);
-                }
-
-                // Corpo do Pássaro Amarelo
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(dX, dY, Math.round(15 * duckScale), Math.round(11 * duckScale));
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, Math.round(1 * duckScale));
-                ctx.strokeRect(dX, dY, Math.round(15 * duckScale), Math.round(11 * duckScale));
-
-                // Cabeça
-                let headX = (cagedDuck.dir >= 0) ? dX + Math.round(8 * duckScale) : dX - Math.round(3 * duckScale);
-                let headY = dY - Math.round(8 * duckScale);
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(headX, headY, Math.round(10 * duckScale), Math.round(9 * duckScale));
-                ctx.strokeRect(headX, headY, Math.round(10 * duckScale), Math.round(9 * duckScale));
-
-                // Bico Vermelho
-                ctx.fillStyle = C_RED;
-                let beakX = (cagedDuck.dir >= 0) ? headX + Math.round(10 * duckScale) : headX - Math.round(5 * duckScale);
-                ctx.fillRect(beakX, headY + Math.round(2 * duckScale), Math.round(5 * duckScale), Math.round(3 * duckScale));
-
-                // Olho Branco/Preto
-                ctx.fillStyle = C_WHITE;
-                let eyeX = (cagedDuck.dir >= 0) ? headX + Math.round(4 * duckScale) : headX + Math.round(2 * duckScale);
-                ctx.fillRect(eyeX, headY + Math.round(1.5 * duckScale), Math.round(3 * duckScale), Math.round(3 * duckScale));
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(eyeX + Math.round(1 * duckScale), headY + Math.round(2 * duckScale), Math.max(1, Math.round(1.5 * duckScale)), Math.max(1, Math.round(1.5 * duckScale)));
-
-                // Asa
-                ctx.fillStyle = C_YELLOW;
-                let wingY = wingUp ? dY - Math.round(2 * duckScale) : dY + Math.round(2 * duckScale);
-                ctx.fillRect(dX + Math.round(2 * duckScale), wingY, Math.round(8 * duckScale), Math.round(5 * duckScale));
-                ctx.strokeRect(dX + Math.round(2 * duckScale), wingY, Math.round(8 * duckScale), Math.round(5 * duckScale));
-
-                // Pernas assentes na base da gaiola
-                if (!cagedDuck.isFlying) {
-                    ctx.fillStyle = C_YELLOW;
-                    let legY = dY + Math.round(11 * duckScale);
-                    let floorY = cY + Math.round(23 * cScale);
-                    let lH = Math.max(2, floorY - legY);
-                    ctx.fillRect(dX + Math.round(3 * duckScale), legY, Math.max(2, Math.round(2 * duckScale)), lH);
-                    ctx.fillRect(dX + Math.round(9 * duckScale), legY, Math.max(2, Math.round(2 * duckScale)), lH);
-                }
+                drawExactBirdcage(ctx, cX, cY, cScale);
             }
 
             function resetLevel() {
@@ -1288,7 +1223,7 @@
                     stopBGM();
                 } else {
                     player.x = isMobile ? 240 : 300; 
-                    player.y = isMobile ? 704 : 428; 
+                    player.y = isMobile ? 712 : 436; 
                     player.vx = 0; player.vy = 0;
                     player.climbing = false;
                 }
@@ -1298,13 +1233,11 @@
                 updateMobileControlUI();
                 if(isGameOver) return;
 
-                // Animação de passeio do pássaro contido no interior da gaiola
                 if (!cagedDuck.isFlying) {
                     cagedDuck.offsetRel += cagedDuck.dir * 0.35;
                     if (cagedDuck.offsetRel > 14) cagedDuck.dir = -1;
                     if (cagedDuck.offsetRel < -14) cagedDuck.dir = 1;
                 } else {
-                    // Animação de fuga a voar para fora da gaiola na vitória
                     cagedDuck.flyX += 3.5;
                     cagedDuck.flyY += 2.5;
                 }
