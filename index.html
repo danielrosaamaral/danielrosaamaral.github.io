@@ -840,6 +840,32 @@
             }
         }
 
+        // RENDERIZADOR ESPECÍFICO DA GAIOLA E PÁSSARO MONOCROMÁTICO IGUAL À IMAGEM SPECTRUM (32x32)
+        function drawExactBirdcage(ctx, x, y, scale) {
+            const matrix = [
+                0x0003c000, 0x00066000, 0x00066000, 0x0003c000, 0x00018000, 0x0003c000, 0x001fe000, 0x00e18700,
+                0x038181c0, 0x06018060, 0x0c199830, 0x18199818, 0x10199f00, 0x201d9f80, 0x20199f80, 0x20199e00,
+                0x20199c00, 0x20399c00, 0x207f9c00, 0x20fff800, 0x23f7f800, 0x23e3f800, 0x23c1f800, 0x21c1f000,
+                0x20e3e000, 0x207fc000, 0x20199000, 0x20199000, 0x20199000, 0x3fffffe0, 0x3fffffe0, 0x00000000
+            ];
+
+            ctx.fillStyle = C_YELLOW;
+            for (let r = 0; r < matrix.length; r++) {
+                let rowVal = matrix[r];
+                for (let c = 0; c < 32; c++) {
+                    if ((rowVal & (1 << (31 - c))) !== 0) {
+                        if (r === 13 && c === 18) {
+                            ctx.fillStyle = '#000000';
+                            ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                            ctx.fillStyle = C_YELLOW;
+                        } else {
+                            ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                        }
+                    }
+                }
+            }
+        }
+
         // ESTRUTURAS DE SPRITES BITMAP RETIRADAS DIRETAMENTE DO FICHEIRO CHUCKIE-EGG.SKOOL
         const SKOOL_SPRITES = {
             // Harry / Farmer Right ($8DF0)
@@ -873,7 +899,7 @@
                 [0x9e00, 0x7700, 0x3f00, 0x5f00, 0x8e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x39fe, 0x3fff, 0x3efd, 0x1ef2, 0x0f0e, 0x07fc, 0x01f0],
                 [0x1e00, 0x3700, 0xff00, 0x1f00, 0x0e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x390e, 0x3ef3, 0x3efd, 0x1ffe, 0x0ffe, 0x07fc, 0x01f0]
             ],
-            // Ostrich / Duck Climbing ($9050) - 16 linhas de 16 bits
+            // Ostrich / Duck Climbing ($9050)
             ostrich_climbing: [
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0260, 0x0200, 0x0200, 0x0600],
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0640, 0x0040, 0x0040, 0x0060]
@@ -881,10 +907,7 @@
             // Item Egg ($8508)
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             // Item Corn ($8510)
-            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00],
-            
-            // Pega da Gaiola ($8A30) - 16x8 bits
-            cage_handle: [0x0000, 0x0000, 0x07c0, 0x0c60, 0x0820, 0x0c60, 0x07c0, 0x0100]
+            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
         };
 
         function initChuckieEgg() {
@@ -928,7 +951,7 @@
                 flyY: 0
             };
 
-            // TAMANHO DO HARRY AUMENTADO (28x28px - BITSCALE DE 1.75x)
+            // TAMANHO DO HARRY AUMENTADO EM +33% (36x36px)
             let player = {
                 x: 0, y: 0, 
                 w: Math.round(28 * gfxScale), 
@@ -949,7 +972,7 @@
                 victoryTimer = 0;
                 cagedDuck = { offsetRel: 0, dir: 1, isFlying: false, flyX: 0, flyY: 0 };
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 712 : 436;
+                player.y = isMobile ? 704 : 428;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -1164,7 +1187,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA ASSENTE NA ESCADA E PÁSSARO ESPAÇADO DENTRO DA GAIOLA COM ANIMAÇÃO DE BICO E ASAS
+            // GAIOLA MONOCROMÁTICA A AMARELO PURO (#FFFF00)
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1194,79 +1217,12 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA ASSENTE DIRETA NO TOPO DA ESCADA (y = 160)
-                let cageW = Math.round(48 * gfxScale);
-                let cageH = Math.round(40 * gfxScale);
-                let cageX = isMobile ? 50 : 60;
-                let cageY = 120;
+                // GAIOLA MONOCROMÁTICA A AMARELO PURO (#FFFF00)
+                let cScale = isMobile ? 2.2 : 1.8;
+                let cX = isMobile ? 30 : 40;
+                let cY = isMobile ? 70 : 80;
 
-                // Pega do topo
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(cageX + cageW/2 - Math.round(6*gfxScale), cageY - Math.round(8*gfxScale), Math.round(12*gfxScale), Math.round(8*gfxScale));
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, Math.round(1*gfxScale));
-                ctx.strokeRect(cageX + cageW/2 - Math.round(6*gfxScale), cageY - Math.round(8*gfxScale), Math.round(12*gfxScale), Math.round(8*gfxScale));
-
-                // Cúpula Curva
-                ctx.strokeStyle = C_YELLOW;
-                ctx.lineWidth = Math.max(2, Math.round(2*gfxScale));
-                ctx.beginPath();
-                ctx.arc(cageX + cageW/2, cageY + Math.round(20*gfxScale), cageW/2, Math.PI, 0);
-                ctx.stroke();
-
-                // Base plana assente na escada
-                ctx.fillRect(cageX, cageY + cageH, cageW, Math.max(3, Math.round(3*gfxScale)));
-
-                // Grades verticais
-                let barCols = isVictory ? 3 : 4;
-                for(let i = 1; i <= barCols; i++) {
-                    let bx = cageX + (i * cageW / 5);
-                    ctx.fillRect(bx, cageY + Math.round(10*gfxScale), Math.max(2, Math.round(2*gfxScale)), cageH - Math.round(10*gfxScale));
-                }
-
-                // PÁSSARO CENTRADO COM ESPAÇO A TODA A VOLTA E ANIMAÇÃO DE BICO/ASAS
-                let animFrame = Math.floor(Date.now() / 150) % 4;
-                let wingUp = (animFrame === 0 || animFrame === 1);
-                let beakOpen = (animFrame === 2) ? Math.round(2 * gfxScale) : 0;
-
-                let bX = cageX + (cageW / 2) - Math.round(8 * gfxScale);
-                let bY = cageY + (cageH / 2) - Math.round(4 * gfxScale);
-
-                // Corpo
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(bX, bY, Math.round(14 * gfxScale), Math.round(11 * gfxScale));
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, Math.round(1 * gfxScale));
-                ctx.strokeRect(bX, bY, Math.round(14 * gfxScale), Math.round(11 * gfxScale));
-
-                // Cabeça
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(bX + Math.round(8 * gfxScale), bY - Math.round(7 * gfxScale), Math.round(9 * gfxScale), Math.round(8 * gfxScale));
-                ctx.strokeRect(bX + Math.round(8 * gfxScale), bY - Math.round(7 * gfxScale), Math.round(9 * gfxScale), Math.round(8 * gfxScale));
-
-                // Bico Vermelho Animado
-                ctx.fillStyle = C_RED;
-                ctx.fillRect(bX + Math.round(17 * gfxScale), bY - Math.round(5 * gfxScale), Math.round(5 * gfxScale), Math.round(3 * gfxScale) + beakOpen);
-
-                // Olho Branco/Preto
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(bX + Math.round(10 * gfxScale), bY - Math.round(6 * gfxScale), Math.round(3 * gfxScale), Math.round(3 * gfxScale));
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(bX + Math.round(11 * gfxScale), bY - Math.round(5 * gfxScale), Math.max(1, Math.round(1.5 * gfxScale)), Math.max(1, Math.round(1.5 * gfxScale)));
-
-                // Asa com Batimento
-                ctx.fillStyle = C_YELLOW;
-                let wingY = wingUp ? bY - Math.round(3 * gfxScale) : bY + Math.round(2 * gfxScale);
-                ctx.fillRect(bX + Math.round(2 * gfxScale), wingY, Math.round(7 * gfxScale), Math.round(5 * gfxScale));
-                ctx.strokeRect(bX + Math.round(2 * gfxScale), wingY, Math.round(7 * gfxScale), Math.round(5 * gfxScale));
-
-                // Pernas a tocar na base
-                ctx.fillStyle = C_YELLOW;
-                let legY = bY + Math.round(11 * gfxScale);
-                let floorY = cageY + cageH;
-                let lH = Math.max(2, floorY - legY);
-                ctx.fillRect(bX + Math.round(3 * gfxScale), legY, Math.max(2, Math.round(2 * gfxScale)), lH);
-                ctx.fillRect(bX + Math.round(9 * gfxScale), legY, Math.max(2, Math.round(2 * gfxScale)), lH);
+                drawExactBirdcage(ctx, cX, cY, cScale);
             }
 
             function resetLevel() {
@@ -1288,6 +1244,15 @@
             function update() {
                 updateMobileControlUI();
                 if(isGameOver) return;
+
+                if (!cagedDuck.isFlying) {
+                    cagedDuck.offsetRel += cagedDuck.dir * 0.35;
+                    if (cagedDuck.offsetRel > 14) cagedDuck.dir = -1;
+                    if (cagedDuck.offsetRel < -14) cagedDuck.dir = 1;
+                } else {
+                    cagedDuck.flyX += 3.5;
+                    cagedDuck.flyY += 2.5;
+                }
 
                 if (isVictory) return;
                 timer -= 0.02;
