@@ -995,18 +995,52 @@
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
 
-                let birdAnim = Math.sin(Date.now() * 0.005) > 0 ? 1 : 0;
-                let birdX = cageX - Math.round(12 * cageScale);
-                let birdY = cageY + Math.round(20 * cageScale) - birdAnim;
-                
-                // Pássaro gigante dentro da gaiola desenhado a AMARELO (#FFFF00) idêntico ao jogo original ZX Spectrum de 1983
+                // Animação de movimento do pássaro gigante da gaiola (batimento de asas, aceno de cabeça e bico)
+                let animFrame = Math.floor(Date.now() / 150) % 4;
+                let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(1.5 * cageScale) : 0;
+                let wingUp = (animFrame === 0 || animFrame === 1);
+
+                // Posição ajustada e tamanho AUMENTADO para preencher a gaiola de forma imponente
+                let bX = cageX - Math.round(15 * cageScale);
+                let bY = cageY + Math.round(12 * cageScale);
+
+                // 1. Corpo principal do Pássaro Gigante (Amarelo #FFFF00)
                 ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(birdX, birdY, Math.round(14 * cageScale), Math.round(10 * cageScale));
-                ctx.fillRect(birdX + Math.round(8 * cageScale), birdY - Math.round(8 * cageScale), Math.round(8 * cageScale), Math.round(8 * cageScale));
+                ctx.fillRect(bX, bY + headBob, Math.round(24 * cageScale), Math.round(16 * cageScale));
+
+                // 2. Cabeça Aumentada
+                let headX = bX + Math.round(12 * cageScale);
+                let headY = bY - Math.round(11 * cageScale) + headBob;
+                ctx.fillRect(headX, headY, Math.round(14 * cageScale), Math.round(12 * cageScale));
+
+                // 3. Bico Detalhado (Vermelho)
                 ctx.fillStyle = C_RED;
-                ctx.fillRect(birdX + Math.round(14 * cageScale), birdY - Math.round(6 * cageScale), Math.round(4 * cageScale), Math.round(3 * cageScale));
+                let beakOpen = (animFrame === 2) ? Math.round(2 * cageScale) : 0;
+                ctx.fillRect(headX + Math.round(14 * cageScale), headY + Math.round(4 * cageScale), Math.round(7 * cageScale), Math.round(4 * cageScale) + beakOpen);
+
+                // 4. Olho Detalhado (Branco com Pupila Preta)
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(headX + Math.round(6 * cageScale), headY + Math.round(2 * cageScale), Math.round(4 * cageScale), Math.round(4 * cageScale));
                 ctx.fillStyle = '#000000';
-                ctx.fillRect(birdX + Math.round(10 * cageScale), birdY - Math.round(6 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
+                ctx.fillRect(headX + Math.round(8 * cageScale), headY + Math.round(3 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
+
+                // 5. Asa Animada em Batimento
+                ctx.fillStyle = C_YELLOW;
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = Math.max(1, Math.round(1.5 * cageScale));
+                let wingY = wingUp ? bY - Math.round(4 * cageScale) + headBob : bY + Math.round(3 * cageScale) + headBob;
+                ctx.fillRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
+                ctx.strokeRect(bX + Math.round(3 * cageScale), wingY, Math.round(12 * cageScale), Math.round(8 * cageScale));
+
+                // 6. Pernas Detalhadas assentes na base da gaiola
+                ctx.fillStyle = C_YELLOW;
+                let legY = bY + Math.round(16 * cageScale) + headBob;
+                let floorTargetY = cageY + Math.round(40 * cageScale);
+                let legH = floorTargetY - legY;
+                if (legH > 0) {
+                    ctx.fillRect(bX + Math.round(6 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
+                    ctx.fillRect(bX + Math.round(16 * cageScale), legY, Math.max(2, Math.round(3 * cageScale)), legH);
+                }
             }
 
             function resetLevel() {
