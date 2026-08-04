@@ -819,6 +819,58 @@
             }
         }
 
+        // FUNÇÃO DE RENDERIZAÇÃO DE MATRIZ DE BITS DO ZX SPECTRUM (DEFB / SKOOLKIT)
+        function drawBitmap(ctx, x, y, bitmap, bitsPerRow, scale, color) {
+            ctx.fillStyle = color;
+            for (let r = 0; r < bitmap.length; r++) {
+                let rowVal = bitmap[r];
+                for (let c = 0; c < bitsPerRow; c++) {
+                    if ((rowVal & (1 << (bitsPerRow - 1 - c))) !== 0) {
+                        ctx.fillRect(Math.round(x + c * scale), Math.round(y + r * scale), Math.ceil(scale), Math.ceil(scale));
+                    }
+                }
+            }
+        }
+
+        // ESTRUTURAS DE SPRITES BITMAP RETIRADAS DIRETAMENTE DO FICHEIRO CHUCKIE-EGG.SKOOL
+        const SKOOL_SPRITES = {
+            // Harry / Farmer Right ($8DF0)
+            farmer_right: [
+                [0x0000, 0x0380, 0x03c0, 0x03c0, 0x3ffc, 0x0340, 0x03c0, 0x0180, 0x03e0, 0x06f0, 0x06f0, 0x06e0, 0x03c0, 0x0100, 0x01c0, 0x0000],
+                [0x0000, 0x0380, 0x03c0, 0x03c0, 0x3ffc, 0x0340, 0x03c0, 0x0180, 0x03e0, 0x06f0, 0x05f0, 0x05e0, 0x03c0, 0x0450, 0x0220, 0x0000],
+                [0x0000, 0x0380, 0x03c0, 0x03c0, 0x3ffc, 0x0340, 0x03c0, 0x0180, 0x03e0, 0x06f0, 0x06f0, 0x06e0, 0x03c0, 0x0100, 0x01c0, 0x0000],
+                [0x0000, 0x0380, 0x03c0, 0x03c0, 0x3ffc, 0x0340, 0x03c0, 0x0180, 0x03e0, 0x06f0, 0x0730, 0x07e0, 0x03c0, 0x0450, 0x0220, 0x0000]
+            ],
+            // Harry / Farmer Left ($8E70)
+            farmer_left: [
+                [0x0000, 0x01c0, 0x03c0, 0x03c0, 0x3ffc, 0x02c0, 0x03c0, 0x0180, 0x07c0, 0x0f60, 0x0f60, 0x0760, 0x03c0, 0x0080, 0x0380, 0x0000],
+                [0x0000, 0x01c0, 0x03c0, 0x03c0, 0x3ffc, 0x02c0, 0x03c0, 0x0180, 0x07c0, 0x0f60, 0x0fa0, 0x07a0, 0x03c0, 0x0a20, 0x0440, 0x0000],
+                [0x0000, 0x01c0, 0x03c0, 0x03c0, 0x3ffc, 0x02c0, 0x03c0, 0x0180, 0x07c0, 0x0f60, 0x0f60, 0x0760, 0x03c0, 0x0080, 0x0380, 0x0000],
+                [0x0000, 0x01c0, 0x03c0, 0x03c0, 0x3ffc, 0x02c0, 0x03c0, 0x0180, 0x07c0, 0x0f60, 0x0ce0, 0x07e0, 0x03c0, 0x0a20, 0x0440, 0x0000]
+            ],
+            // Harry / Farmer Climbing ($8F90)
+            farmer_climbing: [
+                [0x0000, 0x0240, 0x03c0, 0x03c0, 0x3ffc, 0x03c0, 0x0980, 0x17e0, 0x1ff0, 0x0ff8, 0x07e8, 0x07e8, 0x0270, 0x0200, 0x0e00, 0x0000],
+                [0x0000, 0x0240, 0x03c0, 0x03c0, 0x3ffc, 0x03c0, 0x0180, 0x07e0, 0x1ff8, 0x0ff0, 0x07e0, 0x07e0, 0x0240, 0x0e70, 0x0000, 0x0000],
+                [0x0000, 0x0240, 0x03c0, 0x03c0, 0x3ffc, 0x03c0, 0x0190, 0x07e8, 0x0ff8, 0x1ff0, 0x17e0, 0x17e0, 0x0e40, 0x0040, 0x0070, 0x0000],
+                [0x0000, 0x0240, 0x03c0, 0x03c0, 0x3ffc, 0x03c0, 0x0180, 0x07e0, 0x1ff8, 0x0ff0, 0x07e0, 0x07e0, 0x0240, 0x0e70, 0x0000, 0x0000]
+            ],
+            // Ostrich / Duck Right ($8EF0)
+            duck_right: [
+                [0x0079, 0x00ee, 0x00fc, 0x00fa, 0x0071, 0x0070, 0x0030, 0x0038, 0x1e1c, 0x7f9c, 0xfffc, 0xbf7c, 0x4f78, 0x70f0, 0x3fe0, 0x0f80],
+                [0x0078, 0x00ec, 0x00ff, 0x00f8, 0x0070, 0x0070, 0x0030, 0x0038, 0x1e1c, 0x709c, 0xcf7c, 0xbf7c, 0x7ff8, 0x7ff0, 0x3fe0, 0x0f80]
+            ],
+            // Ostrich / Duck Left ($8F30)
+            duck_left: [
+                [0x9e00, 0x7700, 0x3f00, 0x5f00, 0x8e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x39fe, 0x3fff, 0x3efd, 0x1ef2, 0x0f0e, 0x07fc, 0x01f0],
+                [0x1e00, 0x3700, 0xff00, 0x1f00, 0x0e00, 0x0e00, 0x0c00, 0x1c00, 0x3878, 0x390e, 0x3ef3, 0x3efd, 0x1ffe, 0x0ffe, 0x07fc, 0x01f0]
+            ],
+            // Item Egg ($8508)
+            egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
+            // Item Corn ($8510)
+            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
+        };
+
         function initChuckieEgg() {
             const canvas = document.getElementById('chuckieCanvas');
             const ctx = canvas.getContext('2d');
@@ -1058,90 +1110,37 @@
                 }
             }
 
-            // Réplica 1:1 Pixel-Art de Harry (100% Amarelo #FFFF00 com Animação de Corrida de 2 Fotogramas)
+            // DESENHO DO HARRY A PARTIR DA MATRIZ BITMAP DE 16x16 DEFB ($8DF0 DO ZX SPECTRUM)
             function drawPlayer() {
                 ctx.save();
-                ctx.translate(player.x + player.w/2, player.y + player.h/2);
-                ctx.rotate(player.tiltAngle);
-
-                let px = -player.w/2;
-                let py = -player.h/2;
-                let s = gfxScale;
-
-                ctx.fillStyle = C_YELLOW;
-
-                // 1. Chapéu de abas largas duplo
-                ctx.fillRect(px - Math.round(3*s), py - Math.round(8*s), Math.round(24*s), Math.round(3*s));
-                ctx.fillRect(px + Math.round(2*s), py - Math.round(14*s), Math.round(14*s), Math.round(6*s));
-
-                // 2. Rosto / Cabeça
-                ctx.fillRect(px + Math.round(3*s), py - Math.round(5*s), Math.round(12*s), Math.round(7*s));
-
-                // 3. Olho
-                ctx.fillStyle = '#000000';
-                if(player.facingRight) ctx.fillRect(px + Math.round(10*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
-                else ctx.fillRect(px + Math.round(4*s), py - Math.round(3*s), Math.round(2*s), Math.round(2*s));
-
-                // 4. Tronco
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(2*s), Math.round(14*s), Math.round(11*s));
-                // Cinto
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(px + Math.round(2*s), py + Math.round(12*s), Math.round(14*s), Math.round(1*s));
-
-                // 5. Animação de Corrida de 2 fotogramas para as pernas
-                ctx.fillStyle = C_YELLOW;
+                let bitScale = (player.w / 16);
                 let isMoving = Math.abs(player.vx) > 0.1 || player.climbing;
-                let runFrame = isMoving ? (Math.floor(Date.now() / 90) % 2) : 0;
+                let frameIdx = isMoving ? (Math.floor(Date.now() / 90) % 4) : 0;
+                
+                let animSet = SKOOL_SPRITES.farmer_right;
+                if (player.climbing) {
+                    animSet = SKOOL_SPRITES.farmer_climbing;
+                } else if (!player.facingRight) {
+                    animSet = SKOOL_SPRITES.farmer_left;
+                }
 
-                let leg1X = runFrame === 0 ? px + Math.round(1*s) : px + Math.round(5*s);
-                let leg2X = runFrame === 0 ? px + Math.round(13*s) : px + Math.round(9*s);
-
-                ctx.fillRect(leg1X, py + Math.round(13*s), Math.round(4*s), Math.round(8*s));
-                ctx.fillRect(leg2X, py + Math.round(13*s), Math.round(4*s), Math.round(8*s));
-
-                // 6. Pés
-                ctx.fillRect(leg1X - Math.round(1*s), py + Math.round(21*s), Math.round(6*s), Math.round(3*s));
-                ctx.fillRect(leg2X - Math.round(1*s), py + Math.round(21*s), Math.round(6*s), Math.round(3*s));
-
+                let currentFrame = animSet[frameIdx];
+                drawBitmap(ctx, player.x, player.y, currentFrame, 16, bitScale, C_YELLOW);
                 ctx.restore();
             }
 
+            // DESENHO DA AVESTRUZ A PARTIR DA MATRIZ BITMAP DE 16x16 DEFB ($8EF0 DO ZX SPECTRUM)
             function drawOstrich(o) {
                 ctx.save();
-                let s = gfxScale;
-                ctx.fillStyle = C_CYAN;
-                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(6*s), Math.round(14*s), Math.round(12*s));
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(8*s), Math.round(8*s), Math.round(6*s));
-                
-                ctx.fillStyle = C_CYAN;
-                if (o.vx > 0) {
-                    ctx.fillRect(o.x + Math.round(12*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
-                    ctx.fillRect(o.x + Math.round(14*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x + Math.round(21*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x + Math.round(18*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
-                } else {
-                    ctx.fillRect(o.x + Math.round(1*s), o.y - Math.round(2*s), Math.round(5*s), Math.round(12*s));
-                    ctx.fillRect(o.x - Math.round(3*s), o.y - Math.round(7*s), Math.round(7*s), Math.round(6*s));
-                    ctx.fillStyle = C_YELLOW; ctx.fillRect(o.x - Math.round(8*s), o.y - Math.round(5*s), Math.round(5*s), Math.round(3*s));
-                    ctx.fillStyle = '#000000'; ctx.fillRect(o.x - Math.round(1*s), o.y - Math.round(5*s), Math.round(2*s), Math.round(2*s));
-                }
-                
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(10*s), Math.round(7*s), Math.round(5*s));
-
-                ctx.fillStyle = C_CYAN;
-                let legOffset = Math.sin(Date.now() * 0.02) * (3 * s);
-                ctx.fillRect(o.x + Math.round(5*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) + legOffset);
-                ctx.fillRect(o.x + Math.round(11*s), o.y + Math.round(18*s), Math.max(2, Math.round(2*s)), Math.round(6*s) - legOffset);
-                ctx.fillRect(o.x + Math.round(3*s), o.y + Math.round(24*s) + legOffset, Math.round(5*s), Math.round(2*s));
-                ctx.fillRect(o.x + Math.round(9*s), o.y + Math.round(24*s) - legOffset, Math.round(5*s), Math.round(2*s));
-
+                let bitScale = (o.w / 16);
+                let frameIdx = Math.floor(Date.now() / 100) % 2;
+                let animSet = (o.vx > 0) ? SKOOL_SPRITES.duck_right : SKOOL_SPRITES.duck_left;
+                let currentFrame = animSet[frameIdx];
+                drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_CYAN);
                 ctx.restore();
             }
 
-            // Cabeçalho de UI sem caixas vermelhas (Texto limpo sobre o fundo do jogo)
+            // CABEÇALHO DA UI NO ESTILO ZX SPECTRUM ORIGINAL
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1192,7 +1191,7 @@
                     ctx.fillRect(cageX - Math.round(30 * cageScale) + i - 35, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(40 * cageScale));
                 }
 
-                // Pássaro Gigante da Gaiola Detalhado e Nítido com Contornos
+                // Pássaro Gigante da Gaiola Detalhado
                 let animFrame = Math.floor(Date.now() / 150) % 4;
                 let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(1.5 * cageScale) : 0;
                 let wingUp = (animFrame === 0 || animFrame === 1);
@@ -1459,25 +1458,19 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
+                // Desenho das Sementes (`gfx_item_corn` $8510) com a matriz original
                 for(let s of seeds) {
                     if(!s.collected) {
-                        ctx.fillStyle = C_MAGENTA;
-                        ctx.beginPath();
-                        ctx.moveTo(s.x + Math.round(6*gfxScale), s.baseY); 
-                        ctx.lineTo(s.x + Math.round(12*gfxScale), s.baseY + s.h); 
-                        ctx.lineTo(s.x, s.baseY + s.h); 
-                        ctx.fill();
+                        drawBitmap(ctx, s.x, s.baseY, SKOOL_SPRITES.corn, 8, gfxScale * 1.5, C_MAGENTA);
                     }
                 }
 
+                // Desenho dos Ovos (`gfx_item_egg` $8508) com a matriz original
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
                         let renderY = egg.baseY + bobOffset;
-                        ctx.fillStyle = C_WHITE; 
-                        ctx.beginPath();
-                        ctx.ellipse(egg.x + Math.round(7*gfxScale), renderY + Math.round(6*gfxScale), Math.round(7*gfxScale), Math.round(5*gfxScale), 0, 0, Math.PI*2); 
-                        ctx.fill();
+                        drawBitmap(ctx, egg.x, renderY, SKOOL_SPRITES.egg, 8, gfxScale * 1.5, C_WHITE);
                     }
                 }
 
