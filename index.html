@@ -235,7 +235,7 @@
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum) -->
+        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum com Fundo igual ao da Página) -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-[#00FFFF] p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF00FF] text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-none bg-black border border-[#00FFFF] text-[#FFFF00] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -998,10 +998,12 @@
                 let birdAnim = Math.sin(Date.now() * 0.005) > 0 ? 1 : 0;
                 let birdX = cageX - Math.round(12 * cageScale);
                 let birdY = cageY + Math.round(20 * cageScale) - birdAnim;
-                ctx.fillStyle = C_CYAN;
+                
+                // Pássaro gigante dentro da gaiola desenhado a AMARELO (#FFFF00) idêntico ao jogo original ZX Spectrum de 1983
+                ctx.fillStyle = C_YELLOW;
                 ctx.fillRect(birdX, birdY, Math.round(14 * cageScale), Math.round(10 * cageScale));
                 ctx.fillRect(birdX + Math.round(8 * cageScale), birdY - Math.round(8 * cageScale), Math.round(8 * cageScale), Math.round(8 * cageScale));
-                ctx.fillStyle = C_YELLOW;
+                ctx.fillStyle = C_RED;
                 ctx.fillRect(birdX + Math.round(14 * cageScale), birdY - Math.round(6 * cageScale), Math.round(4 * cageScale), Math.round(3 * cageScale));
                 ctx.fillStyle = '#000000';
                 ctx.fillRect(birdX + Math.round(10 * cageScale), birdY - Math.round(6 * cageScale), Math.max(2, Math.round(2 * cageScale)), Math.max(2, Math.round(2 * cageScale)));
