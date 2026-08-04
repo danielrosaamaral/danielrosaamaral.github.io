@@ -437,8 +437,16 @@
         </div>
     </main>
 
-    <!-- SINTETIZADOR WEB AUDIO API & MOTOR HÁPTICO -->
+    <!-- CONSTANTES GLOBAIS DE COR DO ZX SPECTRUM -->
     <script>
+        const C_GREEN = '#00CC00';
+        const C_MAGENTA = '#FF00FF';
+        const C_CYAN = '#00FFFF';
+        const C_YELLOW = '#FFFF00';
+        const C_WHITE = '#FFFFFF';
+        const C_RED = '#FF0000';
+        const C_BLUE = '#0033FF';
+
         const SESSION_ID = Math.random().toString(36).substring(2, 15);
         const SESSION_KEY = 'da_active_game_session';
 
@@ -913,14 +921,6 @@
             const CLIMB_SPEED = 3.2;
             const FRICTION = 0.78;
 
-            const C_GREEN = '#00CC00';
-            const C_MAGENTA = '#FF00FF';
-            const C_CYAN = '#00FFFF';
-            const C_YELLOW = '#FFFF00';
-            const C_WHITE = '#FFFFFF';
-            const C_RED = '#FF0000';
-            const C_BLUE = '#0033FF';
-
             let score = 0;
             let timer = 893;
             let lives = 3;
@@ -1175,7 +1175,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA E PÁSSARO MONOCROMÁTICO EM AMARELO 100% IGUAL À TUA IMAGEM SPECTRUM
+            // GAIOLA E PÁSSARO MONOCROMÁTICO A AMARELO PURO (#FFFF00)
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
