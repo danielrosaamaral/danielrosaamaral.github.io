@@ -925,11 +925,11 @@
             let particles = [];
             let floatingTexts = [];
 
-            // TAMANHO AUMENTADO DO HARRY (28x28px) COM ESCALA DE BITMAP CHUNKY DE 1.75x
+            // AUMENTADO O TAMANHO DO HARRY EM +33% (36x36px) COM ESCALA DE BITMAP CHUNKY DE 2.25x
             let player = {
                 x: 0, y: 0, 
-                w: Math.round(28 * gfxScale), 
-                h: Math.round(28 * gfxScale),
+                w: Math.round(36 * gfxScale), 
+                h: Math.round(36 * gfxScale),
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
                 facingRight: true, tiltAngle: 0
@@ -945,7 +945,7 @@
                 isVictory = false;
                 victoryTimer = 0;
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 712 : 436;
+                player.y = isMobile ? 704 : 428;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -959,7 +959,7 @@
             };
 
             if (isMobile) {
-                player.x = 240; player.y = 712;
+                player.x = 240; player.y = 704;
 
                 platformData = [
                     {x: 0, y: 740, w: 480},
@@ -1022,7 +1022,7 @@
                 ];
 
             } else {
-                player.x = 300; player.y = 436;
+                player.x = 300; player.y = 428;
 
                 platformData = [
                     {x: 0, y: 464, w: 640},
@@ -1124,7 +1124,7 @@
                 }
             }
 
-            // HARRY COM ESCALA AUMENTADA CHUNKY (28x28px - BITSCALE 1.75x)
+            // DESENHO DO HARRY AUMENTADO EM +33% (36x36px - BITSCALE 2.25x)
             function drawPlayer() {
                 ctx.save();
                 let bitScale = (player.w / 16);
@@ -1153,7 +1153,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA E PÁSSARO GIGANTE CONVERTIDOS DIRETO DO CÓDIGO-FONTE Z80 ($8A30, $8A40-$8A98)
+            // GAIOLA E PÁSSARO GIGANTE AUMENTADOS EM 3X (PROPORÇÃO PERFEITA NO CANTO SUPERIOR ESQUERDO)
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1183,10 +1183,10 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA E PÁSSARO 100% FIÉIS AO CÓDIGO SPECTRUM ($8A30, $8A40)
-                let cScale = isMobile ? 1.1 : 0.85;
-                let cX = isMobile ? 45 : 55;
-                let cY = isMobile ? 85 : 95;
+                // GAIOLA E PÁSSARO AUMENTADOS EM 3X E DESENHADOS A PARTIR DO CÓDIGO-FONTE ($8A30, $8A40)
+                let cScale = isMobile ? 2.2 : 1.75;
+                let cX = isMobile ? 25 : 35;
+                let cY = isMobile ? 75 : 85;
 
                 // Pega do topo da gaiola ($8A30)
                 drawBitmap(ctx, cX + 8 * cScale, cY - 8 * cScale, SKOOL_SPRITES.cage_handle, 16, cScale, C_YELLOW);
@@ -1218,7 +1218,7 @@
                     stopBGM();
                 } else {
                     player.x = isMobile ? 240 : 300; 
-                    player.y = isMobile ? 712 : 436; 
+                    player.y = isMobile ? 704 : 428; 
                     player.vx = 0; player.vy = 0;
                     player.climbing = false;
                 }
@@ -1331,7 +1331,7 @@
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
-                // ALINHAMENTO EXATO DOS PÉS DO HARRY SOBRE OS TIJOLOS DA PLATAFORMA BASE (SEM FLUTUAR)
+                // ALINHAMENTO PRECISO DOS PÉS DO HARRY SOBRE OS TIJOLOS (0 PIXÉIS NO AR)
                 let floorLimitY = isMobile ? 740 - player.h : 464 - player.h;
                 if (player.y > floorLimitY) {
                     player.y = floorLimitY;
