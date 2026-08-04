@@ -1028,11 +1028,11 @@
                 ];
 
                 ostriches = [
-                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120, state: 'walking'},
-                    {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 40, maxX: 150, state: 'walking'},
-                    {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 170, maxX: 290, state: 'walking'},
-                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 320, maxX: 430, state: 'walking'},
-                    {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 50, maxX: 160, state: 'walking'}
+                    {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120, state: 'walking', climbCooldown: 0},
+                    {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 40, maxX: 150, state: 'walking', climbCooldown: 0},
+                    {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 170, maxX: 290, state: 'walking', climbCooldown: 0},
+                    {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 320, maxX: 430, state: 'walking', climbCooldown: 0},
+                    {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 50, maxX: 160, state: 'walking', climbCooldown: 0}
                 ];
 
             } else {
@@ -1083,11 +1083,11 @@
                 ];
 
                 ostriches = [
-                    {x: 20, y: 200, w: 22, h: 24, vx: 1.0, minX: 0, maxX: 100, state: 'walking'},
-                    {x: 360, y: 168, w: 22, h: 24, vx: -1.0, minX: 340, maxX: 430, state: 'walking'},
-                    {x: 70, y: 296, w: 22, h: 24, vx: 1.0, minX: 60, maxX: 160, state: 'walking'},
-                    {x: 240, y: 344, w: 22, h: 24, vx: 1.0, minX: 230, maxX: 320, state: 'walking'},
-                    {x: 530, y: 264, w: 22, h: 24, vx: 1.0, minX: 520, maxX: 610, state: 'walking'}
+                    {x: 20, y: 200, w: 22, h: 24, vx: 1.0, minX: 0, maxX: 100, state: 'walking', climbCooldown: 0},
+                    {x: 360, y: 168, w: 22, h: 24, vx: -1.0, minX: 340, maxX: 430, state: 'walking', climbCooldown: 0},
+                    {x: 70, y: 296, w: 22, h: 24, vx: 1.0, minX: 60, maxX: 160, state: 'walking', climbCooldown: 0},
+                    {x: 240, y: 344, w: 22, h: 24, vx: 1.0, minX: 230, maxX: 320, state: 'walking', climbCooldown: 0},
+                    {x: 530, y: 264, w: 22, h: 24, vx: 1.0, minX: 520, maxX: 610, state: 'walking', climbCooldown: 0}
                 ];
             }
 
@@ -1157,6 +1157,7 @@
                 ctx.restore();
             }
 
+            // DESENHO DA AVESTRUZ COM ESCALA CONSTANTE 1:1 EM QUALQUER ESTADO (A CAMINHAR OU A SUBIR ESCADAS)
             function drawOstrich(o) {
                 ctx.save();
                 let bitScale = (o.w / 16);
@@ -1173,7 +1174,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA ASSENTE NA ESCADA E PÁSSARO ESPAÇADO DENTRO DA GAIOLA COM ANIMAÇÃO
+            // GAIOLA ASSENTE NA ESCADA E PÁSSARO ESPAÇADO DENTRO DA GAIOLA COM ANIMAÇÃO DE BICO E ASAS
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1438,30 +1439,38 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // INTELIGÊNCIA ARTIFICIAL DAS AVESTRUZES: MOVIMENTO NAS PLATAFORMAS E SUBIDA/DESCIDA DE ESCADAS
+                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO REVISADO DAS AVESTRUZES (MUDANÇA DE PLATAFORMA + PAUSA APÓS SAIR DE ESCADA)
                 for(let o of ostriches) {
+                    if (o.climbCooldown > 0) {
+                        o.climbCooldown--;
+                    }
+
                     if (o.state === 'climbing') {
                         o.y += o.vy;
-                        if (o.vy < 0 && o.y <= o.targetY) {
+                        // Chegou ao fim da escada no topo ou fundo
+                        if ((o.vy < 0 && o.y <= o.targetY) || (o.vy > 0 && o.y >= o.targetY)) {
                             o.y = o.targetY;
                             o.state = 'walking';
                             o.vy = 0;
-                        } else if (o.vy > 0 && o.y >= o.targetY) {
-                            o.y = o.targetY;
-                            o.state = 'walking';
-                            o.vy = 0;
+                            o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
+                            o.climbCooldown = 40; // Obriga a caminhar na plataforma antes de poder entrar noutra escada
                         }
                     } else {
+                        // Caminhada normal na plataforma
                         o.x += o.vx;
                         let isAtEdge = (o.vx > 0 && o.x + o.w >= o.maxX) || (o.vx < 0 && o.x <= o.minX);
 
                         if (isAtEdge) {
                             let oCenterX = o.x + o.w / 2;
                             let ladderFound = null;
-                            for(let l of ladders) {
-                                if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 15 * gfxScale) {
-                                    ladderFound = l;
-                                    break;
+
+                            // Apenas procura escadas se o cooldown de subida tiver terminado
+                            if (o.climbCooldown <= 0) {
+                                for(let l of ladders) {
+                                    if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 15 * gfxScale) {
+                                        ladderFound = l;
+                                        break;
+                                    }
                                 }
                             }
 
@@ -1476,6 +1485,7 @@
                                     o.targetY = ladderFound.y + ladderFound.h - o.h;
                                 }
                             } else {
+                                // Inverte a marcha na borda da plataforma (comportamento arcade original)
                                 o.vx *= -1;
                             }
                         }
