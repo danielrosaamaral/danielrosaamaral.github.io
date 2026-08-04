@@ -210,46 +210,46 @@
     <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo -->
+        <!-- Cabeçalho Topo (Botão SKIP no Estilo Retro ZX Spectrum) -->
         <div class="w-full flex justify-end items-center z-50 px-4 py-2 shrink-0">
-            <button onclick="skipGame()" class="text-neutral-400 hover:text-white text-xs font-mono tracking-wider bg-neutral-900/80 border border-neutral-700/60 px-3 py-1.5 rounded-lg backdrop-blur-md transition-all hover:border-neutral-500 cursor-pointer">
-                SKIP [ ⏭ ]
+            <button onclick="skipGame()" class="text-[#00FFFF] hover:text-black hover:bg-[#00FFFF] text-xs font-mono tracking-widest bg-black border-2 border-[#00FFFF] px-3 py-1.5 shadow-[2px_2px_0px_#FF00FF] transition-none cursor-pointer">
+                SKIP [ &gt;&gt; ]
             </button>
         </div>
 
-        <!-- Ecrã de Conflito de Sessão (LIFO) -->
-        <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-neutral-900 border border-red-900/50 p-6 md:p-8 rounded-2xl shadow-2xl text-center flex-col items-center gap-4 z-50 mx-auto">
-            <div class="inline-flex p-3 rounded-full bg-red-500/10 text-red-500 mb-2">
+        <!-- Ecrã de Conflito de Sessão (Estilo ZX Spectrum) -->
+        <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-red-500 p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF0000] text-center flex-col items-center gap-4 z-50 mx-auto">
+            <div class="inline-flex p-3 rounded-none bg-black border border-red-500 text-red-500 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
             </div>
-            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Sessão Interrompida</h2>
-            <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
+            <h2 class="text-xl md:text-2xl font-mono font-bold text-red-500 tracking-widest uppercase">Sessão Interrompida</h2>
+            <p class="text-neutral-300 font-mono leading-relaxed text-sm md:text-base">
                 O acesso foi iniciado noutro dispositivo ou separador. Apenas uma instância simultânea é permitida.
             </p>
             <div class="pt-4 flex justify-center">
-                <button onclick="skipGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
+                <button onclick="skipGame()" class="bg-black hover:bg-white hover:text-black text-white font-mono font-bold tracking-widest px-6 py-3 rounded-none transition-none border-2 border-white shadow-[3px_3px_0px_#666666] cursor-pointer uppercase">
                     Prosseguir para Portefólio
                 </button>
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial -->
-        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl shadow-2xl text-center space-y-6 z-40 mx-auto">
-            <div class="inline-flex p-3 rounded-full bg-neutral-800 text-neutral-300 mb-2">
+        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum com Fundo igual ao da Página) -->
+        <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-[#00FFFF] p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF00FF] text-center space-y-6 z-40 mx-auto">
+            <div class="inline-flex p-3 rounded-none bg-black border border-[#00FFFF] text-[#FFFF00] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <h2 class="text-xl md:text-2xl font-light text-white tracking-wide">Aviso de Acesso</h2>
-            <p class="text-neutral-300 font-light leading-relaxed text-sm md:text-base">
+            <h2 class="text-xl md:text-2xl font-mono font-bold text-[#FFFF00] tracking-widest uppercase">Aviso de Acesso</h2>
+            <p class="text-[#00FFFF] font-mono leading-relaxed text-sm md:text-base">
                 Nota: se não reconheces este jogo, é provavelmente porque és mais novo do que eu.
             </p>
             <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
-                <button onclick="startChuckieGame()" class="bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-neutral-700 cursor-pointer">
-                    Aceitar & Jogar
+                <button onclick="startChuckieGame()" class="bg-black hover:bg-[#FFFF00] hover:text-black text-[#FFFF00] font-mono font-bold tracking-widest px-6 py-3 rounded-none transition-none border-2 border-[#FFFF00] shadow-[3px_3px_0px_#FF0000] cursor-pointer uppercase">
+                    Aceitar &amp; Jogar
                 </button>
             </div>
         </div>
@@ -260,15 +260,16 @@
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
+            <!-- Interface Mobile no Estilo Arcade ZX Spectrum -->
             <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
-                <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-neutral-800 bg-neutral-950/90 flex items-center justify-center backdrop-blur-md">
-                    <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center z-20 border border-neutral-700 transition-all duration-150 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-[#00FFFF] bg-black flex items-center justify-center shadow-[0_0_15px_rgba(0,255,255,0.3)]">
+                    <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-xs tracking-widest flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_10px_rgba(255,0,255,0.4)] transition-all">
                         JUMP
                     </button>
-                    <span id="arrow-up" class="absolute top-1 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">▲</span>
-                    <span id="arrow-down" class="absolute bottom-1 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">▼</span>
-                    <span id="arrow-left" class="absolute left-2 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">◄</span>
-                    <span id="arrow-right" class="absolute right-2 text-neutral-400 text-xl font-bold font-mono pointer-events-none transition-all duration-150">►</span>
+                    <span id="arrow-up" class="absolute top-1.5 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">▲</span>
+                    <span id="arrow-down" class="absolute bottom-1.5 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">▼</span>
+                    <span id="arrow-left" class="absolute left-2 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">◄</span>
+                    <span id="arrow-right" class="absolute right-2 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">►</span>
                 </div>
             </div>
         </div>
@@ -646,11 +647,11 @@
             const setArrowActive = (el, isActive) => {
                 if (!el) return;
                 if (isActive) {
-                    el.style.color = 'rgb(0, 17, 255)';
-                    el.style.transform = 'scale(1.35)';
-                    el.style.textShadow = '0 0 10px rgba(0, 17, 255, 0.9)';
+                    el.style.color = '#00FFFF';
+                    el.style.transform = 'scale(1.4)';
+                    el.style.textShadow = '0 0 10px #00FFFF, 2px 2px 0px #FF00FF';
                 } else {
-                    el.style.color = '';
+                    el.style.color = '#FFFF00';
                     el.style.transform = '';
                     el.style.textShadow = '';
                 }
@@ -663,12 +664,14 @@
 
             if (btnJump) {
                 if (keys['Space']) {
-                    btnJump.style.borderColor = 'rgb(0,17,255)';
-                    btnJump.style.boxShadow = '0 0 18px rgba(0,17,255,0.85)';
+                    btnJump.style.borderColor = '#00FFFF';
+                    btnJump.style.color = '#00FFFF';
+                    btnJump.style.boxShadow = '0 0 18px #00FFFF';
                     btnJump.style.transform = 'scale(0.92)';
                 } else {
-                    btnJump.style.borderColor = '';
-                    btnJump.style.boxShadow = '';
+                    btnJump.style.borderColor = '#FF00FF';
+                    btnJump.style.color = '#FF00FF';
+                    btnJump.style.boxShadow = '0 0 10px rgba(255,0,255,0.4)';
                     btnJump.style.transform = '';
                 }
             }
@@ -790,7 +793,7 @@
 
                 ostriches = [
                     {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 10, maxX: 120},
-                    {x: 350, y: 406, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 350, maxX: 450},
+                    {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 40, maxX: 150},
                     {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 170, maxX: 290},
                     {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, minX: 320, maxX: 430},
                     {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, minX: 50, maxX: 160}
