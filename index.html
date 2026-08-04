@@ -868,7 +868,20 @@
             // Item Egg ($8508)
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             // Item Corn ($8510)
-            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
+            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00],
+            
+            // Pega da Gaiola ($8A30) - 16x8 bits
+            cage_handle: [0x0000, 0x0000, 0x07c0, 0x0c60, 0x0820, 0x0c60, 0x07c0, 0x0100],
+            
+            // Cúpula e Gaiola com Pássaro Unificado ($8A40-$8A98) - Matriz exata de 32x24 bits
+            birdcage: [
+                [0x00, 0x1f, 0xf0, 0x00], [0x00, 0xe0, 0x0e, 0x00], [0x03, 0x18, 0x31, 0x80], [0x05, 0x67, 0xcc, 0x40],
+                [0x0a, 0x89, 0x22, 0xa0], [0x15, 0x11, 0x11, 0x50], [0x29, 0x11, 0x11, 0x28], [0x2a, 0x21, 0x08, 0xa8],
+                [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94],
+                [0x72, 0x21, 0x08, 0x9c], [0x5a, 0x21, 0x08, 0xb4], [0x57, 0x21, 0x09, 0xd4], [0x52, 0xdf, 0xfe, 0x94],
+                [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94], [0x52, 0x21, 0x08, 0x94],
+                [0x32, 0x21, 0x08, 0x98], [0x0a, 0x21, 0x08, 0xb0], [0x07, 0x21, 0x09, 0xc0], [0x00, 0xff, 0xfe, 0x00]
+            ]
         };
 
         function initChuckieEgg() {
@@ -912,11 +925,11 @@
             let particles = [];
             let floatingTexts = [];
 
-            // AUMENTADO O TAMANHO DO HARRY PARA 26x34px PARA FICAR ROBUSTO E CHUNKY COMO NO SPECTRUM
+            // TAMANHO AUMENTADO DO HARRY (28x28px) COM ESCALA DE BITMAP CHUNKY DE 1.75x
             let player = {
                 x: 0, y: 0, 
-                w: Math.round(26 * gfxScale), 
-                h: Math.round(34 * gfxScale),
+                w: Math.round(28 * gfxScale), 
+                h: Math.round(28 * gfxScale),
                 vx: 0, vy: 0,
                 onGround: false, onLadder: false, climbing: false,
                 facingRight: true, tiltAngle: 0
@@ -932,7 +945,7 @@
                 isVictory = false;
                 victoryTimer = 0;
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 700 : 430;
+                player.y = isMobile ? 712 : 436;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -946,7 +959,7 @@
             };
 
             if (isMobile) {
-                player.x = 240; player.y = 700;
+                player.x = 240; player.y = 712;
 
                 platformData = [
                     {x: 0, y: 740, w: 480},
@@ -1009,7 +1022,7 @@
                 ];
 
             } else {
-                player.x = 300; player.y = 430;
+                player.x = 300; player.y = 436;
 
                 platformData = [
                     {x: 0, y: 464, w: 640},
@@ -1111,7 +1124,7 @@
                 }
             }
 
-            // DESENHO DO HARRY EM TAMANHO CHUNKY AUMENTADO (26x34px / ESCALA DE BITMAP DE 1.625x)
+            // HARRY COM ESCALA AUMENTADA CHUNKY (28x28px - BITSCALE 1.75x)
             function drawPlayer() {
                 ctx.save();
                 let bitScale = (player.w / 16);
@@ -1140,7 +1153,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA E PÁSSARO GIGANTE AUMENTADOS
+            // GAIOLA E PÁSSARO GIGANTE CONVERTIDOS DIRETO DO CÓDIGO-FONTE Z80 ($8A30, $8A40-$8A98)
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1170,78 +1183,28 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA E PÁSSARO GIGANTE AUMENTADOS
-                let cageScale = isMobile ? 1.6 : 1.35;
-                let cageX = isMobile ? 75 : 70;
-                let cageY = isMobile ? 95 : 110;
-                
-                ctx.fillStyle = C_YELLOW;
-                ctx.strokeStyle = C_YELLOW; ctx.lineWidth = Math.max(2, Math.round(2.5 * cageScale));
-                
-                // Pega de Ferro no Topo da Gaiola (Tile $8A30 do Skoolkit)
-                ctx.fillRect(cageX - Math.round(8 * cageScale), cageY - Math.round(38 * cageScale), Math.round(16 * cageScale), Math.round(8 * cageScale));
+                // GAIOLA E PÁSSARO 100% FIÉIS AO CÓDIGO SPECTRUM ($8A30, $8A40)
+                let cScale = isMobile ? 1.1 : 0.85;
+                let cX = isMobile ? 45 : 55;
+                let cY = isMobile ? 85 : 95;
 
-                // Cúpula superior curva
-                ctx.beginPath(); ctx.arc(cageX, cageY, Math.round(32 * cageScale), Math.PI, 0); ctx.stroke();
-                
-                // Base da gaiola
-                ctx.fillRect(cageX - Math.round(32 * cageScale), cageY + Math.round(42 * cageScale), Math.round(64 * cageScale), Math.max(3, Math.round(4 * cageScale)));
+                // Pega do topo da gaiola ($8A30)
+                drawBitmap(ctx, cX + 8 * cScale, cY - 8 * cScale, SKOOL_SPRITES.cage_handle, 16, cScale, C_YELLOW);
 
-                // Parede vertical do lado esquerdo (fechada)
-                ctx.fillRect(cageX - Math.round(32 * cageScale), cageY, Math.max(2, Math.round(3 * cageScale)), Math.round(42 * cageScale));
-
-                // Grade interior
-                for(let i = Math.round(36 * cageScale); i <= Math.round(60 * cageScale); i += Math.round(10 * cageScale)) {
-                    ctx.fillRect(cageX - Math.round(32 * cageScale) + i - 36, cageY, Math.max(2, Math.round(2 * cageScale)), Math.round(42 * cageScale));
-                }
-
-                // Pássaro Gigante da Gaiola Aumentado para Preencher a Cúpula
-                let animFrame = Math.floor(Date.now() / 150) % 4;
-                let headBob = (animFrame === 1 || animFrame === 3) ? -Math.round(2 * cageScale) : 0;
-                let wingUp = (animFrame === 0 || animFrame === 1);
-
-                let bX = cageX - Math.round(18 * cageScale);
-                let bY = cageY + Math.round(8 * cageScale);
-
-                // Corpo do Pássaro Gigante (Amarelo)
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(bX, bY + headBob, Math.round(30 * cageScale), Math.round(20 * cageScale));
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, Math.round(1.5 * cageScale));
-                ctx.strokeRect(bX, bY + headBob, Math.round(30 * cageScale), Math.round(20 * cageScale));
-
-                // Cabeça
-                let headX = bX + Math.round(15 * cageScale);
-                let headY = bY - Math.round(14 * cageScale) + headBob;
-                ctx.fillStyle = C_YELLOW;
-                ctx.fillRect(headX, headY, Math.round(16 * cageScale), Math.round(15 * cageScale));
-                ctx.strokeRect(headX, headY, Math.round(16 * cageScale), Math.round(15 * cageScale));
-
-                // Bico Vermelho Grande
-                ctx.fillStyle = C_RED;
-                let beakOpen = (animFrame === 2) ? Math.round(3 * cageScale) : 0;
-                ctx.fillRect(headX + Math.round(16 * cageScale), headY + Math.round(5 * cageScale), Math.round(10 * cageScale), Math.round(5 * cageScale) + beakOpen);
-
-                // Olho Branco com Pupila Preta
-                ctx.fillStyle = C_WHITE;
-                ctx.fillRect(headX + Math.round(6 * cageScale), headY + Math.round(3 * cageScale), Math.round(6 * cageScale), Math.round(6 * cageScale));
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(headX + Math.round(8 * cageScale), headY + Math.round(4 * cageScale), Math.max(2, Math.round(3 * cageScale)), Math.max(2, Math.round(3 * cageScale)));
-
-                // Asa Articulada em Batimento
-                ctx.fillStyle = C_YELLOW;
-                let wingY = wingUp ? bY - Math.round(5 * cageScale) + headBob : bY + Math.round(4 * cageScale) + headBob;
-                ctx.fillRect(bX + Math.round(3 * cageScale), wingY, Math.round(15 * cageScale), Math.round(10 * cageScale));
-                ctx.strokeRect(bX + Math.round(3 * cageScale), wingY, Math.round(15 * cageScale), Math.round(10 * cageScale));
-
-                // Pernas assentes na base da gaiola
-                ctx.fillStyle = C_YELLOW;
-                let legY = bY + Math.round(20 * cageScale) + headBob;
-                let floorTargetY = cageY + Math.round(42 * cageScale);
-                let legH = floorTargetY - legY;
-                if (legH > 0) {
-                    ctx.fillRect(bX + Math.round(8 * cageScale), legY, Math.max(2, Math.round(3.5 * cageScale)), legH);
-                    ctx.fillRect(bX + Math.round(20 * cageScale), legY, Math.max(2, Math.round(3.5 * cageScale)), legH);
+                // Matriz de 32x24 bits da Gaiola com o Pássaro Gigante interior ($8A40)
+                for (let r = 0; r < SKOOL_SPRITES.birdcage.length; r++) {
+                    let rowBytes = SKOOL_SPRITES.birdcage[r];
+                    for (let tileIdx = 0; tileIdx < 4; tileIdx++) {
+                        let byteVal = rowBytes[tileIdx];
+                        let tileX = cX + (tileIdx * 8 * cScale);
+                        let tileY = cY + (r * cScale);
+                        for (let bit = 0; bit < 8; bit++) {
+                            if ((byteVal & (1 << (7 - bit))) !== 0) {
+                                ctx.fillStyle = C_YELLOW;
+                                ctx.fillRect(Math.round(tileX + bit * cScale), Math.round(tileY), Math.ceil(cScale), Math.ceil(cScale));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1255,7 +1218,7 @@
                     stopBGM();
                 } else {
                     player.x = isMobile ? 240 : 300; 
-                    player.y = isMobile ? 700 : 430; 
+                    player.y = isMobile ? 712 : 436; 
                     player.vx = 0; player.vy = 0;
                     player.climbing = false;
                 }
@@ -1368,6 +1331,7 @@
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
 
+                // ALINHAMENTO EXATO DOS PÉS DO HARRY SOBRE OS TIJOLOS DA PLATAFORMA BASE (SEM FLUTUAR)
                 let floorLimitY = isMobile ? 740 - player.h : 464 - player.h;
                 if (player.y > floorLimitY) {
                     player.y = floorLimitY;
@@ -1468,12 +1432,14 @@
                     ctx.fillStyle = C_YELLOW; ctx.fillRect(e.x, e.y, e.w, e.h);
                 }
 
+                // Desenho das Sementes (`gfx_item_corn` $8510)
                 for(let s of seeds) {
                     if(!s.collected) {
                         drawBitmap(ctx, s.x, s.baseY, SKOOL_SPRITES.corn, 8, gfxScale * 1.5, C_MAGENTA);
                     }
                 }
 
+                // Desenho dos Ovos (`gfx_item_egg` $8508)
                 for(let egg of eggs) {
                     if(!egg.collected) {
                         let bobOffset = Math.sin(Date.now() * 0.008 + egg.x) * 3.5;
