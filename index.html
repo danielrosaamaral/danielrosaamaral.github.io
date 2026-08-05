@@ -844,7 +844,7 @@
             }
         }
 
-        // DESENHO LIMPO DA GAIOLA FIXA NO HUD (1:1 SIMÉTRICO)
+        // DESENHO LIMPO DA GAIOLA FIXA NO HUD
         function drawExactBirdcage(ctx, x, y, scale) {
             ctx.strokeStyle = C_YELLOW;
             ctx.lineWidth = Math.max(2, Math.round(2 * scale));
@@ -852,7 +852,7 @@
             let cWidth = Math.round(44 * scale);
             let cHeight = Math.round(36 * scale);
 
-            // Cúpula da Gaiola
+            // Cúpula
             ctx.beginPath();
             ctx.arc(x + cWidth / 2, y + cHeight / 2, cWidth / 2, Math.PI, 0, false);
             ctx.lineTo(x + cWidth, y + cHeight);
@@ -865,7 +865,7 @@
             ctx.arc(x + cWidth / 2, y - Math.round(4 * scale), Math.round(5 * scale), 0, Math.PI * 2);
             ctx.stroke();
 
-            // Barras Verticais Limpas da Gaiola
+            // Barras Verticais
             ctx.beginPath();
             ctx.moveTo(x + cWidth * 0.25, y + cHeight * 0.2);
             ctx.lineTo(x + cWidth * 0.25, y + cHeight);
@@ -910,12 +910,13 @@
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0260, 0x0200, 0x0200, 0x0600],
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0640, 0x0040, 0x0040, 0x0060]
             ],
+            // MATRIZ HEXADECIMAL DE 24-BITS CORRIGIDA DA PATA GIGANTE
             mother_duck: [
-                [0x00, 0x3e, 0x00], [0x00, 0x7f, 0x80], [0x00, 0xff, 0xc0], [0x00, 0xef, 0xe0],
-                [0x00, 0xe7, 0xe0], [0x00, 0x7f, 0xc0], [0x00, 0x3f, 0x80], [0x00, 0x1f, 0x00],
-                [0x0f, 0xbf, 0xe0], [0x3f, 0xff, 0xf0], [0x7f, 0xff, 0xf8], [0xff, 0xff, 0xfc],
-                [0xff, 0xff, 0xfc], [0x7f, 0xff, 0xf8], [0x3f, 0xff, 0xf0], [0x1f, 0xfe, 0xe0],
-                [0x0f, 0xfc, 0xc0], [0x07, 0xf8, 0x80], [0x03, 0xf0, 0x00], [0x01, 0xe0, 0x00]
+                0x003e00, 0x007f80, 0x00ffc0, 0x00efe0,
+                0x00e7e0, 0x007fc0, 0x003f80, 0x001f00,
+                0x0fbfe0, 0x3ffff0, 0x7ffff8, 0xfffffc,
+                0xfffffc, 0x7ffff8, 0x3ffff0, 0x1ffee0,
+                0x0ffcc0, 0x07f880, 0x03f000, 0x01e000
             ],
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
@@ -1015,7 +1016,6 @@
             if (isMobile) {
                 player.x = 240; player.y = 712;
 
-                // PLATAFORMAS 100% VISÍVEIS (SEM PLATAFORMAS OCULTAS)
                 platformData = [
                     {x: 0, y: 740, w: 480},
                     {x: 10, y: 590, w: 120}, {x: 350, y: 590, w: 120},
@@ -1227,7 +1227,6 @@
                 let cX = isMobile ? 35 : 45;
                 let cY = isMobile ? 65 : 75;
 
-                // GAIOLA AMARELA FIXA NO HUD NO CANTO SUPERIOR ESQUERDO
                 if (!cagedDuck.isFlying) {
                     drawExactBirdcage(ctx, cX, cY, cScale);
                 } else {
@@ -1287,6 +1286,22 @@
 
                 player.onLadder = activeLadder !== null;
 
+                // ENTRADA DIRETA NA ESCADA AO PREMIR SETA PARA BAIXO JUNTO AO TOPO
+                if (keys['ArrowDown'] && !player.climbing) {
+                    for (let l of ladders) {
+                        let lCenterX = l.x + Math.round(10 * gfxScale);
+                        if (Math.abs(playerCenterX - lCenterX) <= Math.round(18 * gfxScale) &&
+                            Math.abs((player.y + player.h) - l.y) <= 8) {
+                            player.climbing = true;
+                            player.x = lCenterX - player.w / 2;
+                            player.y += 2;
+                            activeLadder = l;
+                            player.onLadder = true;
+                            break;
+                        }
+                    }
+                }
+
                 if(player.onLadder) {
                     if(keys['ArrowUp']) {
                         player.climbing = true;
@@ -1297,7 +1312,6 @@
                         stepAudioTimer++;
                         if (stepAudioTimer % 12 === 0) playStepSound();
 
-                        // SNAP AUTOMÁTICO NO TOPO DA ESCADA COM PÉS NA PLATAFORMA
                         if (player.y + player.h <= activeLadder.y + 4) {
                             player.y = activeLadder.y - player.h;
                             player.climbing = false;
@@ -1377,7 +1391,6 @@
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
                 if(player.y < 0) { player.y = 0; player.vy = 0; }
 
-                // QUEDA NATURAL NAS EXTREMIDADES DAS PLATAFORMAS
                 player.onGround = false;
                 let platformThickness = Math.round(16 * gfxScale);
                 if(!player.climbing && player.vy >= 0) {
@@ -1406,7 +1419,7 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // REPULSÃO ENTRE AVESTRUZES (MANTÉM DISTÂNCIA E EVITA AGRUPAMENTOS)
+                // REPULSÃO ENTRE AVESTRUZES
                 for (let i = 0; i < ostriches.length; i++) {
                     for (let j = i + 1; j < ostriches.length; j++) {
                         let o1 = ostriches[i];
@@ -1427,7 +1440,6 @@
                     }
                 }
 
-                // DETERMINAÇÃO DAS 2 AVESTRUZES MAIS PRÓXIMAS PARA PERSEGUIÇÃO
                 let sortedOstriches = ostriches.slice().sort((a, b) => {
                     let distA = Math.hypot(a.x - player.x, a.y - player.y);
                     let distB = Math.hypot(b.x - player.x, b.y - player.y);
@@ -1681,7 +1693,7 @@
                 ctx.restore();
             }
 
-            // LOOP FIXED TIMESTEP INDEPENDENTE DO REFRESH RATE (60 FPS LOCK)
+            // LOOP FIXED TIMESTEP 60 FPS LOCK
             let lastTime = 0;
             const TIME_STEP = 1000 / 60;
             let accumulator = 0;
