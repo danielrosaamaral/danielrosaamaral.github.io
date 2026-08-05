@@ -840,7 +840,7 @@
             }
         }
 
-        // RENDERIZADOR MULTI-BYTE PARA MATRIZES DE MAIOR LARGURA (EX: GAIOLA DE 24 BITS / 3 BYTES)
+        // RENDERIZADOR MULTI-BYTE PARA MATRIZES DE MAIOR LARGURA
         function drawBitmapMultiByte(ctx, x, y, byteData, bytesPerRow, scale, color) {
             ctx.fillStyle = color;
             let totalRows = Math.floor(byteData.length / bytesPerRow);
@@ -852,6 +852,35 @@
                             let px = x + (b * 8 + c) * scale;
                             let py = y + r * scale;
                             ctx.fillRect(Math.round(px), Math.round(py), Math.ceil(scale), Math.ceil(scale));
+                        }
+                    }
+                }
+            }
+        }
+
+        // RENDERIZADOR DA GAIOLA ARREDONDADA PROPORCIONAL DA TUA IMAGEM SPECTRUM (32x32)
+        function drawExactBirdcage(ctx, x, y, scale) {
+            const matrix = [
+                0x0003c000, 0x00066000, 0x00066000, 0x0003c000, 0x00018000, 0x0003c000, 0x001fe000, 0x00e18700,
+                0x038181c0, 0x06018060, 0x0c199830, 0x18199818, 0x10199f00, 0x201d9f80, 0x20199f80, 0x20199e00,
+                0x20199c00, 0x20399c00, 0x207f9c00, 0x20fff800, 0x23f7f800, 0x23e3f800, 0x23c1f800, 0x21c1f000,
+                0x20e3e000, 0x207fc000, 0x20199000, 0x20199000, 0x20199000, 0x3fffffe0, 0x3fffffe0, 0x00000000
+            ];
+
+            let scaleX = scale * 1.45; // Expansão horizontal para formato arredondado de cúpula
+            let scaleY = scale * 1.0;
+
+            ctx.fillStyle = C_YELLOW;
+            for (let r = 0; r < matrix.length; r++) {
+                let rowVal = matrix[r];
+                for (let c = 0; c < 32; c++) {
+                    if ((rowVal & (1 << (31 - c))) !== 0) {
+                        if (r === 13 && c === 18) {
+                            ctx.fillStyle = '#000000';
+                            ctx.fillRect(Math.round(x + c * scaleX), Math.round(y + r * scaleY), Math.ceil(scaleX), Math.ceil(scaleY));
+                            ctx.fillStyle = C_YELLOW;
+                        } else {
+                            ctx.fillRect(Math.round(x + c * scaleX), Math.round(y + r * scaleY), Math.ceil(scaleX), Math.ceil(scaleY));
                         }
                     }
                 }
@@ -984,7 +1013,7 @@
                 flyY: 0
             };
 
-            // TAMANHO DO HARRY AUMENTADO (28x28px - BITSCALE DE 1.75x)
+            // TAMANHO DO HARRY AUMENTADO EM +33% (36x36px)
             let player = {
                 x: 0, y: 0, 
                 w: Math.round(28 * gfxScale), 
@@ -1005,7 +1034,7 @@
                 victoryTimer = 0;
                 cagedDuck = { offsetRel: 0, dir: 1, isFlying: false, flyX: 0, flyY: 0 };
                 player.x = isMobile ? 240 : 300;
-                player.y = isMobile ? 712 : 436;
+                player.y = isMobile ? 704 : 428;
                 player.vx = 0; player.vy = 0;
                 player.climbing = false;
                 for(let egg of eggs) egg.collected = false;
@@ -1094,7 +1123,7 @@
                     {x: 30, y: 160, w: 60, hidden: true}
                 ];
 
-                // ESCADAS AJUSTADAS PARA TERMINAREM RIGOROSAMENTE NO TOPO DAS PLATAFORMAS
+                // ESCADAS AJUSTADAS PARA TERMINAREM RIGOROSAMENTE NO TOPO DAS PLATAFORMA
                 ladders = [
                     {x: 100, y: 224, h: 240}, {x: 60, y: 160, h: 64}, {x: 180, y: 160, h: 80},
                     {x: 260, y: 192, h: 176}, {x: 310, y: 192, h: 176}, {x: 370, y: 144, h: 128},
@@ -1204,7 +1233,6 @@
                 ctx.restore();
             }
 
-            // DESENHO DA AVESTRUZ COM ESCALA CONSTANTE 1:1 EM QUALQUER ESTADO
             function drawOstrich(o) {
                 ctx.save();
                 let bitScale = (o.w / 16);
@@ -1221,7 +1249,7 @@
                 ctx.restore();
             }
 
-            // RENDERIZAÇÃO DA GAIOLA E PÁSSARO GIGANTE CONFORME OS SPRITES `SPRITE_CAGE_CLOSED` E `SPRITE_BIGDUCK`
+            // GAIOLA COM PROPORÇÃO ARREDONDADA DE CÚPULA DE 48x40px
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1242,7 +1270,7 @@
                 let timeX = canvas.width - (isMobile ? 190 : 170);
                 ctx.fillText('TIME ' + Math.floor(timer), timeX, topOffset);
 
-                // 3. Ícones de Chapéu Amarelo (`SPRITE_HAT`) por baixo do Score
+                // 3. Ícones de Chapéu Amarelo por baixo do Score
                 for(let v = 0; v < lives; v++) {
                     let hX = 20 + (v * 22);
                     let hY = topOffset + 12;
@@ -1251,27 +1279,12 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA RENDERIZADA COM OS SPRITES OFICIAIS `SPRITE_CAGE_CLOSED` E `SPRITE_BIGDUCK`
-                let cageScale = isMobile ? 1.6 : 1.25;
-                let cageX = isMobile ? 35 : 45;
-                let cageY = isMobile ? 70 : 80;
+                // GAIOLA COM PROPORÇÃO ARREDONDADA DE CÚPULA
+                let cScale = isMobile ? 1.8 : 1.45;
+                let cX = isMobile ? 30 : 40;
+                let cY = isMobile ? 70 : 80;
 
-                let cageSprite = isVictory ? SKOOL_SPRITES.cage_open : SKOOL_SPRITES.cage_closed;
-                drawBitmapMultiByte(ctx, cageX, cageY, cageSprite, 3, cageScale, C_YELLOW);
-
-                // Pássaro Gigante interior (`SPRITE_BIGDUCK_R1` / `R2` / `L1` / `L2`)
-                if (!cagedDuck.isFlying) {
-                    let duckX = cageX + Math.round(4 * cageScale) + (cagedDuck.offsetRel * cageScale * 0.2);
-                    let duckY = cageY + Math.round(20 * cageScale);
-                    let bigDuckSprite = (Math.floor(Date.now() / 150) % 2 === 0) ? SKOOL_SPRITES.bigduck_r1 : SKOOL_SPRITES.bigduck_r2;
-                    drawBitmapMultiByte(ctx, duckX, duckY, bigDuckSprite, 2, cageScale, C_YELLOW);
-                } else {
-                    // Animação de fuga na vitória
-                    let duckX = cageX + Math.round(4 * cageScale) + (cagedDuck.flyX * cageScale);
-                    let duckY = cageY + Math.round(20 * cageScale) - (cagedDuck.flyY * cageScale);
-                    let bigDuckSprite = (Math.floor(Date.now() / 100) % 2 === 0) ? SKOOL_SPRITES.bigduck_l1 : SKOOL_SPRITES.bigduck_l2;
-                    drawBitmapMultiByte(ctx, duckX, duckY, bigDuckSprite, 2, cageScale, C_YELLOW);
-                }
+                drawExactBirdcage(ctx, cX, cY, cScale);
             }
 
             function resetLevel() {
@@ -1443,7 +1456,7 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO REVISADO DAS AVESTRUZES (MUDANÇA DE PLATAFORMA E REINÍCIO DE CAMINHADA)
+                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO DAS AVESTRUZES
                 for(let o of ostriches) {
                     let curPlatform = platformData[o.platformIdx || 0];
 
@@ -1453,19 +1466,17 @@
 
                     if (o.state === 'climbing') {
                         o.y += o.vy;
-                        // Ao chegar à plataforma de destino no topo ou no fundo
                         if ((o.vy < 0 && o.y <= o.targetY) || (o.vy > 0 && o.y >= o.targetY)) {
                             o.y = o.targetY;
                             o.state = 'walking';
                             o.vy = 0;
                             o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
-                            o.climbCooldown = 50; // Cooldown de caminhada antes de poder entrar noutra escada
+                            o.climbCooldown = 50;
                             if (o.targetPlatformIdx !== undefined) {
                                 o.platformIdx = o.targetPlatformIdx;
                             }
                         }
                     } else {
-                        // Caminhada rigorosamente em cima da plataforma assinalada
                         o.y = curPlatform.y - o.h;
                         o.x += o.vx;
 
@@ -1512,7 +1523,6 @@
                                     o.targetY = targetP.y - o.h;
                                 }
                             } else {
-                                // Inverte o sentido de caminhada na borda da plataforma
                                 o.vx *= -1;
                             }
                         }
@@ -1630,35 +1640,38 @@
                     redFlashAlpha -= 0.05;
                 }
 
-                // NOVO PAINEL RETRO GAME OVER NO ESTILO ARCADE ZX SPECTRUM
+                // PAINEL GAME OVER AUMENTADO E CENTRADO NO ESTILO ZX SPECTRUM
                 if(isGameOver) {
-                    let boxW = 320, boxH = 100;
+                    let boxW = 340, boxH = 110;
                     let vx = (canvas.width / 2) - (boxW / 2);
                     let vy = (canvas.height / 2) - (boxH / 2);
 
-                    // Caixa preta com contorno duplo ciano e sombra magenta
+                    // Sombra projetada Magenta
                     ctx.fillStyle = '#000000';
-                    ctx.fillRect(vx + 4, vy + 4, boxW, boxH);
+                    ctx.fillRect(vx + 5, vy + 5, boxW, boxH);
                     ctx.strokeStyle = '#FF00FF';
                     ctx.lineWidth = 3;
-                    ctx.strokeRect(vx + 4, vy + 4, boxW, boxH);
+                    ctx.strokeRect(vx + 5, vy + 5, boxW, boxH);
 
+                    // Caixa Principal Preta com contorno Ciano duplo
                     ctx.fillStyle = '#000000';
                     ctx.fillRect(vx, vy, boxW, boxH);
                     ctx.strokeStyle = C_CYAN;
                     ctx.lineWidth = 3;
                     ctx.strokeRect(vx, vy, boxW, boxH);
 
-                    // Texto GAME OVER piscante a amarelo vivo
+                    // Texto GAME OVER Aumentado e Centrado
+                    ctx.textAlign = 'center';
                     let blink = Math.floor(Date.now() / 250) % 2 === 0;
                     ctx.fillStyle = blink ? C_YELLOW : C_RED;
-                    ctx.font = '14px "Courier New", monospace';
-                    if(document.fonts) ctx.font = '13px "Press Start 2P", monospace';
-                    ctx.fillText('GAME OVER', vx + 85, vy + 45);
+                    ctx.font = 'bold 20px "Courier New", monospace';
+                    if(document.fonts) ctx.font = 'bold 18px "Press Start 2P", monospace';
+                    ctx.fillText('GAME OVER', vx + (boxW / 2), vy + 45);
 
                     ctx.fillStyle = C_CYAN;
-                    ctx.font = '11px "Courier New", monospace';
-                    ctx.fillText('CLICA PARA REINICIAR', vx + 65, vy + 72);
+                    ctx.font = 'bold 12px "Courier New", monospace';
+                    ctx.fillText('CLICA PARA REINICIAR', vx + (boxW / 2), vy + 78);
+                    ctx.textAlign = 'left';
                 }
 
                 if(isVictory) {
