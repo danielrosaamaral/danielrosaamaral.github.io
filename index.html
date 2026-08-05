@@ -215,7 +215,7 @@
     <!-- OVERLAY DO JOGO CHUCKIE EGG -->
     <div id="game-overlay" class="fixed inset-0 z-50 bg-[#0d0d0d] flex flex-col justify-between overflow-hidden h-[100dvh] w-screen">
         
-        <!-- Cabeçalho Topo (Botão SKIP e Botão de Som no Estilo Retro ZX Spectrum) -->
+        <!-- Cabeçalho Topo -->
         <div class="w-full flex justify-between items-center z-50 px-4 py-2 shrink-0">
             <button id="btn-sound" onclick="toggleSound()" class="text-[#FFFF00] hover:text-black hover:bg-[#FFFF00] text-xs font-mono tracking-widest bg-black border-2 border-[#FFFF00] px-3 py-1.5 shadow-[2px_2px_0px_#FF0000] transition-none cursor-pointer">
                 🔊 SOUND ON
@@ -225,7 +225,7 @@
             </button>
         </div>
 
-        <!-- Ecrã de Conflito de Sessão (Estilo ZX Spectrum) -->
+        <!-- Ecrã de Conflito de Sessão -->
         <div id="session-conflict-screen" class="hidden my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-red-500 p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF0000] text-center flex-col items-center gap-4 z-50 mx-auto">
             <div class="inline-flex p-3 rounded-none bg-black border border-red-500 text-red-500 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -243,7 +243,7 @@
             </div>
         </div>
 
-        <!-- Ecrã Disclaimer Inicial (Estilo Retro ZX Spectrum) -->
+        <!-- Ecrã Disclaimer Inicial -->
         <div id="disclaimer-screen" class="my-auto max-w-xl w-full bg-[#0d0d0d] border-2 border-[#00FFFF] p-6 md:p-8 rounded-none shadow-[4px_4px_0px_#FF00FF] text-center space-y-6 z-40 mx-auto">
             <div class="inline-flex p-3 rounded-none bg-black border border-[#00FFFF] text-[#FFFF00] mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -268,7 +268,7 @@
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
-            <!-- Interface Mobile no Estilo Arcade ZX Spectrum -->
+            <!-- Interface Mobile Arcade ZX Spectrum -->
             <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
                 <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-[#00FFFF] bg-black flex items-center justify-center shadow-[0_0_15px_rgba(0,255,255,0.3)]">
                     <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-xs tracking-widest flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_10px_rgba(255,0,255,0.4)] transition-all">
@@ -832,7 +832,7 @@
             }
         }
 
-        // FUNÇÃO DE RENDERIZAÇÃO DE MATRIZ DE BITS DO ZX SPECTRUM
+        // RENDERIZADOR DE BITMAP MATRIX DO SPECTRUM
         function drawBitmap(ctx, x, y, bitmap, bitsPerRow, scale, color) {
             ctx.fillStyle = color;
             for (let r = 0; r < bitmap.length; r++) {
@@ -845,7 +845,7 @@
             }
         }
 
-        // RENDERIZADOR DA GAIOLA E PÁSSARO MONOCROMÁTICO (32x32)
+        // RENDERIZADOR DA GAIOLA AMARELA DO SPECTRUM
         function drawExactBirdcage(ctx, x, y, scale) {
             const matrix = [
                 0x0003c000, 0x00066000, 0x00066000, 0x0003c000, 0x00018000, 0x0003c000, 0x001fe000, 0x00e18700,
@@ -862,19 +862,13 @@
                 let rowVal = matrix[r];
                 for (let c = 0; c < 32; c++) {
                     if ((rowVal & (1 << (31 - c))) !== 0) {
-                        if (r === 13 && c === 18) {
-                            ctx.fillStyle = '#000000';
-                            ctx.fillRect(Math.round(x + c * scaleX), Math.round(y + r * scaleY), Math.ceil(scaleX), Math.ceil(scaleY));
-                            ctx.fillStyle = C_YELLOW;
-                        } else {
-                            ctx.fillRect(Math.round(x + c * scaleX), Math.round(y + r * scaleY), Math.ceil(scaleX), Math.ceil(scaleY));
-                        }
+                        ctx.fillRect(Math.round(x + c * scaleX), Math.round(y + r * scaleY), Math.ceil(scaleX), Math.ceil(scaleY));
                     }
                 }
             }
         }
 
-        // SPRITES RETIRADOS DO CÓDIGO-FONTE C/Z80
+        // SPRITES RETIRADOS DO ZX SPECTRUM ORIGINAL
         const SKOOL_SPRITES = {
             farmer_right: [
                 [0x0000, 0x0380, 0x03c0, 0x03c0, 0x3ffc, 0x0340, 0x03c0, 0x0180, 0x03e0, 0x06f0, 0x06f0, 0x06e0, 0x03c0, 0x0100, 0x01c0, 0x0000],
@@ -905,6 +899,14 @@
             ostrich_climbing: [
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0260, 0x0200, 0x0200, 0x0600],
                 [0x0180, 0x03c0, 0x03c0, 0x0180, 0x0180, 0x0180, 0x07e0, 0x0ff0, 0x0ff0, 0x0ff0, 0x07e0, 0x0240, 0x0640, 0x0040, 0x0040, 0x0060]
+            ],
+            // PATA GIGANTE (MOTHER DUCK)
+            mother_duck: [
+                [0x00, 0x3e, 0x00], [0x00, 0x7f, 0x80], [0x00, 0xff, 0xc0], [0x00, 0xef, 0xe0],
+                [0x00, 0xe7, 0xe0], [0x00, 0x7f, 0xc0], [0x00, 0x3f, 0x80], [0x00, 0x1f, 0x00],
+                [0x0f, 0xbf, 0xe0], [0x3f, 0xff, 0xf0], [0x7f, 0xff, 0xf8], [0xff, 0xff, 0xfc],
+                [0xff, 0xff, 0xfc], [0x7f, 0xff, 0xf8], [0x3f, 0xff, 0xf0], [0x1f, 0xfe, 0xe0],
+                [0x0f, 0xfc, 0xc0], [0x07, 0xf8, 0x80], [0x03, 0xf0, 0x00], [0x01, 0xe0, 0x00]
             ],
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
@@ -944,11 +946,9 @@
             let floatingTexts = [];
 
             let cagedDuck = {
-                offsetRel: 0,
-                dir: 1,
                 isFlying: false,
-                flyX: 40,
-                flyY: 80
+                flyX: isMobile ? 45 : 55,
+                flyY: isMobile ? 75 : 85
             };
 
             let player = {
@@ -962,19 +962,18 @@
 
             let platformData, ladders, elevators, eggs, seeds, ostriches;
 
-            // ESTADO INICIAL DAS AVESTRUZES PARA RESET LIMPO
             const initialOstriches = isMobile ? [
-                {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0},
-                {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 7, state: 'walking', climbCooldown: 0},
-                {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 3, state: 'walking', climbCooldown: 0},
-                {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 8, state: 'walking', climbCooldown: 0},
-                {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, platformIdx: 10, state: 'walking', climbCooldown: 0}
+                {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 7, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 3, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 8, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, platformIdx: 10, state: 'walking', climbCooldown: 0, eatingTimer: 0}
             ] : [
-                {x: 20, y: 200, w: 22, h: 24, vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0},
-                {x: 360, y: 168, w: 22, h: 24, vx: -1.0, platformIdx: 11, state: 'walking', climbCooldown: 0},
-                {x: 70, y: 296, w: 22, h: 24, vx: 1.0, platformIdx: 4, state: 'walking', climbCooldown: 0},
-                {x: 240, y: 344, w: 22, h: 24, vx: 1.0, platformIdx: 5, state: 'walking', climbCooldown: 0},
-                {x: 530, y: 264, w: 22, h: 24, vx: 1.0, platformIdx: 9, state: 'walking', climbCooldown: 0}
+                {x: 20, y: 200, w: 22, h: 24, vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 360, y: 168, w: 22, h: -1.0, platformIdx: 11, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 70, y: 296, w: 22, h: 24, vx: 1.0, platformIdx: 4, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 240, y: 344, w: 22, h: 24, vx: 1.0, platformIdx: 5, state: 'walking', climbCooldown: 0, eatingTimer: 0},
+                {x: 530, y: 264, w: 22, h: 24, vx: 1.0, platformIdx: 9, state: 'walking', climbCooldown: 0, eatingTimer: 0}
             ];
 
             function resetOstriches() {
@@ -988,7 +987,7 @@
                 isGameOver = false;
                 isVictory = false;
                 victoryTimer = 0;
-                cagedDuck = { offsetRel: 0, dir: 1, isFlying: false, flyX: 40, flyY: 80 };
+                cagedDuck = { isFlying: false, flyX: isMobile ? 45 : 55, flyY: isMobile ? 75 : 85 };
                 player.x = isMobile ? 240 : 300;
                 player.y = isMobile ? 704 : 428;
                 player.vx = 0; player.vy = 0;
@@ -1025,7 +1024,7 @@
                     {x: 380, y: 590, h: 150},
                     {x: 100, y: 440, h: 150},
                     {x: 360, y: 440, h: 150},
-                    {x: 220, y: 380, h: 140},
+                    {x: 220, y: 380, h: 120},
                     {x: 80, y: 300, h: 140},
                     {x: 380, y: 300, h: 140},
                     {x: 230, y: 110, h: 130}
@@ -1179,7 +1178,11 @@
                 let bitScale = (o.w / 16);
                 let frameIdx = Math.floor(Date.now() / 100) % 2;
                 
-                if (o.state === 'climbing') {
+                if (o.eatingTimer > 0) {
+                    // SE ESTIVER A COMER MILHO, DESENHA PARADA A PICAR O CHÃO
+                    let currentFrame = SKOOL_SPRITES.duck_right[frameIdx];
+                    drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_YELLOW);
+                } else if (o.state === 'climbing') {
                     let currentFrame = SKOOL_SPRITES.ostrich_climbing[frameIdx];
                     drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_CYAN);
                 } else {
@@ -1192,14 +1195,11 @@
 
             function drawUI() {
                 ctx.font = 'bold 14px "Press Start 2P", "Courier New", monospace';
-                
                 let topOffset = isMobile ? 40 : 35;
 
-                // 1. SCORE
                 ctx.fillStyle = C_RED; ctx.fillText('SCORE', 20, topOffset);
                 ctx.fillStyle = C_WHITE; ctx.fillText(score.toString().padStart(6, '0'), isMobile ? 115 : 105, topOffset);
 
-                // 2. TIME
                 if (timer < 100) {
                     ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? C_YELLOW : C_RED;
                 } else {
@@ -1208,7 +1208,6 @@
                 let timeX = canvas.width - (isMobile ? 190 : 170);
                 ctx.fillText('TIME ' + Math.floor(timer), timeX, topOffset);
 
-                // 3. Ícones de Chapéu
                 for(let v = 0; v < lives; v++) {
                     let hX = 20 + (v * 22);
                     let hY = topOffset + 12;
@@ -1217,20 +1216,19 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA E PÁSSARO INTERNO / VOADOR
                 let cScale = isMobile ? 1.8 : 1.45;
                 let cX = isMobile ? 30 : 40;
                 let cY = isMobile ? 70 : 80;
 
-                drawExactBirdcage(ctx, cX, cY, cScale);
-
-                // DESENHO E ANIMAÇÃO DO PÁSSARO DENTRO DA GAIOLA
+                // GAIOLA AMARELA DENTRO DO JOGO (SOME NA VITÓRIA)
                 if (!cagedDuck.isFlying) {
-                    let duckX = cX + Math.round(16 * cScale) + cagedDuck.offsetRel * 0.4;
-                    let duckY = cY + Math.round(14 * cScale);
-                    drawBitmap(ctx, duckX, duckY, SKOOL_SPRITES.duck_right[0], 16, cScale * 0.6, C_CYAN);
+                    drawExactBirdcage(ctx, cX, cY, cScale);
+                    // PATA GIGANTE (MOTHER DUCK) ESTÁTICA DENTRO DA GAIOLA
+                    drawBitmap(ctx, cX + 10 * cScale, cY + 8 * cScale, SKOOL_SPRITES.mother_duck, 24, cScale * 0.55, C_CYAN);
                 } else {
-                    drawBitmap(ctx, cagedDuck.flyX, cagedDuck.flyY, SKOOL_SPRITES.duck_right[Math.floor(Date.now() / 100) % 2], 16, cScale * 0.9, C_CYAN);
+                    // ANIMAÇÃO DA PATA GIGANTE A VOAR FORA DA GAIOLA NA VITÓRIA
+                    let wingFrame = (Math.floor(Date.now() / 90) % 2 === 0) ? SKOOL_SPRITES.duck_right[0] : SKOOL_SPRITES.duck_right[1];
+                    drawBitmap(ctx, cagedDuck.flyX, cagedDuck.flyY, wingFrame, 16, cScale * 1.6, C_CYAN);
                 }
             }
 
@@ -1254,13 +1252,10 @@
                 updateMobileControlUI();
                 if(isGameOver) return;
 
-                if (!cagedDuck.isFlying) {
-                    cagedDuck.offsetRel += cagedDuck.dir * 0.35;
-                    if (cagedDuck.offsetRel > 14) cagedDuck.dir = -1;
-                    if (cagedDuck.offsetRel < -14) cagedDuck.dir = 1;
-                } else {
-                    cagedDuck.flyX += 3.5;
-                    cagedDuck.flyY -= 1.5;
+                // ANIMAÇÃO DO VOO DA PATA NA VITÓRIA
+                if (cagedDuck.isFlying) {
+                    cagedDuck.flyX += 4.5;
+                    cagedDuck.flyY -= 2.2;
                 }
 
                 if (isVictory) return;
@@ -1299,7 +1294,6 @@
                         stepAudioTimer++;
                         if (stepAudioTimer % 12 === 0) playStepSound();
 
-                        // SAÍDA DA ESCADA NO TOPO
                         if (player.y + player.h <= activeLadder.y + 2) {
                             player.y = activeLadder.y - player.h;
                             player.climbing = false;
@@ -1375,7 +1369,6 @@
                 player.x += player.vx;
                 player.y += player.vy;
 
-                // TETO E FRONTEIRAS LATERAIS
                 if(player.x < 0) player.x = 0;
                 if(player.x + player.w > canvas.width) player.x = canvas.width - player.w;
                 if(player.y < 0) { player.y = 0; player.vy = 0; }
@@ -1414,9 +1407,26 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // INTELIGÊNCIA ARTIFICIAL E VALIDAÇÃO DE ESCADAS DAS AVESTRUZES
+                // INTELIGÊNCIA ARTIFICIAL: PERSEGUIÇÃO NATURAL (80%) E COMER MILHO
                 for(let o of ostriches) {
                     let curPlatform = platformData[o.platformIdx || 0];
+
+                    // TRATAMENTO DE AVESTRUZ A COMER MILHO
+                    if (o.eatingTimer > 0) {
+                        o.eatingTimer--;
+                        continue;
+                    }
+
+                    // COLISÃO DE AVESTRUZ COM SEMENTE DE MILHO
+                    for(let s of seeds) {
+                        if(!s.collected && Math.abs(o.x - s.x) < 14 && Math.abs((o.y + o.h) - (s.baseY + s.h)) < 14) {
+                            s.collected = true;
+                            o.eatingTimer = 150; // 2.5 segundos de pausa a comer
+                            addFloatingText('NOM!', s.x, s.baseY - 10);
+                            playTone(440, 0.1, 'sine', 0.05);
+                            break;
+                        }
+                    }
 
                     if (o.climbCooldown > 0) {
                         o.climbCooldown--;
@@ -1429,7 +1439,7 @@
                             o.state = 'walking';
                             o.vy = 0;
                             o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
-                            o.climbCooldown = 50;
+                            o.climbCooldown = 40;
                             if (o.targetPlatformIdx !== undefined) {
                                 o.platformIdx = o.targetPlatformIdx;
                             }
@@ -1442,74 +1452,55 @@
                         let pMaxX = curPlatform.x + curPlatform.w - o.w;
 
                         let isAtEdge = (o.vx > 0 && o.x >= pMaxX) || (o.vx < 0 && o.x <= pMinX);
+                        let oCenterX = o.x + o.w / 2;
 
-                        if (isAtEdge) {
-                            o.x = Math.max(pMinX, Math.min(pMaxX, o.x));
-                            let oCenterX = o.x + o.w / 2;
+                        // PROCURA DE ESCADAS AO LONGO DE TODO O CAMINHO
+                        if (o.climbCooldown <= 0) {
+                            for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
+                                let l = ladders[lIdx];
+                                let ladderCenterX = l.x + 10 * gfxScale;
+                                
+                                if (Math.abs(oCenterX - ladderCenterX) < 6) {
+                                    let wantUp = player.y < o.y - 15;
+                                    let wantDown = player.y > o.y + 15;
 
-                            if (o.climbCooldown <= 0) {
-                                let upPlatforms = [];
-                                let downPlatforms = [];
-
-                                for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
-                                    let l = ladders[lIdx];
-                                    if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 18 * gfxScale) {
-                                        for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
-                                            let p = platformData[pIdx];
-                                            if (pIdx !== o.platformIdx) {
-                                                // VALIDAÇÃO RIGOROSA DE ESCADA CONECTADA
-                                                if (p.y < curPlatform.y) {
-                                                    let ladderConnectsBottom = Math.abs((l.y + l.h) - curPlatform.y) < 20;
-                                                    let ladderConnectsTop = Math.abs(l.y - p.y) < 20;
-                                                    if (ladderConnectsBottom && ladderConnectsTop) {
-                                                        upPlatforms.push({ l: l, pIdx: pIdx, p: p });
-                                                    }
-                                                } else if (p.y > curPlatform.y) {
-                                                    let ladderConnectsTop = Math.abs(l.y - curPlatform.y) < 20;
-                                                    let ladderConnectsBottom = Math.abs((l.y + l.h) - p.y) < 20;
-                                                    if (ladderConnectsTop && ladderConnectsBottom) {
-                                                        downPlatforms.push({ l: l, pIdx: pIdx, p: p });
+                                    if (wantUp || wantDown) {
+                                        // 80% DE PROBABILIDADE DE SEGUIR O HARRY NA ESCADA
+                                        if (Math.random() < 0.80) {
+                                            for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
+                                                let p = platformData[pIdx];
+                                                if (pIdx !== o.platformIdx) {
+                                                    if (wantUp && p.y < curPlatform.y && Math.abs((l.y + l.h) - curPlatform.y) < 20 && Math.abs(l.y - p.y) < 20) {
+                                                        o.state = 'climbing';
+                                                        o.x = ladderCenterX - o.w / 2;
+                                                        o.targetPlatformIdx = pIdx;
+                                                        o.vy = -1.2;
+                                                        o.targetY = p.y - o.h;
+                                                        break;
+                                                    } else if (wantDown && p.y > curPlatform.y && Math.abs(l.y - curPlatform.y) < 20 && Math.abs((l.y + l.h) - p.y) < 20) {
+                                                        o.state = 'climbing';
+                                                        o.x = ladderCenterX - o.w / 2;
+                                                        o.targetPlatformIdx = pIdx;
+                                                        o.vy = 1.2;
+                                                        o.targetY = p.y - o.h;
+                                                        break;
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-                                let chooseUp = Math.random() < 0.50;
-                                let chosenTarget = null;
-
-                                if (chooseUp && upPlatforms.length > 0) {
-                                    chosenTarget = upPlatforms[Math.floor(Math.random() * upPlatforms.length)];
-                                } else if (!chooseUp && downPlatforms.length > 0) {
-                                    chosenTarget = downPlatforms[Math.floor(Math.random() * downPlatforms.length)];
-                                } else if (upPlatforms.length > 0) {
-                                    chosenTarget = upPlatforms[Math.floor(Math.random() * upPlatforms.length)];
-                                } else if (downPlatforms.length > 0) {
-                                    chosenTarget = downPlatforms[Math.floor(Math.random() * downPlatforms.length)];
-                                }
-
-                                if (chosenTarget) {
-                                    o.state = 'climbing';
-                                    o.x = chosenTarget.l.x + 10 * gfxScale - o.w / 2;
-                                    o.targetPlatformIdx = chosenTarget.pIdx;
-                                    if (chosenTarget.p.y < curPlatform.y) {
-                                        o.vy = -1.2;
-                                        o.targetY = chosenTarget.p.y - o.h;
-                                    } else {
-                                        o.vy = 1.2;
-                                        o.targetY = chosenTarget.p.y - o.h;
-                                    }
-                                } else {
-                                    o.vx *= -1;
-                                }
-                            } else {
-                                o.vx *= -1;
                             }
+                        }
+
+                        if (isAtEdge) {
+                            o.x = Math.max(pMinX, Math.min(pMaxX, o.x));
+                            o.vx *= -1;
                         }
                     }
 
-                    if(player.x < o.x + o.w && player.x + player.w > o.x &&
+                    // COLISÃO COM HARRY (APENAS SE NÃO ESTIVER A COMER)
+                    if(o.eatingTimer <= 0 && player.x < o.x + o.w && player.x + player.w > o.x &&
                        player.y < o.y + o.h && player.y + player.h > o.y) {
                         resetLevel();
                     }
@@ -1661,7 +1652,7 @@
                     ctx.font = '12px "Press Start 2P", "Courier New", monospace';
                     ctx.fillText('NÍVEL CONCLUÍDO!', vx + 40, vy + 55);
 
-                    if(victoryTimer > 80) {
+                    if(victoryTimer > 90) {
                         skipGame();
                     }
                 }
@@ -1669,7 +1660,7 @@
                 ctx.restore();
             }
 
-            // LOOP FIXED TIMESTEP INDEPENDENTE DO REFRESH RATE DO ECRÃ (60 FPS LOCK)
+            // LOOP FIXED TIMESTEP INDEPENDENTE DE REFRESH RATE (60 FPS LOCK)
             let lastTime = 0;
             const TIME_STEP = 1000 / 60;
             let accumulator = 0;
