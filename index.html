@@ -840,25 +840,7 @@
             }
         }
 
-        // RENDERIZADOR MULTI-BYTE PARA MATRIZES DE MAIOR LARGURA
-        function drawBitmapMultiByte(ctx, x, y, byteData, bytesPerRow, scale, color) {
-            ctx.fillStyle = color;
-            let totalRows = Math.floor(byteData.length / bytesPerRow);
-            for (let r = 0; r < totalRows; r++) {
-                for (let b = 0; b < bytesPerRow; b++) {
-                    let byteVal = byteData[r * bytesPerRow + b];
-                    for (let c = 0; c < 8; c++) {
-                        if ((byteVal & (1 << (7 - c))) !== 0) {
-                            let px = x + (b * 8 + c) * scale;
-                            let py = y + r * scale;
-                            ctx.fillRect(Math.round(px), Math.round(py), Math.ceil(scale), Math.ceil(scale));
-                        }
-                    }
-                }
-            }
-        }
-
-        // RENDERIZADOR DA GAIOLA ARREDONDADA PROPORCIONAL DA TUA IMAGEM SPECTRUM (32x32)
+        // RENDERIZADOR ESPECÍFICO DA GAIOLA E PÁSSARO MONOCROMÁTICO COM COMPENSAÇÃO DE ESCALA DE CÚPULA ARREDONDADA (32x32)
         function drawExactBirdcage(ctx, x, y, scale) {
             const matrix = [
                 0x0003c000, 0x00066000, 0x00066000, 0x0003c000, 0x00018000, 0x0003c000, 0x001fe000, 0x00e18700,
@@ -867,7 +849,7 @@
                 0x20e3e000, 0x207fc000, 0x20199000, 0x20199000, 0x20199000, 0x3fffffe0, 0x3fffffe0, 0x00000000
             ];
 
-            let scaleX = scale * 1.45; // Expansão horizontal para formato arredondado de cúpula
+            let scaleX = scale * 1.45; // Compensação horizontal para criar a cúpula larga e redonda
             let scaleY = scale * 1.0;
 
             ctx.fillStyle = C_YELLOW;
@@ -928,48 +910,7 @@
             // Item Egg ($8508 / SPRITE_EGG)
             egg: [0x38, 0x7e, 0xff, 0xff, 0xff, 0x7e, 0x38, 0x00],
             // Item Corn ($8510 / SPRITE_GRAIN)
-            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00],
-            
-            // SPRITE_CAGE_CLOSED (24x48 bits / 144 bytes) - Direto do `spritedata.c`
-            cage_closed: [
-                0x00,0x38,0x00, 0x00,0x44,0x00, 0x00,0x44,0x00, 0x00,0x44,0x00, 0x00,0x38,0x00, 0x00,0x10,0x00, 0x00,0xfe,0x00, 0x03,0x7d,0x80,
-                0x0c,0xd6,0x60, 0x11,0x55,0x10, 0x22,0x54,0x88, 0x24,0x92,0x48, 0x44,0x92,0x44, 0x48,0x92,0x24, 0x88,0x92,0x22, 0x89,0x11,0x22,
-                0xd1,0x10,0x16, 0xb1,0x10,0x0a, 0x99,0x00,0x02, 0x97,0x00,0x02, 0x91,0xe0,0x02, 0x91,0x00,0x02, 0x91,0x10,0x02, 0x91,0x10,0x12,
-                0x91,0x10,0x12, 0x91,0x10,0x12, 0x90,0x00,0x12, 0x90,0x00,0x12, 0x90,0x00,0x12, 0xd0,0x00,0x16, 0xb0,0x00,0x1a, 0x90,0x00,0x32,
-                0x90,0x00,0x12, 0x90,0x00,0x12, 0x90,0x00,0x12, 0x90,0x00,0x12, 0x90,0x00,0x12, 0x91,0x00,0x12, 0x91,0x01,0x12, 0x91,0x11,0x12,
-                0x91,0x11,0x12, 0xd1,0x11,0x12, 0x51,0x11,0x14, 0x31,0x11,0x18, 0x19,0x11,0x30, 0x07,0x11,0xc0, 0x00,0xfe,0x00
-            ],
-
-            // SPRITE_CAGE_OPEN (24x48 bits / 144 bytes) - Gaiola Aberta na Vitória
-            cage_open: [
-                0x00,0x38,0x00, 0x00,0x44,0x00, 0x00,0x44,0x00, 0x00,0x44,0x00, 0x00,0x38,0x00, 0x00,0x10,0x00, 0x00,0xfe,0x00, 0x03,0x7d,0x80,
-                0x0c,0xd6,0x60, 0x11,0x55,0x10, 0x22,0x54,0x88, 0x24,0x92,0x48, 0x44,0x92,0x44, 0x48,0x92,0x24, 0x88,0x92,0x22, 0x89,0x11,0x22,
-                0xd1,0x11,0x16, 0xb1,0x11,0x1a, 0x99,0x11,0x32, 0x97,0x11,0xd2, 0x91,0xff,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12,
-                0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0xd1,0x11,0x16, 0xb1,0x11,0x1a, 0x99,0x11,0x32,
-                0x97,0x11,0xd2, 0x91,0xff,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12, 0x91,0x11,0x12,
-                0x91,0x11,0x12, 0x91,0x11,0x12, 0xd1,0x11,0x12, 0x51,0x11,0x14, 0x31,0x11,0x18, 0x19,0x11,0x30, 0x07,0x11,0xc0, 0x00,0xfe,0x00
-            ],
-
-            // SPRITE_BIGDUCK_R1 (16x24 bits) - Pássaro Gigante Oficial
-            bigduck_r1: [
-                0x00,0x70,0x00,0xf8,0x01,0xe8,0x01,0xef,0x01,0xff,0x01,0xf8,0x00,0xf0,0x00,0xe0,0x00,0x60,0x0e,0x70,0x1f,0x70,0x3f,0xf8,
-                0x7f,0xf8,0xff,0x78,0xff,0xb8,0xbf,0xbc,0xbf,0xbc,0xdf,0xbc,0x6f,0x7c,0x76,0xfc,0x39,0xf8,0x1f,0xf8,0x0f,0xf0,0x03,0xe0
-            ],
-            // SPRITE_BIGDUCK_R2 (16x24 bits) - Fotograma 2
-            bigduck_r2: [
-                0x00,0x70,0x00,0xf9,0x01,0xea,0x01,0xec,0x01,0xfc,0x01,0xfa,0x00,0xf1,0x00,0xe0,0x00,0x60,0x0e,0x70,0x1f,0x70,0x3f,0xf8,
-                0x71,0xf8,0xee,0x78,0xdf,0xb8,0xbf,0xfc,0xff,0xfc,0xff,0xfc,0x7f,0xfc,0x7f,0xfc,0x3f,0xf8,0x1f,0xf8,0x0f,0xf0,0x03,0xe0
-            ],
-            // SPRITE_BIGDUCK_L1 (16x24 bits) - Esquerda/Fuga
-            bigduck_l1: [
-                0x0e,0x00,0x1f,0x00,0x17,0x80,0xf7,0x80,0xff,0x80,0x1f,0x80,0x0f,0x00,0x07,0x00,0x06,0x00,0x0e,0x70,0x0e,0xf8,0x1f,0xfc,
-                0x1f,0xfe,0x1e,0xff,0x1d,0xff,0x3d,0xfd,0x3d,0xfd,0x3d,0xfb,0x3e,0xf6,0x3f,0x6e,0x1f,0x9c,0x1f,0xf8,0x0f,0xf0,0x07,0xc0
-            ],
-            // SPRITE_BIGDUCK_L2 (16x24 bits) - Esquerda/Fuga 2
-            bigduck_l2: [
-                0x0e,0x00,0x9f,0x00,0x57,0x80,0x37,0x80,0x3f,0x80,0x5f,0x80,0x8f,0x00,0x07,0x00,0x06,0x00,0x0e,0x70,0x0e,0xf8,0x1f,0xfc,
-                0x1f,0x8e,0x1e,0x77,0x1d,0xfb,0x3f,0xfd,0x3f,0xff,0x3f,0xff,0x3f,0xfe,0x3f,0xfe,0x1f,0xfc,0x1f,0xf8,0x0f,0xf0,0x07,0xc0
-            ]
+            corn: [0x00, 0x00, 0x00, 0x10, 0x28, 0x54, 0xaa, 0x00]
         };
 
         function initChuckieEgg() {
@@ -1123,7 +1064,7 @@
                     {x: 30, y: 160, w: 60, hidden: true}
                 ];
 
-                // ESCADAS AJUSTADAS PARA TERMINAREM RIGOROSAMENTE NO TOPO DAS PLATAFORMA
+                // ESCADAS AJUSTADAS PARA TERMINAREM RIGOROSAMENTE NO TOPO DAS PLATAFORMAS
                 ladders = [
                     {x: 100, y: 224, h: 240}, {x: 60, y: 160, h: 64}, {x: 180, y: 160, h: 80},
                     {x: 260, y: 192, h: 176}, {x: 310, y: 192, h: 176}, {x: 370, y: 144, h: 128},
@@ -1233,6 +1174,7 @@
                 ctx.restore();
             }
 
+            // DESENHO DA AVESTRUZ COM ESCALA CONSTANTE 1:1 EM QUALQUER ESTADO
             function drawOstrich(o) {
                 ctx.save();
                 let bitScale = (o.w / 16);
@@ -1249,7 +1191,7 @@
                 ctx.restore();
             }
 
-            // GAIOLA COM PROPORÇÃO ARREDONDADA DE CÚPULA DE 48x40px
+            // GAIOLA MONOCROMÁTICA A AMARELO PURO (#FFFF00) COM PROPORÇÃO ARREDONDADA
             function drawUI() {
                 let fontSize = isMobile ? '16px' : '15px';
                 ctx.font = `bold ${fontSize} "Courier New", monospace, sans-serif`;
@@ -1279,7 +1221,7 @@
                     ctx.fillRect(hX + 3, hY, 8, 3);
                 }
 
-                // GAIOLA COM PROPORÇÃO ARREDONDADA DE CÚPULA
+                // GAIOLA COM PROPORÇÃO ARREDONDADA DE CÚPULA DE 48x40px
                 let cScale = isMobile ? 1.8 : 1.45;
                 let cX = isMobile ? 30 : 40;
                 let cY = isMobile ? 70 : 80;
@@ -1456,7 +1398,7 @@
                     if(e.y <= e.minY || e.y >= e.maxY) e.vy *= -1;
                 }
 
-                // INTELIGÊNCIA ARTIFICIAL E FLUXO DE MOVIMENTO DAS AVESTRUZES
+                // INTELIGÊNCIA ARTIFICIAL E MUDANÇA EQUILIBRADA DE PLATAFORMAS DAS AVESTRUZES (SUBIR E DESCER 50/50)
                 for(let o of ostriches) {
                     let curPlatform = platformData[o.platformIdx || 0];
 
@@ -1488,39 +1430,54 @@
                         if (isAtEdge) {
                             o.x = Math.max(pMinX, Math.min(pMaxX, o.x));
                             let oCenterX = o.x + o.w / 2;
-                            let ladderFound = null;
-                            let nextPlatformIdx = -1;
 
-                            if (o.climbCooldown <= 0 && Math.random() < 0.50) {
+                            if (o.climbCooldown <= 0) {
+                                let upPlatforms = [];
+                                let downPlatforms = [];
+
                                 for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
                                     let l = ladders[lIdx];
-                                    if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 15 * gfxScale) {
+                                    if (Math.abs(oCenterX - (l.x + 10 * gfxScale)) < 18 * gfxScale) {
                                         for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
                                             let p = platformData[pIdx];
-                                            if (pIdx !== o.platformIdx && Math.abs((p.y - o.h) - o.y) > 20) {
-                                                if (Math.abs((l.y - o.h) - (p.y - o.h)) < 15 || Math.abs((l.y + l.h - o.h) - (p.y - o.h)) < 15) {
-                                                    ladderFound = l;
-                                                    nextPlatformIdx = pIdx;
-                                                    break;
+                                            if (pIdx !== o.platformIdx) {
+                                                if (p.y < curPlatform.y && Math.abs((l.y - o.h) - (p.y - o.h)) < 20) {
+                                                    upPlatforms.push({ l: l, pIdx: pIdx, p: p });
+                                                } else if (p.y > curPlatform.y && Math.abs((l.y + l.h - o.h) - (p.y - o.h)) < 20) {
+                                                    downPlatforms.push({ l: l, pIdx: pIdx, p: p });
                                                 }
                                             }
                                         }
                                     }
-                                    if (ladderFound) break;
                                 }
-                            }
 
-                            if (ladderFound && nextPlatformIdx !== -1) {
-                                let targetP = platformData[nextPlatformIdx];
-                                o.state = 'climbing';
-                                o.x = ladderFound.x + 10 * gfxScale - o.w / 2;
-                                o.targetPlatformIdx = nextPlatformIdx;
-                                if (targetP.y < curPlatform.y) {
-                                    o.vy = -1.2;
-                                    o.targetY = targetP.y - o.h;
+                                // Sorteio 50/50 equilibrado para subir ou descer escadas
+                                let chooseUp = Math.random() < 0.50;
+                                let chosenTarget = null;
+
+                                if (chooseUp && upPlatforms.length > 0) {
+                                    chosenTarget = upPlatforms[Math.floor(Math.random() * upPlatforms.length)];
+                                } else if (!chooseUp && downPlatforms.length > 0) {
+                                    chosenTarget = downPlatforms[Math.floor(Math.random() * downPlatforms.length)];
+                                } else if (upPlatforms.length > 0) {
+                                    chosenTarget = upPlatforms[Math.floor(Math.random() * upPlatforms.length)];
+                                } else if (downPlatforms.length > 0) {
+                                    chosenTarget = downPlatforms[Math.floor(Math.random() * downPlatforms.length)];
+                                }
+
+                                if (chosenTarget) {
+                                    o.state = 'climbing';
+                                    o.x = chosenTarget.l.x + 10 * gfxScale - o.w / 2;
+                                    o.targetPlatformIdx = chosenTarget.pIdx;
+                                    if (chosenTarget.p.y < curPlatform.y) {
+                                        o.vy = -1.2;
+                                        o.targetY = chosenTarget.p.y - o.h;
+                                    } else {
+                                        o.vy = 1.2;
+                                        o.targetY = chosenTarget.p.y - o.h;
+                                    }
                                 } else {
-                                    o.vy = 1.2;
-                                    o.targetY = targetP.y - o.h;
+                                    o.vx *= -1;
                                 }
                             } else {
                                 o.vx *= -1;
