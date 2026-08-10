@@ -844,39 +844,161 @@
             }
         }
 
-        // DESENHO LIMPO DA GAIOLA FIXA NO HUD
+        // DESENHO CORRIGIDO E DETALHADO DA GAIOLA FIXA NO HUD (CONFORME GUIA)
         function drawExactBirdcage(ctx, x, y, scale) {
+            ctx.save();
             ctx.strokeStyle = C_YELLOW;
-            ctx.lineWidth = Math.max(2, Math.round(2 * scale));
+            ctx.fillStyle = C_YELLOW;
+            ctx.lineWidth = Math.max(1.5, Math.round(2 * scale));
             
-            let cWidth = Math.round(44 * scale);
-            let cHeight = Math.round(36 * scale);
+            let cWidth = Math.round(52 * scale);
+            let cHeight = Math.round(52 * scale);
 
-            // Cúpula
+            // 1. TOPO: Argola superior
             ctx.beginPath();
-            ctx.arc(x + cWidth / 2, y + cHeight / 2, cWidth / 2, Math.PI, 0, false);
+            ctx.arc(x + cWidth / 2, y - Math.round(5 * scale), Math.round(5 * scale), 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillRect(x + cWidth / 2 - Math.round(2 * scale), y - Math.round(1 * scale), Math.round(4 * scale), Math.round(3 * scale));
+
+            // 2. TOPO: Curvatura da Cúpula da Gaiola
+            ctx.beginPath();
+            ctx.arc(x + cWidth / 2, y + Math.round(22 * scale), Math.round(24 * scale), Math.PI, 0, false);
             ctx.lineTo(x + cWidth, y + cHeight);
             ctx.lineTo(x, y + cHeight);
             ctx.closePath();
             ctx.stroke();
 
-            // Argola Superior
+            // 3. BASE: Estrutura metálica reforçada
+            let floorY = y + cHeight;
+            ctx.fillRect(x - Math.round(2 * scale), floorY, cWidth + Math.round(4 * scale), Math.round(4 * scale));
+            ctx.fillRect(x, floorY + Math.round(4 * scale), cWidth, Math.round(2 * scale));
+
+            // 4. PISO: Gradeado para profundidade
+            ctx.lineWidth = Math.max(1, scale);
+            for (let gx = x + Math.round(4 * scale); gx < x + cWidth; gx += Math.round(6 * scale)) {
+                ctx.beginPath();
+                ctx.moveTo(gx, floorY - Math.round(4 * scale));
+                ctx.lineTo(gx + Math.round(3 * scale), floorY);
+                ctx.stroke();
+            }
+
+            // 5. BARRAS VERTICAIS UNIFORMES
+            ctx.lineWidth = Math.max(1.5, Math.round(1.8 * scale));
+            let numBars = 5;
+            for (let b = 1; b <= numBars; b++) {
+                let barX = x + (cWidth * b) / (numBars + 1);
+                let dx = barX - (x + cWidth / 2);
+                let arcRadius = 24 * scale;
+                let arcCenterY = y + 22 * scale;
+                let topBarY = arcCenterY;
+                if (Math.abs(dx) <= arcRadius) {
+                    topBarY = arcCenterY - Math.sqrt(arcRadius * arcRadius - dx * dx);
+                }
+                ctx.beginPath();
+                ctx.moveTo(barX, topBarY);
+                ctx.lineTo(barX, floorY);
+                ctx.stroke();
+            }
+
+            // 6. PORTA COM DOBRADIÇAS E TRINCO (lado direito)
+            let doorW = Math.round(12 * scale);
+            let doorH = Math.round(20 * scale);
+            let doorX = x + cWidth - doorW - Math.round(2 * scale);
+            let doorY = y + cHeight - doorH - Math.round(4 * scale);
+
+            ctx.strokeRect(doorX, doorY, doorW, doorH);
+            ctx.fillRect(doorX - Math.round(2 * scale), doorY + Math.round(3 * scale), Math.round(2 * scale), Math.round(3 * scale));
+            ctx.fillRect(doorX - Math.round(2 * scale), doorY + doorH - Math.round(6 * scale), Math.round(2 * scale), Math.round(3 * scale));
+            ctx.fillRect(doorX + doorW, doorY + Math.round(doorH / 2 - 2 * scale), Math.round(4 * scale), Math.round(4 * scale));
+
+            // 7. PASSARO AMARELO (#FFFF00) COM MICRO MOVIMENTOS (~2.0s LOOP)
+            // 1. NEUTRO, 2. PISCA, 3. BATE ASA, 4. RESPIRA
+            let loopTime = (Date.now() % 2000) / 2000;
+
+            // 4. RESPIRA: Suave oscilação vertical
+            let respiraOffset = Math.sin(loopTime * Math.PI * 2) * (1.2 * scale);
+
+            // 2. PISCA: Olho pisca entre 0.40 e 0.52 do ciclo
+            let isBlinking = (loopTime > 0.40 && loopTime < 0.52);
+
+            // 3. BATE ASA: Asa mexe/levanta entre 0.65 e 0.85 do ciclo
+            let isFlapping = (loopTime > 0.65 && loopTime < 0.85);
+
+            let birdCenterX = x + cWidth / 2 - Math.round(2 * scale);
+            let birdBaseY = floorY - Math.round(4 * scale) + respiraOffset;
+
+            // Pernas e pés assentes no piso
+            ctx.lineWidth = Math.max(1, scale);
             ctx.beginPath();
-            ctx.arc(x + cWidth / 2, y - Math.round(4 * scale), Math.round(5 * scale), 0, Math.PI * 2);
+            ctx.moveTo(birdCenterX - Math.round(3 * scale), birdBaseY - Math.round(8 * scale));
+            ctx.lineTo(birdCenterX - Math.round(3 * scale), floorY);
+            ctx.moveTo(birdCenterX + Math.round(3 * scale), birdBaseY - Math.round(8 * scale));
+            ctx.lineTo(birdCenterX + Math.round(3 * scale), floorY);
+            ctx.moveTo(birdCenterX - Math.round(5 * scale), floorY);
+            ctx.lineTo(birdCenterX - Math.round(1 * scale), floorY);
+            ctx.moveTo(birdCenterX + Math.round(1 * scale), floorY);
+            ctx.lineTo(birdCenterX + Math.round(5 * scale), floorY);
             ctx.stroke();
 
-            // Barras Verticais
+            // Corpo do Pássaro (Amarelo)
+            let bodyX = birdCenterX;
+            let bodyY = birdBaseY - Math.round(16 * scale);
+
+            // Cauda
             ctx.beginPath();
-            ctx.moveTo(x + cWidth * 0.25, y + cHeight * 0.2);
-            ctx.lineTo(x + cWidth * 0.25, y + cHeight);
-            ctx.moveTo(x + cWidth * 0.75, y + cHeight * 0.2);
-            ctx.lineTo(x + cWidth * 0.75, y + cHeight);
+            ctx.moveTo(bodyX - Math.round(10 * scale), bodyY + Math.round(2 * scale));
+            ctx.lineTo(bodyX - Math.round(18 * scale), bodyY - Math.round(2 * scale));
+            ctx.lineTo(bodyX - Math.round(16 * scale), bodyY + Math.round(6 * scale));
+            ctx.closePath();
+            ctx.fill();
+
+            // Peito / Corpo Oval
+            ctx.beginPath();
+            ctx.ellipse(bodyX, bodyY, Math.round(10 * scale), Math.round(8 * scale), 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cabeça
+            let headX = bodyX + Math.round(8 * scale);
+            let headY = bodyY - Math.round(7 * scale);
+            ctx.beginPath();
+            ctx.arc(headX, headY, Math.round(6 * scale), 0, Math.PI * 2);
+            ctx.fill();
+
+            // Bico apontando para a direita
+            ctx.beginPath();
+            ctx.moveTo(headX + Math.round(5 * scale), headY - Math.round(2 * scale));
+            ctx.lineTo(headX + Math.round(13 * scale), headY + Math.round(1 * scale));
+            ctx.lineTo(headX + Math.round(5 * scale), headY + Math.round(4 * scale));
+            ctx.closePath();
+            ctx.fill();
+
+            // Olho com PISCA
+            if (isBlinking) {
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = Math.max(1, scale);
+                ctx.beginPath();
+                ctx.moveTo(headX + Math.round(2 * scale), headY - Math.round(1 * scale));
+                ctx.lineTo(headX + Math.round(6 * scale), headY - Math.round(1 * scale));
+                ctx.stroke();
+            } else {
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.arc(headX + Math.round(3 * scale), headY - Math.round(1 * scale), Math.max(1, Math.round(1.5 * scale)), 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Asa com BATE ASA
+            ctx.fillStyle = C_YELLOW;
+            ctx.strokeStyle = '#D4B000';
+            ctx.lineWidth = Math.max(1, scale);
+            let wingYOffset = isFlapping ? -Math.round(4 * scale) : 0;
+            
+            ctx.beginPath();
+            ctx.ellipse(bodyX - Math.round(2 * scale), bodyY - Math.round(1 * scale) + wingYOffset, Math.round(6 * scale), Math.round(4 * scale), Math.PI / 6, 0, Math.PI * 2);
+            ctx.fill();
             ctx.stroke();
 
-            // PATA GIGANTE (MOTHER DUCK) DESENHADA LIMPA NO INTERIOR
-            let duckX = x + Math.round(10 * scale);
-            let duckY = y + Math.round(10 * scale);
-            drawBitmap(ctx, duckX, duckY, SKOOL_SPRITES.mother_duck, 24, scale * 0.6, C_CYAN);
+            ctx.restore();
         }
 
         const SKOOL_SPRITES = {
@@ -973,17 +1095,17 @@
             let platformData, ladders, elevators, eggs, seeds, ostriches;
 
             const initialOstriches = isMobile ? [
-                {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 7, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 3, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 8, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, platformIdx: 10, state: 'walking', climbCooldown: 0, eatingTimer: 0}
+                {x: 30, y: 556, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 1, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 40, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 7, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 180, y: 346, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 3, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 320, y: 266, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: 1.0, platformIdx: 8, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 60, y: 136, w: Math.round(22 * gfxScale), h: Math.round(24 * gfxScale), vx: -1.0, platformIdx: 10, state: 'patrolling', facingRight: false, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0}
             ] : [
-                {x: 20, y: 200, w: 22, h: 24, vx: 1.0, platformIdx: 1, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 360, y: 168, w: 22, h: 24, vx: -1.0, platformIdx: 11, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 70, y: 296, w: 22, h: 24, vx: 1.0, platformIdx: 4, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 240, y: 344, w: 22, h: 24, vx: 1.0, platformIdx: 5, state: 'walking', climbCooldown: 0, eatingTimer: 0},
-                {x: 530, y: 264, w: 22, h: 24, vx: 1.0, platformIdx: 9, state: 'walking', climbCooldown: 0, eatingTimer: 0}
+                {x: 20, y: 200, w: 22, h: 24, vx: 1.0, platformIdx: 1, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 360, y: 168, w: 22, h: 24, vx: -1.0, platformIdx: 11, state: 'patrolling', facingRight: false, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 70, y: 296, w: 22, h: 24, vx: 1.0, platformIdx: 4, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 240, y: 344, w: 22, h: 24, vx: 1.0, platformIdx: 5, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0},
+                {x: 530, y: 264, w: 22, h: 24, vx: 1.0, platformIdx: 9, state: 'patrolling', facingRight: true, turnTimer: 0, hesitationTimer: 0, targetUpdateTimer: 0, walkCycleTimer: 0, speedMult: 1.0, climbCooldown: 0, eatingTimer: 0}
             ];
 
             function resetOstriches() {
@@ -1186,6 +1308,13 @@
                 let bitScale = (o.w / 16);
                 let frameIdx = Math.floor(Date.now() / 100) % 2;
                 
+                // 1. ANDAR & ACELERAR: Leve inclinação para a frente em movimento
+                if (o.tiltAngle) {
+                    ctx.translate(o.x + o.w / 2, o.y + o.h);
+                    ctx.rotate(o.tiltAngle);
+                    ctx.translate(-(o.x + o.w / 2), -(o.y + o.h));
+                }
+
                 if (o.eatingTimer > 0) {
                     let currentFrame = SKOOL_SPRITES.duck_right[frameIdx];
                     drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_YELLOW);
@@ -1193,7 +1322,8 @@
                     let currentFrame = SKOOL_SPRITES.ostrich_climbing[frameIdx];
                     drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_CYAN);
                 } else {
-                    let animSet = (o.vx > 0) ? SKOOL_SPRITES.duck_right : SKOOL_SPRITES.duck_left;
+                    let isFacingRight = (o.facingRight !== undefined) ? o.facingRight : (o.vx >= 0);
+                    let animSet = isFacingRight ? SKOOL_SPRITES.duck_right : SKOOL_SPRITES.duck_left;
                     let currentFrame = animSet[frameIdx];
                     drawBitmap(ctx, o.x, o.y, currentFrame, 16, bitScale, C_CYAN);
                 }
@@ -1470,20 +1600,69 @@
                     }
 
                     if (o.state === 'climbing') {
+                        o.tiltAngle = 0;
                         o.y += o.vy;
                         if ((o.vy < 0 && o.y <= o.targetY) || (o.vy > 0 && o.y >= o.targetY)) {
                             o.y = o.targetY;
-                            o.state = 'walking';
+                            o.state = 'patrolling';
                             o.vy = 0;
-                            o.vx = Math.random() > 0.5 ? 1.0 : -1.0;
+                            o.facingRight = Math.random() > 0.5;
+                            o.vx = o.facingRight ? 0.3 : -0.3;
                             o.climbCooldown = 40;
                             if (o.targetPlatformIdx !== undefined) {
                                 o.platformIdx = o.targetPlatformIdx;
                             }
                         }
+                    } else if (o.state === 'hesitating') {
+                        // 4. HESITAÇÃO ANTES DE USAR ESCADAS (6 a 10 frames)
+                        o.vx = 0;
+                        o.tiltAngle = 0;
+                        o.hesitationTimer = (o.hesitationTimer || 0) - 1;
+                        if (o.hesitationTimer <= 0 && o.pendingLadder) {
+                            o.state = 'climbing';
+                            o.x = o.pendingLadder.x;
+                            o.vy = o.pendingLadder.vy;
+                            o.targetY = o.pendingLadder.targetY;
+                            o.targetPlatformIdx = o.pendingLadder.targetPlatformIdx;
+                            o.pendingLadder = null;
+                        }
+                    } else if (o.state === 'turning') {
+                        // 1. INÉRCIA NA MUDANÇA DE DIREÇÃO (~120ms / 7-8 frames)
+                        o.turnTimer = (o.turnTimer || 0) - 1;
+                        o.vx *= 0.5; // Desacelera 2-3 frames e para brevemente
+                        o.tiltAngle = (o.tiltAngle || 0) * 0.5;
+                        if (o.turnTimer <= 0) {
+                            o.facingRight = !!o.targetFacingRight;
+                            o.vx = o.facingRight ? 0.2 : -0.2; // Acelera progressivamente
+                            o.state = 'patrolling';
+                        }
+                    } else if (o.state === 'pausing') {
+                        // Pausa breve / ritmo
+                        o.pauseTimer = (o.pauseTimer || 0) - 1;
+                        o.vx *= 0.6;
+                        o.tiltAngle = (o.tiltAngle || 0) * 0.6;
+                        if (o.pauseTimer <= 0) {
+                            o.state = 'patrolling';
+                        }
                     } else {
+                        // 5. RITMO DE CAMINHADA MAIS ORGÂNICO & 7. PATRULHA
                         o.y = curPlatform.y - o.h;
+                        
+                        if (o.facingRight === undefined) o.facingRight = (o.vx >= 0);
+
+                        // Alternar velocidade entre 0.95 e 1.05 a cada 12-18 frames
+                        o.walkCycleTimer = (o.walkCycleTimer || 0) - 1;
+                        if (o.walkCycleTimer <= 0) {
+                            o.speedMult = 0.95 + Math.random() * 0.10; // 0.95 a 1.05
+                            o.walkCycleTimer = Math.floor(Math.random() * 7) + 12; // 12-18 frames
+                        }
+                        
+                        let baseSpeed = (o.facingRight ? 1.0 : -1.0) * (o.speedMult || 1.0);
+                        o.vx += (baseSpeed - o.vx) * 0.15;
                         o.x += o.vx;
+
+                        let targetTilt = (o.vx > 0 ? 0.08 : -0.08) * Math.min(1.0, Math.abs(o.vx));
+                        o.tiltAngle = (o.tiltAngle || 0) + (targetTilt - (o.tiltAngle || 0)) * 0.2;
 
                         let pMinX = curPlatform.x;
                         let pMaxX = curPlatform.x + curPlatform.w - o.w;
@@ -1491,34 +1670,53 @@
                         let isAtEdge = (o.vx > 0 && o.x >= pMaxX) || (o.vx < 0 && o.x <= pMinX);
                         let oCenterX = o.x + o.w / 2;
 
-                        if (o.climbCooldown <= 0) {
-                            for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
-                                let l = ladders[lIdx];
-                                let ladderCenterX = l.x + 10 * gfxScale;
-                                
-                                if (Math.abs(oCenterX - ladderCenterX) < 6) {
-                                    let wantUp = player.y < o.y - 15;
-                                    let wantDown = player.y > o.y + 15;
-                                    let chaseChance = activeChasers.has(o) ? 0.80 : 0.20;
+                        // 3. DECISÕES APENAS EM NÓS DO MAPA & 6. TEMPO DE REACÇÃO (150-300ms)
+                        o.targetUpdateTimer = (o.targetUpdateTimer || 0) - 1;
 
-                                    if ((wantUp || wantDown) && Math.random() < chaseChance) {
-                                        for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
-                                            let p = platformData[pIdx];
-                                            if (pIdx !== o.platformIdx) {
-                                                if (wantUp && p.y < curPlatform.y && Math.abs((l.y + l.h) - curPlatform.y) < 20 && Math.abs(l.y - p.y) < 20) {
-                                                    o.state = 'climbing';
-                                                    o.x = ladderCenterX - o.w / 2;
-                                                    o.targetPlatformIdx = pIdx;
-                                                    o.vy = -1.2;
-                                                    o.targetY = p.y - o.h;
-                                                    break;
-                                                } else if (wantDown && p.y > curPlatform.y && Math.abs(l.y - curPlatform.y) < 20 && Math.abs((l.y + l.h) - p.y) < 20) {
-                                                    o.state = 'climbing';
-                                                    o.x = ladderCenterX - o.w / 2;
-                                                    o.targetPlatformIdx = pIdx;
-                                                    o.vy = 1.2;
-                                                    o.targetY = p.y - o.h;
-                                                    break;
+                        function isDecisionNode(ostrich, plat) {
+                            if (ostrich.x <= plat.x || ostrich.x >= plat.x + plat.w - ostrich.w) return true;
+                            let cx = ostrich.x + ostrich.w / 2;
+                            for (let l of ladders) {
+                                if (Math.abs(cx - (l.x + 10 * gfxScale)) < 6) return true;
+                            }
+                            return false;
+                        }
+
+                        if (o.targetUpdateTimer <= 0 && isDecisionNode(o, curPlatform)) {
+                            o.targetUpdateTimer = Math.floor(Math.random() * 10) + 9; // ~150-300ms (9-18 frames a 60fps)
+
+                            // 4. HESITAÇÃO ANTES DE USAR ESCADAS
+                            if (o.climbCooldown <= 0) {
+                                for(let lIdx = 0; lIdx < ladders.length; lIdx++) {
+                                    let l = ladders[lIdx];
+                                    let ladderCenterX = l.x + 10 * gfxScale;
+                                    
+                                    if (Math.abs(oCenterX - ladderCenterX) < 6) {
+                                        let wantUp = player.y < o.y - 15;
+                                        let wantDown = player.y > o.y + 15;
+                                        
+                                        // 2. PERSEGUIÇÃO IMPERFEITA: 80% probabilidade de seguir o Harry
+                                        let chaseChance = (activeChasers.has(o) ? 0.80 : 0.20);
+                                        let shouldChase = (Math.random() < chaseChance);
+
+                                        if ((wantUp || wantDown) && shouldChase) {
+                                            for(let pIdx = 0; pIdx < platformData.length; pIdx++) {
+                                                let p = platformData[pIdx];
+                                                if (pIdx !== o.platformIdx) {
+                                                    let canUp = wantUp && p.y < curPlatform.y && Math.abs((l.y + l.h) - curPlatform.y) < 20 && Math.abs(l.y - p.y) < 20;
+                                                    let canDown = wantDown && p.y > curPlatform.y && Math.abs(l.y - curPlatform.y) < 20 && Math.abs((l.y + l.h) - p.y) < 20;
+                                                    
+                                                    if (canUp || canDown) {
+                                                        o.state = 'hesitating';
+                                                        o.hesitationTimer = Math.floor(Math.random() * 5) + 6; // 6 a 10 frames
+                                                        o.pendingLadder = {
+                                                            x: ladderCenterX - o.w / 2,
+                                                            vy: canUp ? -1.2 : 1.2,
+                                                            targetY: p.y - o.h,
+                                                            targetPlatformIdx: pIdx
+                                                        };
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }
@@ -1527,9 +1725,15 @@
                             }
                         }
 
-                        if (isAtEdge) {
+                        // 1. INÉRCIA NA MUDANÇA DE DIREÇÃO NOS LIMITES DA PLATAFORMA
+                        if (isAtEdge && o.state === 'patrolling') {
                             o.x = Math.max(pMinX, Math.min(pMaxX, o.x));
-                            o.vx *= -1;
+                            o.state = 'turning';
+                            o.targetFacingRight = !o.facingRight;
+                            o.turnTimer = 8; // ~120ms (7-8 frames)
+                        } else if (Math.random() < 0.0015 && o.climbCooldown <= 0 && o.state === 'patrolling') {
+                            o.state = 'pausing';
+                            o.pauseTimer = 18;
                         }
                     }
 
