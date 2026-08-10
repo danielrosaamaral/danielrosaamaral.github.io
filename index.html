@@ -844,159 +844,103 @@
             }
         }
 
-        // DESENHO CORRIGIDO E DETALHADO DA GAIOLA FIXA NO HUD (CONFORME GUIA)
+        // DESENHO RETRO PIXEL-ART DA GAIOLA E PÁSSARO (ESTÉTICA ZX SPECTRUM / CHUCKIE EGG)
         function drawExactBirdcage(ctx, x, y, scale) {
             ctx.save();
-            ctx.strokeStyle = C_YELLOW;
-            ctx.fillStyle = C_YELLOW;
-            ctx.lineWidth = Math.max(1.5, Math.round(2 * scale));
             
-            let cWidth = Math.round(52 * scale);
-            let cHeight = Math.round(52 * scale);
-
-            // 1. TOPO: Argola superior
-            ctx.beginPath();
-            ctx.arc(x + cWidth / 2, y - Math.round(5 * scale), Math.round(5 * scale), 0, Math.PI * 2);
-            ctx.stroke();
-            ctx.fillRect(x + cWidth / 2 - Math.round(2 * scale), y - Math.round(1 * scale), Math.round(4 * scale), Math.round(3 * scale));
-
-            // 2. TOPO: Curvatura da Cúpula da Gaiola
-            ctx.beginPath();
-            ctx.arc(x + cWidth / 2, y + Math.round(22 * scale), Math.round(24 * scale), Math.PI, 0, false);
-            ctx.lineTo(x + cWidth, y + cHeight);
-            ctx.lineTo(x, y + cHeight);
-            ctx.closePath();
-            ctx.stroke();
-
-            // 3. BASE: Estrutura metálica reforçada
-            let floorY = y + cHeight;
-            ctx.fillRect(x - Math.round(2 * scale), floorY, cWidth + Math.round(4 * scale), Math.round(4 * scale));
-            ctx.fillRect(x, floorY + Math.round(4 * scale), cWidth, Math.round(2 * scale));
-
-            // 4. PISO: Gradeado para profundidade
-            ctx.lineWidth = Math.max(1, scale);
-            for (let gx = x + Math.round(4 * scale); gx < x + cWidth; gx += Math.round(6 * scale)) {
-                ctx.beginPath();
-                ctx.moveTo(gx, floorY - Math.round(4 * scale));
-                ctx.lineTo(gx + Math.round(3 * scale), floorY);
-                ctx.stroke();
-            }
-
-            // 5. BARRAS VERTICAIS UNIFORMES
-            ctx.lineWidth = Math.max(1.5, Math.round(1.8 * scale));
-            let numBars = 5;
-            for (let b = 1; b <= numBars; b++) {
-                let barX = x + (cWidth * b) / (numBars + 1);
-                let dx = barX - (x + cWidth / 2);
-                let arcRadius = 24 * scale;
-                let arcCenterY = y + 22 * scale;
-                let topBarY = arcCenterY;
-                if (Math.abs(dx) <= arcRadius) {
-                    topBarY = arcCenterY - Math.sqrt(arcRadius * arcRadius - dx * dx);
-                }
-                ctx.beginPath();
-                ctx.moveTo(barX, topBarY);
-                ctx.lineTo(barX, floorY);
-                ctx.stroke();
-            }
-
-            // 6. PORTA COM DOBRADIÇAS E TRINCO (lado direito)
-            let doorW = Math.round(12 * scale);
-            let doorH = Math.round(20 * scale);
-            let doorX = x + cWidth - doorW - Math.round(2 * scale);
-            let doorY = y + cHeight - doorH - Math.round(4 * scale);
-
-            ctx.strokeRect(doorX, doorY, doorW, doorH);
-            ctx.fillRect(doorX - Math.round(2 * scale), doorY + Math.round(3 * scale), Math.round(2 * scale), Math.round(3 * scale));
-            ctx.fillRect(doorX - Math.round(2 * scale), doorY + doorH - Math.round(6 * scale), Math.round(2 * scale), Math.round(3 * scale));
-            ctx.fillRect(doorX + doorW, doorY + Math.round(doorH / 2 - 2 * scale), Math.round(4 * scale), Math.round(4 * scale));
-
-            // 7. PASSARO AMARELO (#FFFF00) COM MICRO MOVIMENTOS (~2.0s LOOP)
-            // 1. NEUTRO, 2. PISCA, 3. BATE ASA, 4. RESPIRA
+            // Unidade fundamental de pixel retro
+            const px = Math.max(1, Math.round(scale * 1.4));
+            
+            // 1. ANIMAÇÃO DE MICRO-MOVIMENTOS RETRO (LOOP ~2.0s)
             let loopTime = (Date.now() % 2000) / 2000;
-
-            // 4. RESPIRA: Suave oscilação vertical
-            let respiraOffset = Math.sin(loopTime * Math.PI * 2) * (1.2 * scale);
-
-            // 2. PISCA: Olho pisca entre 0.40 e 0.52 do ciclo
             let isBlinking = (loopTime > 0.40 && loopTime < 0.52);
-
-            // 3. BATE ASA: Asa mexe/levanta entre 0.65 e 0.85 do ciclo
             let isFlapping = (loopTime > 0.65 && loopTime < 0.85);
+            let breatheY = (Math.sin(loopTime * Math.PI * 2) > 0) ? 0 : -px;
 
-            let birdCenterX = x + cWidth / 2 - Math.round(2 * scale);
-            let birdBaseY = floorY - Math.round(4 * scale) + respiraOffset;
+            // Dimensões da Gaiola em Pixels Retro
+            const cageW = 28 * px;
+            const cageH = 26 * px;
+            const baseLineY = y + cageH;
 
-            // Pernas e pés assentes no piso
-            ctx.lineWidth = Math.max(1, scale);
-            ctx.beginPath();
-            ctx.moveTo(birdCenterX - Math.round(3 * scale), birdBaseY - Math.round(8 * scale));
-            ctx.lineTo(birdCenterX - Math.round(3 * scale), floorY);
-            ctx.moveTo(birdCenterX + Math.round(3 * scale), birdBaseY - Math.round(8 * scale));
-            ctx.lineTo(birdCenterX + Math.round(3 * scale), floorY);
-            ctx.moveTo(birdCenterX - Math.round(5 * scale), floorY);
-            ctx.lineTo(birdCenterX - Math.round(1 * scale), floorY);
-            ctx.moveTo(birdCenterX + Math.round(1 * scale), floorY);
-            ctx.lineTo(birdCenterX + Math.round(5 * scale), floorY);
-            ctx.stroke();
+            // 2. TOPO: Argola e Cúpula em Pixel Art ZX Spectrum
+            ctx.fillStyle = C_YELLOW;
+            
+            // Argola superior
+            ctx.fillRect(x + 12 * px, y - 4 * px, 4 * px, 1 * px);
+            ctx.fillRect(x + 11 * px, y - 3 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 15 * px, y - 3 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 12 * px, y - 1 * px, 4 * px, 1 * px);
 
-            // Corpo do Pássaro (Amarelo)
-            let bodyX = birdCenterX;
-            let bodyY = birdBaseY - Math.round(16 * scale);
+            // Cúpula escalonada em blocos retro
+            ctx.fillRect(x + 10 * px, y, 8 * px, 2 * px);
+            ctx.fillRect(x + 6 * px, y + 2 * px, 16 * px, 2 * px);
+            ctx.fillRect(x + 3 * px, y + 4 * px, 22 * px, 2 * px);
+            ctx.fillRect(x + 1 * px, y + 6 * px, 26 * px, 2 * px);
 
-            // Cauda
-            ctx.beginPath();
-            ctx.moveTo(bodyX - Math.round(10 * scale), bodyY + Math.round(2 * scale));
-            ctx.lineTo(bodyX - Math.round(18 * scale), bodyY - Math.round(2 * scale));
-            ctx.lineTo(bodyX - Math.round(16 * scale), bodyY + Math.round(6 * scale));
-            ctx.closePath();
-            ctx.fill();
+            // 3. BASE DA GAIOLA (Piso reforçado em Pixel Art)
+            ctx.fillRect(x - 1 * px, baseLineY, cageW + 2 * px, 3 * px);
+            ctx.fillStyle = C_RED;
+            ctx.fillRect(x, baseLineY + 3 * px, cageW, 1 * px);
 
-            // Peito / Corpo Oval
-            ctx.beginPath();
-            ctx.ellipse(bodyX, bodyY, Math.round(10 * scale), Math.round(8 * scale), 0, 0, Math.PI * 2);
-            ctx.fill();
+            // 4. BARRAS VERTICAIS E HORIZONTAIS
+            ctx.fillStyle = C_YELLOW;
+            // Moldura lateral
+            ctx.fillRect(x, y + 8 * px, 2 * px, cageH - 8 * px);
+            ctx.fillRect(x + cageW - 2 * px, y + 8 * px, 2 * px, cageH - 8 * px);
 
-            // Cabeça
-            let headX = bodyX + Math.round(8 * scale);
-            let headY = bodyY - Math.round(7 * scale);
-            ctx.beginPath();
-            ctx.arc(headX, headY, Math.round(6 * scale), 0, Math.PI * 2);
-            ctx.fill();
+            // Barras interiores com espaçamento uniforme
+            const barPositions = [5, 9, 13, 17, 21];
+            for (let i = 0; i < barPositions.length; i++) {
+                let bx = x + barPositions[i] * px;
+                ctx.fillRect(bx, y + 6 * px, 1 * px, cageH - 6 * px);
+            }
 
-            // Bico apontando para a direita
-            ctx.beginPath();
-            ctx.moveTo(headX + Math.round(5 * scale), headY - Math.round(2 * scale));
-            ctx.lineTo(headX + Math.round(13 * scale), headY + Math.round(1 * scale));
-            ctx.lineTo(headX + Math.round(5 * scale), headY + Math.round(4 * scale));
-            ctx.closePath();
-            ctx.fill();
+            // Traves horizontais de reforço
+            ctx.fillRect(x, y + 8 * px, cageW, 1 * px);
+            ctx.fillRect(x, y + 17 * px, cageW, 1 * px);
 
-            // Olho com PISCA
+            // 5. PORTA DA GAIOLA (Lado direito com fecho e dobradiças)
+            ctx.fillStyle = C_CYAN;
+            ctx.fillRect(x + 18 * px, y + 9 * px, 8 * px, 1 * px);
+            ctx.fillRect(x + 18 * px, y + 9 * px, 1 * px, 14 * px);
+            ctx.fillRect(x + 18 * px, y + 23 * px, 8 * px, 1 * px);
+            // Dobradiças e Fecho
+            ctx.fillStyle = C_WHITE;
+            ctx.fillRect(x + 25 * px, y + 11 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 25 * px, y + 19 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 17 * px, y + 15 * px, 2 * px, 3 * px);
+
+            // 6. PÁSSARO GIGANTE (SKOOL_SPRITES.mother_duck em Pixel Art)
+            let birdX = x + 3 * px;
+            let birdY = y + 7 * px + breatheY;
+            let spriteScale = px * 0.8;
+
+            // Sprite do Pássaro em Amarelo ZX Spectrum
+            drawBitmap(ctx, birdX, birdY, SKOOL_SPRITES.mother_duck, 24, spriteScale, C_YELLOW);
+
+            // Olho Pixel Art com Piscadela
+            let eyeX = birdX + Math.round(15 * spriteScale);
+            let eyeY = birdY + Math.round(3 * spriteScale);
+            let eyeSize = Math.max(2, Math.round(2 * spriteScale));
+
             if (isBlinking) {
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = Math.max(1, scale);
-                ctx.beginPath();
-                ctx.moveTo(headX + Math.round(2 * scale), headY - Math.round(1 * scale));
-                ctx.lineTo(headX + Math.round(6 * scale), headY - Math.round(1 * scale));
-                ctx.stroke();
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(eyeX - 1, eyeY, eyeSize + 2, 1 * px);
             } else {
                 ctx.fillStyle = '#000000';
-                ctx.beginPath();
-                ctx.arc(headX + Math.round(3 * scale), headY - Math.round(1 * scale), Math.max(1, Math.round(1.5 * scale)), 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(eyeX, eyeY, eyeSize, eyeSize);
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(eyeX, eyeY, Math.max(1, Math.floor(eyeSize / 2)), Math.max(1, Math.floor(eyeSize / 2)));
             }
 
-            // Asa com BATE ASA
-            ctx.fillStyle = C_YELLOW;
-            ctx.strokeStyle = '#D4B000';
-            ctx.lineWidth = Math.max(1, scale);
-            let wingYOffset = isFlapping ? -Math.round(4 * scale) : 0;
-            
-            ctx.beginPath();
-            ctx.ellipse(bodyX - Math.round(2 * scale), bodyY - Math.round(1 * scale) + wingYOffset, Math.round(6 * scale), Math.round(4 * scale), Math.PI / 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
+            // Animação de Bate-Asa Pixel
+            if (isFlapping) {
+                ctx.fillStyle = C_YELLOW;
+                let wingX = birdX + Math.round(4 * spriteScale);
+                let wingY = birdY + Math.round(7 * spriteScale) - 2 * px;
+                ctx.fillRect(wingX, wingY, 7 * px, 3 * px);
+                ctx.fillRect(wingX + 1 * px, wingY - 1 * px, 5 * px, 1 * px);
+            }
 
             ctx.restore();
         }
@@ -1361,7 +1305,7 @@
                     drawExactBirdcage(ctx, cX, cY, cScale);
                 } else {
                     let wingFrame = (Math.floor(Date.now() / 90) % 2 === 0) ? SKOOL_SPRITES.duck_right[0] : SKOOL_SPRITES.duck_right[1];
-                    drawBitmap(ctx, cagedDuck.flyX, cagedDuck.flyY, wingFrame, 16, cScale * 1.6, C_CYAN);
+                    drawBitmap(ctx, cagedDuck.flyX, cagedDuck.flyY, wingFrame, 16, cScale * 1.6, C_YELLOW);
                 }
             }
 
