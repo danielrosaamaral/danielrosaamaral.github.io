@@ -910,10 +910,10 @@
             ctx.fillRect(x + 25 * px, y + 19 * px, 2 * px, 2 * px);
             ctx.fillRect(x + 17 * px, y + 15 * px, 2 * px, 3 * px);
 
-            // 6. PÁSSARO GIGANTE (SKOOL_SPRITES.mother_duck em Pixel Art)
-            let birdX = x + 3 * px;
-            let birdY = y + 7 * px + breatheY;
-            let spriteScale = px * 0.8;
+            // 6. PÁSSARO GIGANTE (SKOOL_SPRITES.mother_duck em Pixel Art - Escala Otimizada)
+            let birdX = x + 3.5 * px;
+            let birdY = y + 6 * px + breatheY;
+            let spriteScale = px * 0.88;
 
             // Sprite do Pássaro em Amarelo ZX Spectrum
             drawBitmap(ctx, birdX, birdY, SKOOL_SPRITES.mother_duck, 24, spriteScale, C_YELLOW);
@@ -1206,6 +1206,8 @@
                 let thickness = Math.round(16 * gfxScale);
                 ctx.fillStyle = C_GREEN;
                 ctx.fillRect(x, y, w, thickness);
+                
+                // Hatching interno retro ZX Spectrum
                 ctx.fillStyle = '#000000';
                 let blockW = Math.round(12 * gfxScale);
                 let blockH = Math.round(3 * gfxScale);
@@ -1213,6 +1215,15 @@
                     ctx.fillRect(x + i, y + Math.round(2 * gfxScale), Math.round(6 * gfxScale), blockH);
                     ctx.fillRect(x + i + Math.round(3 * gfxScale), y + Math.round(9 * gfxScale), Math.round(6 * gfxScale), blockH);
                 }
+
+                // Remates/Bordas retro nas extremidades da plataforma
+                let capW = Math.max(2, Math.round(3 * gfxScale));
+                ctx.fillStyle = C_WHITE;
+                ctx.fillRect(x, y, capW, thickness);
+                ctx.fillRect(x + w - capW, y, capW, thickness);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(x + capW, y, 1, thickness);
+                ctx.fillRect(x + w - capW - 1, y, 1, thickness);
             }
 
             function drawLadder(x, y, h) {
@@ -1252,12 +1263,20 @@
                 let bitScale = (o.w / 16);
                 let frameIdx = Math.floor(Date.now() / 100) % 2;
                 
-                // 1. ANDAR & ACELERAR: Leve inclinação para a frente em movimento
-                if (o.tiltAngle) {
-                    ctx.translate(o.x + o.w / 2, o.y + o.h);
-                    ctx.rotate(o.tiltAngle);
-                    ctx.translate(-(o.x + o.w / 2), -(o.y + o.h));
+                // Efecto visual de viragem (squash horizontal durante o estado 'turning')
+                let scaleX = 1.0;
+                let scaleY = 1.0;
+                if (o.state === 'turning') {
+                    scaleX = 0.75;
+                    scaleY = 1.05;
                 }
+
+                ctx.translate(o.x + o.w / 2, o.y + o.h);
+                if (o.tiltAngle) {
+                    ctx.rotate(o.tiltAngle);
+                }
+                ctx.scale(scaleX, scaleY);
+                ctx.translate(-(o.x + o.w / 2), -(o.y + o.h));
 
                 if (o.eatingTimer > 0) {
                     let currentFrame = SKOOL_SPRITES.duck_right[frameIdx];
