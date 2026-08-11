@@ -857,9 +857,9 @@
             let isFlapping = (loopTime > 0.65 && loopTime < 0.85);
             let breatheY = (Math.sin(loopTime * Math.PI * 2) > 0) ? 0 : -px;
 
-            // Dimensões da Gaiola em Pixels Retro
+            // Dimensões da Gaiola em Pixels Retro (alongada +10% em altura)
             const cageW = 28 * px;
-            const cageH = 26 * px;
+            const cageH = 29 * px;
             const baseLineY = y + cageH;
 
             // 2. TOPO: Argola e Cúpula em Pixel Art ZX Spectrum
@@ -897,22 +897,22 @@
 
             // Traves horizontais de reforço
             ctx.fillRect(x, y + 8 * px, cageW, 1 * px);
-            ctx.fillRect(x, y + 17 * px, cageW, 1 * px);
+            ctx.fillRect(x, y + 18 * px, cageW, 1 * px);
 
             // 5. PORTA DA GAIOLA (Lado direito com fecho e dobradiças)
             ctx.fillStyle = C_CYAN;
             ctx.fillRect(x + 18 * px, y + 9 * px, 8 * px, 1 * px);
-            ctx.fillRect(x + 18 * px, y + 9 * px, 1 * px, 14 * px);
-            ctx.fillRect(x + 18 * px, y + 23 * px, 8 * px, 1 * px);
+            ctx.fillRect(x + 18 * px, y + 9 * px, 1 * px, 17 * px);
+            ctx.fillRect(x + 18 * px, y + 26 * px, 8 * px, 1 * px);
             // Dobradiças e Fecho
             ctx.fillStyle = C_WHITE;
-            ctx.fillRect(x + 25 * px, y + 11 * px, 2 * px, 2 * px);
-            ctx.fillRect(x + 25 * px, y + 19 * px, 2 * px, 2 * px);
-            ctx.fillRect(x + 17 * px, y + 15 * px, 2 * px, 3 * px);
+            ctx.fillRect(x + 25 * px, y + 12 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 25 * px, y + 21 * px, 2 * px, 2 * px);
+            ctx.fillRect(x + 17 * px, y + 17 * px, 2 * px, 3 * px);
 
-            // 6. PÁSSARO GIGANTE (SKOOL_SPRITES.mother_duck em Pixel Art - Escala Otimizada)
+            // 6. PÁSSARO GIGANTE (SKOOL_SPRITES.mother_duck em Pixel Art - Mantém o tamanho do pássaro)
             let birdX = x + 3.5 * px;
-            let birdY = y + 6 * px + breatheY;
+            let birdY = y + 8.5 * px + breatheY;
             let spriteScale = px * 0.88;
 
             // Sprite do Pássaro em Amarelo ZX Spectrum
