@@ -63,14 +63,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <script>
-        window.embeddedChatbotConfig = {
-            chatbotId: "4Xp1KrkvShDv2af8eykrm",
-            domain: "www.chatbase.co"
-        }
-    </script>
-    <script src="https://www.chatbase.co/embed.min.js" data-chatbot-id="4Xp1KrkvShDv2af8eykrm" data-domain="www.chatbase.co" defer></script>
-
     <style>
         :root {
             --electric-blue-pure: rgb(0, 17, 255);
@@ -647,10 +639,16 @@
             if (typeof gtag === 'function') {
                 gtag('event', 'click_avatar_chat', {'event_category': 'Engagement'});
             }
-            if (typeof window.chatbase === 'function') {
-                window.chatbase('open');
-            } else {
-                window.open('https://www.chatbase.co/chatbot-iframe/4Xp1KrkvShDv2af8eykrm', '_blank');
+            const convai = document.querySelector('elevenlabs-convai');
+            if (convai) {
+                if (convai.shadowRoot) {
+                    const btn = convai.shadowRoot.querySelector('button');
+                    if (btn) {
+                        btn.click();
+                        return;
+                    }
+                }
+                convai.click();
             }
         }
 
@@ -1889,5 +1887,8 @@
             animationFrameId = requestAnimationFrame(loop);
         }
     </script>
+
+    <elevenlabs-convai agent-id="agent_0101m2f403v9e69ajck0awn48mv6"></elevenlabs-convai>
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
