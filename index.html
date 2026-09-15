@@ -479,12 +479,10 @@
             const vw = video.videoWidth || (isPhone ? 1080 : 1280);
             const vh = video.videoHeight || (isPhone ? 1920 : 720);
 
-            // No Desktop: object-cover para preencher 100% do ecrã sem barras pretas (full screen total)
-            // No Mobile: object-contain para manter o enquadramento original
-            const isCover = !isPhone;
-            video.style.objectFit = isCover ? 'cover' : 'contain';
+            // Full screen total em todos os dispositivos sem barras pretas (cover integral)
+            video.style.objectFit = 'cover';
 
-            const scale = isCover ? Math.max(cw / vw, ch / vh) : Math.min(cw / vw, ch / vh);
+            const scale = Math.max(cw / vw, ch / vh);
             const renderedW = vw * scale;
             const renderedH = vh * scale;
             const offsetX = (cw - renderedW) / 2;
@@ -536,6 +534,17 @@
                 updateHotspotPosition();
                 bgVideoEl.play().catch(() => {});
             });
+
+            // Loop contínuo e instantâneo sem qualquer pausa ou intervalo preto
+            bgVideoEl.addEventListener('timeupdate', () => {
+                const isPhone = isPhoneDevice();
+                const loopCutoff = isPhone ? 49.9 : 49.85;
+                if (bgVideoEl.currentTime >= loopCutoff) {
+                    bgVideoEl.currentTime = 0;
+                    bgVideoEl.play().catch(() => {});
+                }
+            });
+
             bgVideoEl.addEventListener('error', (e) => {
                 console.warn('Falha no carregamento do vídeo, a ativar alternativa:', bgVideoEl.src, e);
                 if (!bgVideoEl.src.includes('site%20mobile.mp4') && !bgVideoEl.src.includes('site mobile.mp4')) {
