@@ -425,21 +425,35 @@
         let bgmTimer = null;
         let animationFrameId = null;
 
-        function isMobileDevice() {
-            return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+        /* DETECÇÃO E SEGMENTAÇÃO DE DISPOSITIVOS */
+        function isPhoneDevice() {
+            const ua = navigator.userAgent || '';
+            
+            // 1. Tablets (iPad, iPadOS, Android Tablets, etc.): Devem usar SEMPRE a versão Desktop (site.mp4)
+            const isTablet = /(iPad|Tablet|(Android(?!.*Mobile))|(Silk))/i.test(ua) || 
+                             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS Safari
+            if (isTablet) return false;
+
+            // 2. Ecrãs de Computador e Ecrãs Largos (qualquer dispositivo com largura >= 768px): Desktop (site.mp4)
+            if (window.innerWidth >= 768) return false;
+
+            // 3. Telemóveis (smartphones: ecrãs estreitos < 768px em formato vertical)
+            const isPhoneUA = /iPhone|iPod|Android.*Mobile|Windows Phone|BlackBerry|webOS/i.test(ua);
+            return isPhoneUA || (window.innerWidth < 768 && window.innerHeight > window.innerWidth);
         }
 
         /* CONFIGURAÇÃO DO VÍDEO CONFORME DISPOSITIVO */
         function setupVideoSource() {
             const video = document.getElementById('bg-video');
             if (!video) return;
-            const isMobile = isMobileDevice();
-            const targetSrc = isMobile ? 'site%20mobile.mp4' : 'site.mp4';
+            const isPhone = isPhoneDevice();
+            const targetSrc = isPhone ? 'site%20mobile.mp4' : 'site.mp4';
             
             // Atribui se ainda não estiver definido ou se houver alteração
             const currentSrc = video.currentSrc || video.src || '';
-            const normalizedTarget = isMobile ? 'site mobile.mp4' : 'site.mp4';
+            const normalizedTarget = isPhone ? 'site mobile.mp4' : 'site.mp4';
             if (!currentSrc.includes(normalizedTarget) && !currentSrc.includes(targetSrc)) {
+                console.log('Modo de dispositivo detectado:', isPhone ? 'Telemóvel (site mobile.mp4)' : 'Computador / Tablet (site.mp4)');
                 video.src = targetSrc;
                 video.load();
             }
@@ -463,9 +477,9 @@
             const ch = window.innerHeight;
 
             // Dimensões intrínsecas reais do vídeo carregado
-            const isMobile = isMobileDevice();
-            const vw = video.videoWidth || (isMobile ? 1080 : 1920);
-            const vh = video.videoHeight || (isMobile ? 1920 : 1080);
+            const isPhone = isPhoneDevice();
+            const vw = video.videoWidth || (isPhone ? 1080 : 1920);
+            const vh = video.videoHeight || (isPhone ? 1920 : 1080);
 
             // Escala a 100% proporcional sem cortes (object-contain)
             const scale = Math.min(cw / vw, ch / vh);
@@ -480,7 +494,7 @@
             const isVertical = vh > vw;
 
             if (isVertical) {
-                // No vídeo mobile (site mobile.mp4): o círculo amarelo está centrado em X (50%), a ~40.5% em Y
+                // No vídeo mobile (site mobile.mp4 1080x1920): o círculo amarelo está centrado em X (50%), a ~40.5% em Y
                 // e tem raio relativo de ~37% da largura
                 const normCenterX = 0.50;
                 const normCenterY = 0.405;
@@ -489,7 +503,7 @@
                 centerY = offsetY + (normCenterY * renderedH);
                 radiusPx = normRadius * scale;
             } else {
-                // No vídeo desktop (site.mp4 1920x1080): o círculo amarelo está centrado em X (50%), centrado em Y (50%)
+                // No vídeo desktop (site.mp4 1920x1080): o círculo amarelo está perfeitamente centrado em X (50%) e Y (50%)
                 // e tem raio relativo de ~36% da altura
                 const normCenterX = 0.50;
                 const normCenterY = 0.50;
