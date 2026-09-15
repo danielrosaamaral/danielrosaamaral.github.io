@@ -217,9 +217,9 @@
 <body class="bg-[#000000] text-[#e5e5e5] font-sans antialiased overflow-hidden w-screen h-[100dvh] m-0 p-0 selection:bg-[rgb(0,17,255)] selection:text-white">
 
     <!-- CONTAINER DE VÍDEO FULL SCREEN E HOTSPOT INTERACTIVO -->
-    <div id="video-experience-container" class="fixed inset-0 w-full h-full overflow-hidden bg-black z-0">
+    <div id="video-experience-container" class="fixed inset-0 w-full h-full overflow-hidden bg-black z-0 flex items-center justify-center">
         <video id="bg-video"
-               class="w-full h-full object-cover"
+               class="w-full h-full object-contain mx-auto my-auto"
                playsinline
                webkit-playsinline
                autoplay
@@ -461,14 +461,14 @@
 
             const cw = window.innerWidth;
             const ch = window.innerHeight;
-            const isMobile = isMobileDevice();
 
-            // Dimensões intrínsecas: Desktop 16:9 (1920x1080), Mobile 9:16 (1080x1920)
+            // Dimensões intrínsecas reais do vídeo carregado
+            const isMobile = isMobileDevice();
             const vw = video.videoWidth || (isMobile ? 1080 : 1920);
             const vh = video.videoHeight || (isMobile ? 1920 : 1080);
 
-            // Escala proporcional sob object-fit: cover
-            const scale = Math.max(cw / vw, ch / vh);
+            // Escala a 100% proporcional sem cortes (object-contain)
+            const scale = Math.min(cw / vw, ch / vh);
             const renderedW = vw * scale;
             const renderedH = vh * scale;
             const offsetX = (cw - renderedW) / 2;
@@ -476,9 +476,12 @@
 
             let centerX, centerY, radiusPx;
 
-            if (isMobile) {
+            // Identifica se o vídeo atualmente em reprodução é vertical (mobile) ou horizontal (desktop)
+            const isVertical = vh > vw;
+
+            if (isVertical) {
                 // No vídeo mobile (site mobile.mp4): o círculo amarelo está centrado em X (50%), a ~40.5% em Y
-                // e tem diâmetro de ~74% da largura do vídeo
+                // e tem raio relativo de ~37% da largura
                 const normCenterX = 0.50;
                 const normCenterY = 0.405;
                 const normRadius = 0.37 * vw;
@@ -486,8 +489,8 @@
                 centerY = offsetY + (normCenterY * renderedH);
                 radiusPx = normRadius * scale;
             } else {
-                // No vídeo desktop (site.mp4): o círculo amarelo está centrado em X (50%), centrado em Y (50%)
-                // e tem diâmetro de ~72% da altura do vídeo
+                // No vídeo desktop (site.mp4 1920x1080): o círculo amarelo está centrado em X (50%), centrado em Y (50%)
+                // e tem raio relativo de ~36% da altura
                 const normCenterX = 0.50;
                 const normCenterY = 0.50;
                 const normRadius = 0.36 * vh;
