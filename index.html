@@ -222,6 +222,8 @@
                class="w-full h-full object-cover"
                playsinline
                webkit-playsinline
+               autoplay
+               muted
                loop
                preload="auto">
         </video>
@@ -441,6 +443,14 @@
                 video.src = targetSrc;
                 video.load();
             }
+
+            // Inicia reprodução em segundo plano com áudio silencioso para buffering imediato
+            const bgPlay = video.play();
+            if (bgPlay !== undefined) {
+                bgPlay.catch(() => {
+                    // Silenciosamente aguarda a primeira interação do utilizador
+                });
+            }
         }
 
         /* CÁLCULO E POSICIONAMENTO EXACTO DO HOTSPOT NO CÍRCULO AMARELO */
@@ -501,7 +511,18 @@
         const bgVideoEl = document.getElementById('bg-video');
         if (bgVideoEl) {
             bgVideoEl.addEventListener('loadedmetadata', updateHotspotPosition);
-            bgVideoEl.addEventListener('canplay', updateHotspotPosition);
+            bgVideoEl.addEventListener('canplay', () => {
+                updateHotspotPosition();
+                bgVideoEl.play().catch(() => {});
+            });
+            bgVideoEl.addEventListener('error', (e) => {
+                console.warn('Falha no carregamento do vídeo, a ativar alternativa:', bgVideoEl.src, e);
+                if (!bgVideoEl.src.includes('site%20mobile.mp4') && !bgVideoEl.src.includes('site mobile.mp4')) {
+                    bgVideoEl.src = 'site%20mobile.mp4';
+                    bgVideoEl.load();
+                    bgVideoEl.play().catch(() => {});
+                }
+            });
         }
 
         /* GATILHO PARA O WIDGET ELEVENLABS CONVAI */
@@ -558,10 +579,13 @@
                 video.volume = 1.0;
                 const playPromise = video.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                        // Se o navegador barrar o som de imediato, toca mudo e ativa no toque seguinte
+                    playPromise.then(() => {
+                        console.log('Vídeo a reproduzir com som.');
+                    }).catch((err) => {
+                        console.warn('Áudio bloqueado pela política do navegador; a reproduzir sem som e a armar ativação ao clique:', err);
                         video.muted = true;
-                        video.play();
+                        video.play().catch(e => console.error('Erro de reprodução:', e));
+
                         const unmuteHandler = () => {
                             video.muted = false;
                             video.volume = 1.0;
