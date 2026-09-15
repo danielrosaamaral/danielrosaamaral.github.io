@@ -392,16 +392,16 @@
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
-            <!-- Interface Mobile Arcade ZX Spectrum -->
-            <div id="mobile-controls" class="w-full md:hidden flex flex-col items-center justify-center pb-4 select-none touch-none shrink-0">
-                <div id="control-ring" class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full border-2 border-[#00FFFF] bg-black flex items-center justify-center shadow-[0_0_15px_rgba(0,255,255,0.3)]">
-                    <button id="btn-jump" class="touch-btn absolute w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-xs tracking-widest flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_10px_rgba(255,0,255,0.4)] transition-all">
+            <!-- Interface Mobile Arcade ZX Spectrum (Reposicionada à esquerda para não sobrepor o widget ElevenAgents) -->
+            <div id="mobile-controls" class="w-full md:hidden flex items-center justify-start pl-4 sm:pl-8 pb-3 select-none touch-none shrink-0">
+                <div id="control-ring" class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-[#00FFFF] bg-black flex items-center justify-center shadow-[0_0_12px_rgba(0,255,255,0.3)]">
+                    <button id="btn-jump" class="touch-btn absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-[10px] sm:text-xs tracking-wider flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_8px_rgba(255,0,255,0.4)] transition-all active:scale-95">
                         JUMP
                     </button>
-                    <span id="arrow-up" class="absolute top-1.5 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">▲</span>
-                    <span id="arrow-down" class="absolute bottom-1.5 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">▼</span>
-                    <span id="arrow-left" class="absolute left-2 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">◄</span>
-                    <span id="arrow-right" class="absolute right-2 text-[#FFFF00] text-xl font-bold font-mono pointer-events-none transition-all">►</span>
+                    <span id="arrow-up" class="absolute top-1 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">▲</span>
+                    <span id="arrow-down" class="absolute bottom-1 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">▼</span>
+                    <span id="arrow-left" class="absolute left-1.5 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">◄</span>
+                    <span id="arrow-right" class="absolute right-1.5 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">►</span>
                 </div>
             </div>
         </div>
@@ -845,10 +845,12 @@
             const pressJump = (e) => {
                 initAudio();
                 if(e.cancelable) e.preventDefault();
+                if(e.stopPropagation) e.stopPropagation();
                 keys['Space'] = true;
             };
             const releaseJump = (e) => {
                 if(e.cancelable) e.preventDefault();
+                if(e.stopPropagation) e.stopPropagation();
                 keys['Space'] = false;
             };
 
@@ -867,7 +869,7 @@
                 const dx = clientX - centerX;
                 const dy = clientY - centerY;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-                const innerRadius = rect.width * 0.14;
+                const innerRadius = rect.width * 0.18;
 
                 keys['ArrowLeft'] = false;
                 keys['ArrowRight'] = false;
