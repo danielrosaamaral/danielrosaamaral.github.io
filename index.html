@@ -202,9 +202,9 @@
 
         #video-audio-toggle {
             position: absolute;
-            top: max(1rem, env(safe-area-inset-top));
-            left: max(1rem, env(safe-area-inset-left));
-            z-index: 50;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -220,11 +220,40 @@
             transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
+        #portfolio-pdf-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 2.75rem;
+            padding: 0 0.875rem;
+            color: #9ca3af;
+            background: transparent;
+            border: 1.5px solid #9ca3af;
+            font-size: 0.875rem;
+            line-height: 1;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
         #video-audio-toggle:active {
             transform: scale(0.94);
         }
 
+        #portfolio-pdf-link:active {
+            transform: scale(0.97);
+        }
+
         #video-audio-toggle:focus-visible {
+            outline: 2px solid #9ca3af;
+            outline-offset: 3px;
+        }
+
+        #portfolio-pdf-link:focus-visible {
             outline: 2px solid #9ca3af;
             outline-offset: 3px;
         }
@@ -260,6 +289,18 @@
                loop
                preload="auto">
         </video>
+
+        <a id="portfolio-pdf-link"
+           href="portfolio-2026-sumario-daniel-amaral.pdf"
+           target="_blank"
+           rel="noopener noreferrer">
+            <span>Portfólio</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 3h7v7"></path>
+                <path d="M10 14 21 3"></path>
+                <path d="M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"></path>
+            </svg>
+        </a>
 
         <!-- ZONA CLICÁVEL INVISÍVEL EXACTAMENTE SOBREPOSTA AO CÍRCULO AMARELO -->
         <button id="circle-hotspot"
@@ -633,24 +674,30 @@
             }
         }
 
+        function updateButtonUI() {
+            const video = document.getElementById('bg-video');
+            if (!video) return;
+
+            const audioButton = document.getElementById('video-audio-toggle');
+            if (audioButton) {
+                audioButton.setAttribute('aria-pressed', String(!video.muted));
+                const label = video.muted ? 'Unmute background video' : 'Mute background video';
+                audioButton.title = label;
+            }
+
+            const mutedIcon = document.getElementById('video-audio-muted-icon');
+            const unmutedIcon = document.getElementById('video-audio-unmuted-icon');
+            if (mutedIcon) mutedIcon.hidden = !video.muted;
+            if (unmutedIcon) unmutedIcon.hidden = video.muted;
+        }
+
         function setVideoMuted(muted) {
             const video = document.getElementById('bg-video');
             if (!video) return;
 
             video.muted = muted;
             video.volume = muted ? 0 : 1;
-
-            const audioButton = document.getElementById('video-audio-toggle');
-            if (audioButton) {
-                audioButton.setAttribute('aria-pressed', String(!muted));
-                const label = muted ? 'Unmute background video' : 'Mute background video';
-                audioButton.title = label;
-            }
-
-            const mutedIcon = document.getElementById('video-audio-muted-icon');
-            const unmutedIcon = document.getElementById('video-audio-unmuted-icon');
-            if (mutedIcon) mutedIcon.hidden = !muted;
-            if (unmutedIcon) unmutedIcon.hidden = muted;
+            updateButtonUI();
         }
 
         const audioToggleEl = document.getElementById('video-audio-toggle');
@@ -664,6 +711,107 @@
                 }
             });
         }
+
+        function isWidgetElementVisible(element) {
+            let current = element;
+            while (current && current.nodeType === Node.ELEMENT_NODE) {
+                if (current.hidden) return false;
+                const style = window.getComputedStyle(current);
+                if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
+                    return false;
+                }
+                current = current.parentElement || current.getRootNode().host;
+            }
+
+            const rect = element.getBoundingClientRect();
+            return rect.width > 0 && rect.height > 0;
+        }
+
+        function isElevenLabsChatActive(widget) {
+            if (widget.matches('[aria-expanded="true"], [data-state="open"]')) {
+                return true;
+            }
+
+            const widgetRect = widget.getBoundingClientRect();
+            if (isWidgetElementVisible(widget) && (widgetRect.width > 180 || widgetRect.height > 180)) {
+                return true;
+            }
+
+            const root = widget.shadowRoot;
+            if (!root) return false;
+
+            const activeSelectors = [
+                '[role="dialog"]',
+                '[aria-modal="true"]',
+                '[aria-expanded="true"]',
+                '[data-state="open"]',
+                'iframe',
+                '[class*="chat" i]',
+                '[id*="chat" i]',
+                '[class*="conversation" i]',
+                '[id*="conversation" i]',
+                '[class*="call" i]',
+                '[id*="call" i]'
+            ].join(',');
+
+            return Array.from(root.querySelectorAll(activeSelectors)).some((element) => {
+                if (!isWidgetElementVisible(element)) return false;
+                const rect = element.getBoundingClientRect();
+                return element.matches('[role="dialog"], [aria-modal="true"], [aria-expanded="true"], [data-state="open"], iframe')
+                    || rect.width > 180
+                    || rect.height > 180;
+            });
+        }
+
+        function observeElevenLabsWidget() {
+            const widget = document.querySelector('elevenlabs-convai');
+            if (!widget || widget.dataset.audioObserverAttached) return;
+            widget.dataset.audioObserverAttached = 'true';
+
+            const syncChatAudio = () => {
+                if (isElevenLabsChatActive(widget)) {
+                    const video = document.getElementById('bg-video');
+                    if (video) {
+                        video.muted = true;
+                        video.volume = 0;
+                        updateButtonUI();
+                    }
+                }
+            };
+
+            const observer = new MutationObserver(syncChatAudio);
+            observer.observe(widget, {
+                attributes: true,
+                attributeFilter: ['aria-expanded', 'aria-hidden', 'aria-label', 'class', 'data-state', 'hidden', 'open', 'style'],
+                childList: true,
+                subtree: true
+            });
+
+            const observeShadowRoot = () => {
+                if (!widget.shadowRoot || widget.dataset.audioShadowObserved) return;
+                widget.dataset.audioShadowObserved = 'true';
+                observer.observe(widget.shadowRoot, {
+                    attributes: true,
+                    attributeFilter: ['aria-expanded', 'aria-hidden', 'aria-label', 'aria-pressed', 'class', 'data-state', 'hidden', 'open', 'style', 'title'],
+                    childList: true,
+                    characterData: true,
+                    subtree: true
+                });
+                widget.shadowRoot.addEventListener('click', () => {
+                    requestAnimationFrame(syncChatAudio);
+                }, true);
+                syncChatAudio();
+            };
+
+            observeShadowRoot();
+            if (window.customElements && customElements.whenDefined) {
+                customElements.whenDefined('elevenlabs-convai').then(observeShadowRoot);
+            }
+        }
+
+        const widgetObserver = new MutationObserver(observeElevenLabsWidget);
+        widgetObserver.observe(document.documentElement, { childList: true, subtree: true });
+        observeElevenLabsWidget();
 
         const hotspotEl = document.getElementById('circle-hotspot');
         if (hotspotEl) {
