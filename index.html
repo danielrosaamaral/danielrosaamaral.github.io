@@ -200,6 +200,39 @@
             transform: scale(0.97);
         }
 
+        #video-audio-toggle {
+            position: absolute;
+            top: max(1rem, env(safe-area-inset-top));
+            left: max(1rem, env(safe-area-inset-left));
+            z-index: 50;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            padding: 0;
+            color: #9ca3af;
+            background: transparent;
+            border: 1.5px solid #9ca3af;
+            border-radius: 9999px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        #video-audio-toggle:active {
+            transform: scale(0.94);
+        }
+
+        #video-audio-toggle:focus-visible {
+            outline: 2px solid #9ca3af;
+            outline-offset: 3px;
+        }
+
+        #video-audio-toggle[hidden] {
+            display: none;
+        }
+
         /* Bloco de conteúdo semântico optimizado para SEO/AEO e acessibilidade */
         .sr-only {
             position: absolute;
@@ -233,6 +266,25 @@
                 type="button"
                 aria-label="Abrir assistente interactivo de conversação com Daniel Amaral"
                 title="Clica no círculo para conversar"></button>
+
+        <button id="video-audio-toggle"
+                type="button"
+                aria-label="Background video sound"
+                aria-pressed="false"
+                title="Unmute background video"
+                hidden>
+            <svg id="video-audio-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
+                <g id="video-audio-muted-icon">
+                    <path d="m17 9 5 6"></path>
+                    <path d="m22 9-5 6"></path>
+                </g>
+                <g id="video-audio-unmuted-icon" hidden>
+                    <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+                    <path d="M18.5 5.5a9 9 0 0 1 0 13"></path>
+                </g>
+            </svg>
+        </button>
     </div>
 
     <!-- CONTEÚDO SEMÂNTICO E INDEXÁVEL (SEO & AEO) -->
@@ -557,6 +609,11 @@
 
         /* GATILHO PARA O WIDGET ELEVENLABS CONVAI */
         function triggerElevenLabsChat() {
+            const video = document.getElementById('bg-video');
+            if (video) {
+                setVideoMuted(true);
+            }
+
             if (typeof gtag === 'function') {
                 gtag('event', 'click_yellow_circle', {
                     'event_category': 'Engagement',
@@ -574,6 +631,38 @@
                 }
                 convai.click();
             }
+        }
+
+        function setVideoMuted(muted) {
+            const video = document.getElementById('bg-video');
+            if (!video) return;
+
+            video.muted = muted;
+            video.volume = muted ? 0 : 1;
+
+            const audioButton = document.getElementById('video-audio-toggle');
+            if (audioButton) {
+                audioButton.setAttribute('aria-pressed', String(!muted));
+                const label = muted ? 'Unmute background video' : 'Mute background video';
+                audioButton.title = label;
+            }
+
+            const mutedIcon = document.getElementById('video-audio-muted-icon');
+            const unmutedIcon = document.getElementById('video-audio-unmuted-icon');
+            if (mutedIcon) mutedIcon.hidden = !muted;
+            if (unmutedIcon) unmutedIcon.hidden = muted;
+        }
+
+        const audioToggleEl = document.getElementById('video-audio-toggle');
+        if (audioToggleEl) {
+            audioToggleEl.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const video = document.getElementById('bg-video');
+                if (video) {
+                    setVideoMuted(!video.muted);
+                }
+            });
         }
 
         const hotspotEl = document.getElementById('circle-hotspot');
@@ -605,27 +694,22 @@
             const video = document.getElementById('bg-video');
             if (video) {
                 setupVideoSource();
-                video.muted = false;
-                video.volume = 1.0;
+                setVideoMuted(false);
                 const playPromise = video.play();
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         console.log('Vídeo a reproduzir com som.');
                     }).catch((err) => {
-                        console.warn('Áudio bloqueado pela política do navegador; a reproduzir sem som e a armar ativação ao clique:', err);
-                        video.muted = true;
+                        console.warn('Áudio bloqueado pela política do navegador; a reproduzir sem som:', err);
+                        setVideoMuted(true);
                         video.play().catch(e => console.error('Erro de reprodução:', e));
-
-                        const unmuteHandler = () => {
-                            video.muted = false;
-                            video.volume = 1.0;
-                            window.removeEventListener('click', unmuteHandler);
-                            window.removeEventListener('touchstart', unmuteHandler);
-                        };
-                        window.addEventListener('click', unmuteHandler, { once: true });
-                        window.addEventListener('touchstart', unmuteHandler, { once: true });
                     });
                 }
+            }
+
+            const audioToggle = document.getElementById('video-audio-toggle');
+            if (audioToggle) {
+                audioToggle.hidden = false;
             }
 
             updateHotspotPosition();
