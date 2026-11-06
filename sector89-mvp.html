@@ -49,11 +49,10 @@ function drawBackground(){
     // fine world-space asphalt grain, subtly moving toward camera
     for(let k=0;k<Math.min(10,Math.ceil(half/45));k++){let seed=Math.floor((distance+rel)*.4)+k*19,xx=cx-half+rand(seed+7)*2*half;if(xx<cx-half+5||xx>cx+half-5)continue;ctx.fillStyle=k%2?'rgba(170,168,157,.2)':'rgba(7,9,10,.17)';ctx.fillRect(xx,y,Math.max(1,p*2),1)}
   }
-  // Broken centre line and edge strips: every marker derives from world depth and the same road centreline.
-  for(let rel=8;rel<1000;rel+=8){if(Math.floor((distance+rel)/42)%2)continue;let near=Math.max(0,rel-8),p=projection(rel),p2=projection(near),y=horizon+p*(H-horizon),y2=horizon+p2*(H-horizon),cx=trackCenterAtDepth(rel),cx2=trackCenterAtDepth(near),half=halfRoadAtDepth(rel),half2=halfRoadAtDepth(near),w=Math.max(.45,p*3),w2=Math.max(.45,p2*3);if(y>H||y2>H)continue;
-    ctx.fillStyle='rgba(160,157,144,.34)';ctx.beginPath();ctx.moveTo(cx-w,y);ctx.lineTo(cx+w,y);ctx.lineTo(cx2+w2,y2);ctx.lineTo(cx2-w2,y2);ctx.closePath();ctx.fill();
-    for(let side of [-1,1]){let edge=cx+side*(half-2*p),edge2=cx2+side*(half2-2*p2);ctx.fillStyle='rgba(180,174,158,.25)';ctx.beginPath();ctx.moveTo(edge-w*.35,y);ctx.lineTo(edge+w*.35,y);ctx.lineTo(edge2+w2*.35,y2);ctx.lineTo(edge2-w2*.35,y2);ctx.closePath();ctx.fill()}
-  }
+  // Legible broken centre stripe. Both ends of each dash use the shared world-depth projection.
+  for(let rel=8;rel<1500;rel+=32){let near=rel,far=rel+15,pN=projection(near),pF=projection(far),yN=horizon+pN*(H-horizon),yF=horizon+pF*(H-horizon);if(yN>H||yF>H)continue;let cN=trackCenterAtDepth(near),cF=trackCenterAtDepth(far),wN=1.4+pN*5.5,wF=1.1+pF*5.5;ctx.fillStyle='rgba(206,202,185,'+(.40+.38*pN)+')';ctx.beginPath();ctx.moveTo(cF-wF,yF);ctx.lineTo(cF+wF,yF);ctx.lineTo(cN+wN,yN);ctx.lineTo(cN-wN,yN);ctx.closePath();ctx.fill()}
+  // Faint worn shoulder seam, follows the same path instead of reading as guardrail.
+  for(let side of [-1,1]){ctx.strokeStyle='rgba(190,184,163,.24)';ctx.lineWidth=1;ctx.beginPath();for(let rel=0;rel<=920;rel+=10){let p=projection(rel),y=horizon+p*(H-horizon),cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)-2*p);rel===0?ctx.moveTo(cx,y):ctx.lineTo(cx,y)}ctx.stroke()}
   // Grounded industrial verge markers replace the continuous bridge-like rails.
   for(let side of [-1,1])for(let rel=100;rel<940;rel+=150){let p=projection(rel),y=horizon+p*(H-horizon),cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+9+p*4),postH=5+p*35,w=1+p*2.5;if(y>H)continue;ctx.fillStyle='rgba(24,27,27,.8)';ctx.fillRect(cx-w,y-postH,w*2,postH);ctx.fillStyle='rgba(129,132,126,.62)';ctx.fillRect(cx-w,y-postH,w*2,Math.max(1,p*3));ctx.fillStyle='rgba(183,145,91,.52)';ctx.fillRect(cx-w,y-postH,w*2,Math.max(1,p*1.3));}
   let v=clamp(speed/228,0,1);if(v>.16){ctx.save();ctx.globalAlpha=.09*v;ctx.strokeStyle='#d3d1c8';for(let i=0;i<24;i++){let y=345+((i*31+distance*2)%360),p=perspective(y),side=i%2?1:-1,xx=trackCenter(y)+side*(halfRoad(y)+12+rand(i+Math.floor(distance/35))*66);ctx.lineWidth=1+p*2;ctx.beginPath();ctx.moveTo(xx,y);ctx.lineTo(xx+side*(8+v*22)*p,y+12+v*15);ctx.stroke()}ctx.restore()}
@@ -100,16 +99,15 @@ ctx.font='bold 13px monospace';ctx.fillStyle=damage>55?'#d97768':'#d6d2ae';ctx.f
 ctx.font='bold 12px monospace';ctx.fillStyle='#d6d2ae';ctx.fillText('AMMO '+String(ammo).padStart(2,'0'),655,576);
 ctx.fillStyle='#c3c4b8';ctx.fillText('KILLS '+String(kills).padStart(2,'0'),738,576);
 ctx.font='10px monospace';ctx.fillStyle='#9da49b';ctx.fillText('ODOMETER  '+String(Math.floor(distance)).padStart(6,'0')+' m',655,594);ctx.restore();
-// Short tracer to the selected opponent and a restrained impact flash.
-for(const s of shots){ctx.save();ctx.globalAlpha=clamp(s.life/.18,0,1);ctx.strokeStyle=s.hit?'#e2c679':'#d9ded9';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.tx,s.ty);ctx.stroke();ctx.restore()}
-for(const fx of impactFx){let r=(.42-fx.life)*105;ctx.save();ctx.globalAlpha=clamp(fx.life/.42,0,1);ctx.strokeStyle='#d9b76b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(fx.x,fx.y,r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='rgba(231,198,122,.55)';ctx.beginPath();ctx.arc(fx.x,fx.y,Math.max(2,r*.24),0,Math.PI*2);ctx.fill();ctx.restore()}
 // centered reticle and weapon discharge; only armed highlights carry color
 if(fire>0){ctx.strokeStyle='rgba(237,136,78,.8)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(630,249);ctx.lineTo(650,249);ctx.moveTo(640,239);ctx.lineTo(640,259);ctx.stroke()}if(flash>0){let a=flash/.16;ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#ff9b45';ctx.beginPath();ctx.moveTo(608,393);ctx.lineTo(640,246);ctx.lineTo(672,393);ctx.closePath();ctx.fill();ctx.fillStyle='#ffe9a4';ctx.beginPath();ctx.moveTo(630,389);ctx.lineTo(640,278);ctx.lineTo(650,389);ctx.closePath();ctx.fill();ctx.restore()}
 if(notice){ctx.fillStyle='#e1d074';ctx.font='bold 18px monospace';ctx.textAlign='center';ctx.fillText(notice,640,157)}
-// horizon/camera motion indicator: show actual road bend under steering
-
 }
-function render(){drawBackground();rivals.sort((a,b)=>b.z-a.z).forEach(drawRival);drawCockpit()}
+function drawCombatFX(){// Short tracer to the selected opponent and a restrained impact flash.
+for(const s of shots){ctx.save();ctx.globalAlpha=clamp(s.life/.18,0,1);ctx.strokeStyle=s.hit?'#e2c679':'#d9ded9';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.tx,s.ty);ctx.stroke();ctx.restore()}
+for(const fx of impactFx){let r=(.42-fx.life)*105;ctx.save();ctx.globalAlpha=clamp(fx.life/.42,0,1);ctx.strokeStyle='#d9b76b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(fx.x,fx.y,r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='rgba(231,198,122,.55)';ctx.beginPath();ctx.arc(fx.x,fx.y,Math.max(2,r*.24),0,Math.PI*2);ctx.fill();ctx.restore()}
+}
+function render(){drawBackground();rivals.sort((a,b)=>b.z-a.z).forEach(drawRival);drawCombatFX();drawCockpit()}
 function loop(now){if(!playing)return;let dt=clamp((now-last)/1000,0,.04);last=now;update(dt);render();raf=requestAnimationFrame(loop)}function idle(){if(!playing&&!paused){render();raf=requestAnimationFrame(idle)}}
 let loads=[worldImage,asphalt,cockpit];let completed=0,started=false;
 function ready(){if(started)return;started=true;if(!playing){render();raf=requestAnimationFrame(idle)}}
