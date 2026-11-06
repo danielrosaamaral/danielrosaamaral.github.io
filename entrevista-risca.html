@@ -22,5 +22,6 @@ const gameDialog=document.getElementById('gameDialog'),gameFrame=document.getEle
 document.getElementById('closeGame').onclick=()=>gameDialog.close();
 gameDialog.addEventListener('close',()=>{gameFrame.src='about:blank';document.getElementById('start')?.focus()});
 gameFrame.addEventListener('load',()=>{try{const overlay=gameFrame.contentDocument?.getElementById('game-overlay');if(!overlay)return;const observer=new MutationObserver(()=>{if(overlay.classList.contains('game-hidden')&&gameDialog.open){observer.disconnect();gameDialog.close()}});observer.observe(overlay,{attributes:true,attributeFilter:['class']});if(overlay.classList.contains('game-hidden')&&gameDialog.open){observer.disconnect();gameDialog.close()}}catch(e){}});
-draw();gameDialog.showModal();gameFrame.src='https://danielrosaamaral.github.io/';
+window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===gameFrame.contentWindow&&event.data?.type==='risca-game-complete'&&gameDialog.open)gameDialog.close()});
+draw();gameDialog.showModal();gameFrame.src='chuckie-risca.html';
 </script></body></html>
