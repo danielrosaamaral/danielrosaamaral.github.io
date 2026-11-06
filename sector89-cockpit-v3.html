@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090b12"><title>Sector 89 — estudo visual</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0b0d13;color:#d8d5c8;font-family:Arial,sans-serif}body{min-width:1000px;min-height:760px;display:grid;place-items:center}.wrap{width:980px}.top{display:flex;justify-content:space-between;align-items:center;margin:0 8px 8px;color:#89919a;font:12px Arial,sans-serif;letter-spacing:.12em}.top strong{color:#d9bd68}.frame{border:8px solid #4c5159;box-shadow:0 0 0 2px #a8a395,0 0 0 8px #22262e,0 18px 60px #000;background:#12151b;padding:7px}.screen{width:960px;height:600px;overflow:hidden;background:#05070c;position:relative}canvas{width:960px;height:600px;display:block;image-rendering:pixelated;image-rendering:crisp-edges}.caption{margin:17px 10px 0;text-align:center;color:#818990;font:12px/1.5 Arial,sans-serif;letter-spacing:.07em}.desk-message{display:none;position:fixed;inset:0;z-index:4;background:#11131a;color:#ece6d2;align-items:center;justify-content:center;text-align:center;padding:32px;font:16px/1.6 Arial,sans-serif}.desk-message div{max-width:460px;border:1px solid #7d7153;padding:24px;background:#20232a}.desk-message b{display:block;color:#edcc68;font-size:20px;margin-bottom:10px}@media(max-width:999px),(max-height:759px){.desk-message{display:flex}}
+</style></head><body><div class="desk-message"><div><b>Sector 89 foi concebido para desktop.</b>Abre esta página num ecrã maior para ver o cockpit e a estrada como foram desenhados.</div></div><main class="wrap"><div class="top"><span><strong>SECTOR 89</strong>　/　CORRIDA DE COMBATE</span><span>CIRCUITO 04 · PROTÓTIPO VISUAL</span></div><div class="frame"><div class="screen"><canvas id="view" width="640" height="400" aria-label="Ilustração animada de corrida retro, com cockpit blindado, estrada em perspectiva, instrumentos e sistema de armas"></canvas></div></div><p class="caption">ESTUDO VISUAL ORIGINAL · ESTÉTICA EGA / 320 × 200 AMPLIADA · DESKTOP</p></main><script>
+(()=>{'use strict';const c=document.querySelector('#view'),v=c.getContext('2d');c.width=640;c.height=400;v.imageSmoothingEnabled=false;v.scale(2,2);const x=v,W=320,H=200;let tm=0;
+// A restrained expanded EGA-like palette: bright pixels are used sparingly.
+const C={black:'#080a10',ink:'#141720',panel:'#252a31',edge:'#92938c',silver:'#b8b8ac',white:'#e6e2cf',shadow:'#52585d',steel:'#65757a',blue:'#233a5e',sky:'#274369',sun:'#db9c55',sand:'#c6a071',rock:'#765444',red:'#ac3933',green:'#45d05e',lime:'#9fe05d',yellow:'#e2cb58',cyan:'#54d4d3',pink:'#da6e91'};
+const R=(col,a,b,w,h)=>{x.fillStyle=col;x.fillRect(Math.round(a),Math.round(b),Math.max(1,Math.round(w)),Math.max(1,Math.round(h)))};
+const P=(col,p)=>{x.fillStyle=col;x.beginPath();x.moveTo(p[0],p[1]);for(let i=2;i<p.length;i+=2)x.lineTo(p[i],p[i+1]);x.closePath();x.fill()};
+const L=(col,a,b,d,e)=>{x.strokeStyle=col;x.lineWidth=1;x.beginPath();x.moveTo(a,b);x.lineTo(d,e);x.stroke()};
+function txt(s,a,b,col=C.white,font='4px monospace',align='left'){x.fillStyle=col;x.font=font;x.textAlign=align;x.textBaseline='alphabetic';x.fillText(s,a,b)}
+function bolt(a,b){R(C.black,a,b,3,3);R(C.white,a,b,2,1);R(C.shadow,a+1,b+1,1,1)}
+function ridge(){// layered pixel-painted Nevada canyon / service structures
+ P('#59453f',[0,45,0,36,12,33,20,37,33,29,43,34,55,27,68,36,81,31,91,40,106,33,118,39,132,32,145,38,160,31,177,37,193,29,207,36,220,30,231,37,243,29,255,35,267,27,278,34,290,26,304,34,320,31,320,61,0,61]);
+ P('#815947',[0,47,0,39,15,35,23,39,37,31,44,37,58,30,72,39,83,33,95,43,108,36,121,42,135,34,148,41,164,33,180,40,196,31,210,39,224,33,235,40,248,32,261,39,272,30,284,38,297,29,309,37,320,34,320,64,0,64]);
+ P('#a17754',[0,51,16,38,22,40,37,32,43,38,57,31,64,39,58,36,48,36,34,42,22,40,12,47]);
+ P('#ba8b5d',[177,41,193,30,199,33,211,39,204,36,196,35,185,42]);
+ // city / refineries, many small crisp silhouettes at the vanishing line
+ for(let i=0;i<46;i++){let xx=(i*37+5)%320,w=2+(i*7%5),h=2+(i*13%11),base=62+(i%3);R(i%3?'#181d29':'#222333',xx,base-h,w,h);if(i%4===0){R('#d2aa58',xx+1,base-h+2,1,1);if(w>4)R('#d2aa58',xx+3,base-h+4,1,1)}if(i%7===0){R('#464345',xx+w/2,base-h-3,1,3);R('#b6784d',xx+w/2-1,base-h-4,3,1)}}
+ // luminous sunset strip, pixel halftone
+ for(let i=0;i<16;i++)R(i%2?'#d88a50':'#e7a858',0,61+i,320,1);
+ for(let i=0;i<65;i++){let xx=(i*53+17)%320,yy=63+(i*11%11);if(i%3===0)R('#f1bb74',xx,yy,1,1)}
+}
+function road(){const hz=72,bottom=128,curve=Math.sin(tm*.23)*5;for(let y=hz;y<bottom;y++){let q=(y-hz)/(bottom-hz),half=3+q*171,cx=160+curve*q+Math.sin(tm*.31+q*2)*q*5;R(q>.55?'#18191d':'#35373a',0,y,320,1);let shoulder=3+q*4;R((Math.floor(y/3+tm*5)%2)?C.white:'#9c5042',cx-half-shoulder,y,2*half+2*shoulder,1);R('#25272a',cx-half,y,2*half,1);
+ // asphalt grain and changing dash rhythm
+ if(Math.floor(y/3+tm*8)%3===0){let d=Math.max(1,q*2);R('#e7dfc4',cx-d/2,y,d,Math.max(1,q*2))}
+ if(y>80){for(let n=0;n<4;n++){let xx=cx-half+((n*47+Math.floor(tm*6))%(Math.max(1,2*half)));if(Math.abs(xx-cx)>8)R(n%2?'#303238':'#52504c',xx,y,1,1)}}
+ // guardrail stanchions converge toward horizon
+ for(let side of [-1,1]){let railx=Math.round(cx+side*(half+shoulder+2));if(y%Math.max(2,Math.round(9-q*5))===0)R('#d0c6ad',railx,y,1,Math.max(1,Math.round(1+q*2)));R('#706e68',railx+side,y,1,1)}
+ }
+ // converging road-side yellow/black hazard panels on the right, like a track structure
+ P('#616569',[227,76,320,74,320,116,223,111]);P('#c8bd9a',[231,78,320,77,320,112,229,108]);for(let i=0;i<8;i++){let xx=241+i*12+Math.sin(tm*.2)*2;P(i%2?'#17191e':'#e3d053',[xx,79,xx+7,79,xx-4,106,xx-11,106])}R('#ede2c6',228,76,92,2);R('#45494e',223,109,97,3);
+ // off-road red rock bank to the left
+ P('#753d3b',[0,83,47,77,75,87,91,112,0,112]);P('#b25748',[0,89,42,81,59,86,76,99,0,101]);P('#dc7954',[0,91,39,84,46,86,23,94]);
+}
+function car(cx,base,s,col){const w=s,h=s*.43;P('#090b10',[cx-w*.57,base,cx-w*.47,base-h*.55,cx-w*.28,base-h,cx+w*.3,base-h,cx+w*.48,base-h*.55,cx+w*.57,base]);P(col,[cx-w*.48,base-1,cx-w*.4,base-h*.57,cx-w*.25,base-h*.86,cx+w*.25,base-h*.86,cx+w*.4,base-h*.57,cx+w*.49,base-1]);P('#739096',[cx-w*.2,base-h*.61,cx-w*.14,base-h*.82,cx+w*.14,base-h*.82,cx+w*.21,base-h*.61]);R('#db4842',cx-w*.38,base-h*.28,w*.13,Math.max(1,h*.1));R('#db4842',cx+w*.25,base-h*.28,w*.13,Math.max(1,h*.1));R('#11141a',cx-w*.45,base-h*.05,w*.15,h*.16);R('#11141a',cx+w*.3,base-h*.05,w*.15,h*.16)}
+function rivals(){car(161+Math.sin(tm*.32)*6,105,8,'#b2473a');car(201+Math.sin(tm*.25)*5,112,13,'#5a8290');}
+function hud(){// compact full-width status strip, modular hardware not a modern HUD
+ R('#101319',0,0,320,31);R('#d2cbb3',0,30,320,2);R('#555a5e',0,27,320,2);
+ // damage module
+ R('#777b7a',2,2,70,23);R('#161b20',4,4,66,19);R('#242b30',5,5,64,7);txt('DAMAGE',9,11,C.yellow,'5px monospace');R('#a13b38',8,14,25,5);R('#e1c856',34,14,29,5);txt('LEVEL',8,24,C.white,'4px monospace');
+ // machine diagnostics bars and indicator lamps
+ R('#b5b3a5',74,2,38,23);R('#11181d',76,4,34,19);for(let i=0;i<12;i++)R(i<9?C.green:C.shadow,79+i*2.2,7,2,4);R('#7d837b',79,15,26,1);txt('AUTO',80,22,C.white,'4px monospace');
+ // central rear display/scanner with digital landscape
+ R('#91928a',115,0,91,31);R('#171b20',117,2,87,26);R('#111a2a',120,5,81,19);txt('FUEL',122,10,C.cyan,'5px monospace');for(let i=0;i<28;i++)R(i<21?['#39c8ca','#d7d24e','#d78448'][Math.floor(i/8)]:C.shadow,139+i*2,6,2,4);R('#17191e',122,13,77,9);R('#d1724b',122,13,77,1);R('#253858',123,15,76,5);R('#f0d86d',128,16,7,2);R('#171b1e',122,21,77,1);
+ // warning lamps
+ R('#858981',208,2,38,23);R('#15191d',210,4,34,19);for(let i=0;i<3;i++){R(['#d74e47','#e6cb48','#57d47b'][i],213+i*9,6,5,5);R('#272b2b',213+i*9,12,5,2)}txt('SYS',216,23,C.white,'4px monospace');
+ // right weapon status + caution stripes
+ R('#b3b2a3',248,2,70,23);R('#171b20',250,4,66,19);for(let i=0;i<5;i++)P(i%2?'#18191b':'#e6c94b',[252+i*8,5,258+i*8,5,255+i*8,11,249+i*8,11]);txt('BITS',284,10,C.white,'5px monospace');R('#6d7776',284,14,27,2);R('#cf4b43',287,18,9,3);R('#e4ce55',299,18,9,3);
+}
+function screw(a,b){R('#101318',a,b,4,4);R('#cbc6b5',a+1,b+1,2,1);R('#656a68',a+1,b+2,2,1)}
+function dial(cx,cy,r,label,n,col){x.fillStyle='#080b10';x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();x.strokeStyle=C.silver;x.lineWidth=1;x.stroke();x.fillStyle='#1a2026';x.beginPath();x.arc(cx,cy,r-2,Math.PI,Math.PI*2);x.fill();for(let i=0;i<7;i++){let a=Math.PI+i*Math.PI/6;L(i>4?C.red:C.white,cx+Math.cos(a)*(r-3),cy+Math.sin(a)*(r-3),cx+Math.cos(a)*(r-1),cy+Math.sin(a)*(r-1))}let a=Math.PI+(n/100)*Math.PI;L(col,cx,cy,cx+Math.cos(a)*(r-5),cy+Math.sin(a)*(r-5));R(C.white,cx-1,cy-1,2,2);txt(label,cx,cy+r+5,C.white,'4px monospace','center');txt(String(n),cx,cy+3,C.yellow,'4px monospace','center')}
+function cockpit(){// metallic windshield sill / segmented armored dash
+ P('#858780',[0,115,22,111,51,114,77,108,103,112,131,108,188,108,215,111,244,108,269,113,296,108,320,114,320,200,0,200]);P('#272c32',[0,121,24,115,50,119,77,113,101,117,131,113,189,113,218,116,243,113,270,118,297,113,320,120,320,200,0,200]);
+ // front metal rail is bright and mechanical, bisecting road and cockpit
+ R('#1a1d22',0,114,320,8);R('#f1ead0',0,115,320,2);R('#7f8582',0,117,320,2);for(let i=0;i<64;i++)R(i%2?'#393e43':'#d0c5a5',i*5,119,3,1);R('#8b8d84',0,120,320,1);
+ // large panel outline, layered bevels
+ P('#b9b9ad',[0,126,35,119,67,124,101,118,123,122,197,122,220,118,254,124,285,119,320,127,320,200,0,200]);P('#474e52',[0,130,36,123,67,128,101,122,123,126,197,126,220,122,254,128,285,123,320,131,320,200,0,200]);P('#20252c',[0,134,38,127,69,132,102,126,122,130,198,130,221,126,253,132,283,127,320,135,320,200,0,200]);
+ // two side wing panels framing separate controls
+ P('#9a9a8e',[2,133,65,127,77,133,72,171,4,183]);P('#171b20',[6,136,63,131,73,136,68,168,8,179]);
+ P('#a3a193',[255,132,315,136,316,182,248,171]);P('#161a1f',[258,136,311,139,312,178,252,168]);
+ // bolted side switch banks, diagonal warning trim
+ for(let j=0;j<4;j++){R(j===0?C.red:'#867e6c',13+j*12,144,7,5);R('#11151a',14+j*12,145,5,3);R('#d8c98b',15+j*12,146,2,1);R('#f1e2c0',266+j*10,145,6,4);R('#c33835',267+j*10,146,4,2)}
+ for(let i=0;i<7;i++){let xx=7+i*7;R(i%2?'#e0cf69':'#11151b',xx,171,5,3);R(i%2?'#11151b':'#e0cf69',xx+5,171,2,3)}
+ for(let i=0;i<7;i++){let xx=269+i*6;R(i%2?'#e0cf69':'#11151b',xx,169,5,3);R(i%2?'#11151b':'#e0cf69',xx+5,169,2,3)}
+ // instrument pods on the wings
+ dial(35,157,11,'TEMP',57,'#68d8a5');dial(285,157,11,'AMMO',74,'#e5cc58');
+ // central raised map module (new route silhouette)
+ P('#acaa9c',[102,127,216,127,222,135,218,183,99,183,96,135]);P('#777a77',[103,130,215,130,219,136,215,180,102,180,99,136]);R('#12191f',106,134,105,42);R('#727b7c',109,137,99,36);R('#111922',111,139,95,32);
+ // Map as angular polygon course, route marker, blinking position dots
+ L('#ded9c5',121,146,132,143);L('#ded9c5',132,143,137,148);L('#ded9c5',137,148,151,148);L('#ded9c5',151,148,157,143);L('#ded9c5',157,143,174,143);L('#ded9c5',174,143,179,151);L('#ded9c5',179,151,173,159);L('#ded9c5',173,159,163,159);L('#ded9c5',163,159,159,166);L('#ded9c5',159,166,145,166);L('#ded9c5',145,166,138,159);L('#ded9c5',138,159,126,160);L('#ded9c5',126,160,121,146);
+ P(C.yellow,[151,149,155,143,159,149]);R(C.red,171,155,2,2);R(C.cyan,127,155,2,2);txt('ROUTE 04',158,177,C.lime,'4px monospace','center');
+ // twin weapon-control grips with heavy shaded pixel outlines
+ for(let side of [-1,1]){let cx=160+side*49;P('#090c11',[cx-9,177,cx-8,154,cx-4,148,cx+4,148,cx+8,154,cx+9,177]);P('#8d8d82',[cx-7,174,cx-6,155,cx-3,151,cx+3,151,cx+6,155,cx+7,174]);P('#343a40',[cx-5,172,cx-4,156,cx-2,153,cx+2,153,cx+4,156,cx+5,172]);R(C.red,cx-5,152,10,4);R('#f0c7a0',cx-3,151,6,2);for(let i=0;i<4;i++)R('#0c0f14',cx-5,158+i*3,10,1)}
+ // central speed/rpm bar on the brow, luminous but period-appropriate
+ P('#c5c2b2',[118,123,202,123,205,128,115,128]);R('#11191e',120,124,80,5);txt('ENGINE',122,128,C.cyan,'3px monospace');for(let i=0;i<25;i++)R(i<17?['#45cf70','#d7cb4b','#da754b'][Math.floor(i/7)]:C.shadow,141+i*2.1,125,2,2);txt('MPH',203,128,C.white,'3px monospace','right');
+ // steering-wheel bottom silhouette with pixel highlights
+ P('#0a0d12',[81,200,88,179,104,174,216,174,232,180,239,200]);P('#6f7473',[92,200,98,181,108,177,212,177,222,181,228,200]);P('#171c22',[100,200,105,181,113,180,207,180,215,184,220,200]);R('#a4a396',106,181,108,1);R('#c8b983',212,183,2,1);
+ // rivets and etched seams
+ for(const [a,b] of [[7,137],[63,132],[104,134],[216,134],[255,134],[310,139],[10,176],[63,166],[105,177],[215,177],[254,168],[307,176]])bolt(a,b);L('#747a78',76,135,71,169);L('#747a78',244,135,250,169);L('#596064',78,173,99,179);L('#596064',221,179,243,172);
+}
+function draw(){x.setTransform(2,0,0,2,0,0);x.imageSmoothingEnabled=false;R(C.black,0,0,W,H);let g=x.createLinearGradient(0,30,0,74);g.addColorStop(0,'#284878');g.addColorStop(.7,'#b65d43');g.addColorStop(1,'#e6a253');x.fillStyle=g;x.fillRect(0,31,320,44);R('#e2ae64',246,47,14,7);R('#e2ae64',249,45,8,11);ridge();road();rivals();hud();cockpit();tm+=.016;requestAnimationFrame(draw)}requestAnimationFrame(draw);
+})();
+</script></body></html>
