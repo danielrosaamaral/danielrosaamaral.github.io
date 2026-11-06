@@ -14,7 +14,7 @@ function update(dt){t+=dt;let accelerating=has(accelCodes),braking=has(brakeCode
 let horizon=245;
 function projection(rel){return 35/(Math.max(0,rel)+35)}
 function perspective(y){return clamp((y-horizon)/(H-horizon),0,1)}
-function halfRoadAtDepth(rel){return 2+850*projection(rel)}
+function halfRoadAtDepth(rel){return 8+1130*projection(rel)}
 function trackCenterAtDepth(rel){let p=projection(rel);return W/2-lateral*360*p+(curve(distance+Math.max(0,rel))-curve(distance))*420*p}
 function depthAtY(y){let p=clamp(perspective(y),.002,.995);return 35*(1-p)/p}
 function halfRoad(y){return halfRoadAtDepth(depthAtY(y))}
@@ -34,25 +34,25 @@ function drawBackground(){
   // sparse projected rubble, never drawn over the road
   for(let i=0;i<120;i++){let rel=55+rand(i*7+2)*1050,p=projection(rel),y=horizon+p*(H-horizon),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),side=i%2?1:-1,x=cx+side*(half+8+p*95);if(x<0||x>W||y>H)continue;let sz=1+p*(2+rand(i*19)*7);ctx.fillStyle=i%3?'#393a38':'#565650';ctx.beginPath();ctx.ellipse(x,y,sz*1.5,Math.max(1,sz*.42),rand(i*31)*.6,0,Math.PI*2);ctx.fill()}
   // One continuous curved road surface, laid as near/far cross-sections.
-  const band=2;for(let y=horizon;y<H;y+=band){let rel=depthAtY(y),p=perspective(y),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),q=(y-horizon)/(H-horizon),stripe=(Math.floor((distance+rel)/24)%2);
+  const band=2;for(let y=horizon;y<H;y+=band){let rel=depthAtY(y),p=perspective(y),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),q=(y-horizon)/(H-horizon),stripe=(Math.floor((distance+rel)/42)%2);
     // ash shoulder to dark asphalt edge; the road widens from one common vanishing point
-    ctx.fillStyle=stripe?'#77756d':'#96938a';ctx.fillRect(cx-half-13-p*7,y,2*(half+13+p*7),band);
-    ctx.fillStyle=stripe?'#c5c2b7':'#85837b';ctx.fillRect(cx-half-4-p*3,y,2*(half+4+p*3),band);
+    ctx.fillStyle=stripe?'#77766f':'#817f77';ctx.fillRect(cx-half-13-p*7,y,2*(half+13+p*7),band);
+    ctx.fillStyle=stripe?'#b7b4a9':'#8a8881';ctx.fillRect(cx-half-4-p*3,y,2*(half+4+p*3),band);
     ctx.fillStyle=stripe?'#363839':'#3a3c3d';ctx.fillRect(cx-half,y,2*half,band);
     // fine world-space asphalt grain, subtly moving toward camera
     for(let k=0;k<Math.min(10,Math.ceil(half/45));k++){let seed=Math.floor((distance+rel)*.4)+k*19,xx=cx-half+rand(seed+7)*2*half;if(xx<cx-half+5||xx>cx+half-5)continue;ctx.fillStyle=k%2?'rgba(170,168,157,.2)':'rgba(7,9,10,.17)';ctx.fillRect(xx,y,Math.max(1,p*2),1)}
   }
   // Broken centre line and edge strips: every marker derives from world depth and the same road centreline.
-  for(let rel=8;rel<1000;rel+=8){if(Math.floor((distance+rel)/24)%2)continue;let p=projection(rel),y=horizon+p*(H-horizon),y2=horizon+projection(Math.max(0,rel-8))*(H-horizon),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),w=Math.max(1,1+p*4);if(y>H||y2>H)continue;
+  for(let rel=8;rel<1000;rel+=8){if(Math.floor((distance+rel)/42)%2)continue;let p=projection(rel),y=horizon+p*(H-horizon),y2=horizon+projection(Math.max(0,rel-8))*(H-horizon),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),w=Math.max(1,1+p*4);if(y>H||y2>H)continue;
     ctx.fillStyle='rgba(204,202,192,.75)';ctx.beginPath();ctx.moveTo(cx-w,y);ctx.lineTo(cx+w,y);ctx.lineTo(cx+w*1.3,y2);ctx.lineTo(cx-w*1.3,y2);ctx.closePath();ctx.fill();
     for(let side of [-1,1]){let edge=cx+side*(half-2*p);ctx.fillStyle='rgba(210,208,198,.74)';ctx.beginPath();ctx.moveTo(edge-w*.7,y);ctx.lineTo(edge+w*.7,y);ctx.lineTo(edge+w,y2);ctx.lineTo(edge-w,y2);ctx.closePath();ctx.fill()}
   }
   // low guardrail segments with sparse supports, follows same perspective and curvature
-  for(let side of [-1,1]){ctx.strokeStyle='#5e6261';ctx.lineWidth=2;ctx.beginPath();for(let rel=0;rel<=800;rel+=10){let p=projection(rel),y=horizon+p*(H-horizon)-p*18,cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+6+p*7);rel===0?ctx.moveTo(cx,y):ctx.lineTo(cx,y)}ctx.stroke();ctx.strokeStyle='rgba(183,181,170,.7)';ctx.lineWidth=1;ctx.beginPath();for(let rel=0;rel<=800;rel+=10){let p=projection(rel),y=horizon+p*(H-horizon)-p*18,cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+6+p*7);rel===0?ctx.moveTo(cx,y):ctx.lineTo(cx,y)}ctx.stroke();
+  for(let side of [-1,1]){ctx.strokeStyle='#555956';ctx.lineWidth=2;ctx.beginPath();for(let rel=0;rel<=800;rel+=10){let p=projection(rel),y=horizon+p*(H-horizon)-p*18,cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+6+p*7);rel===0?ctx.moveTo(cx,y):ctx.lineTo(cx,y)}ctx.stroke();ctx.strokeStyle='rgba(154,153,143,.62)';ctx.lineWidth=1;ctx.beginPath();for(let rel=0;rel<=800;rel+=10){let p=projection(rel),y=horizon+p*(H-horizon)-p*18,cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+6+p*7);rel===0?ctx.moveTo(cx,y):ctx.lineTo(cx,y)}ctx.stroke();
     for(let rel=80;rel<=800;rel+=45){let p=projection(rel),y=horizon+p*(H-horizon),cx=trackCenterAtDepth(rel)+side*(halfRoadAtDepth(rel)+6+p*7),ph=3+p*25;ctx.fillStyle='#454948';ctx.fillRect(cx-p,y-ph,Math.max(1,p*2),ph);ctx.fillStyle='#a09e94';ctx.fillRect(cx-p,y-ph,Math.max(1,p*2),Math.max(1,p*2))}}
   let v=clamp(speed/228,0,1);if(v>.16){ctx.save();ctx.globalAlpha=.09*v;ctx.strokeStyle='#d3d1c8';for(let i=0;i<24;i++){let y=345+((i*31+distance*2)%360),p=perspective(y),side=i%2?1:-1,xx=trackCenter(y)+side*(halfRoad(y)+12+rand(i+Math.floor(distance/35))*66);ctx.lineWidth=1+p*2;ctx.beginPath();ctx.moveTo(xx,y);ctx.lineTo(xx+side*(8+v*22)*p,y+12+v*15);ctx.stroke()}ctx.restore()}
 }
-function drawRival(o){let rel=o.z-distance;if(rel<-28){o.z=distance+500+o.offset*45;rel=o.z-distance;o.lane=(rand(o.seed+Math.floor(distance/1100))-.5)*1.25;}if(rel>1200)return;let p=projection(rel),y=horizon+p*(H-horizon);if(y>H+40)return;let cx=trackCenterAtDepth(rel)+o.lane*halfRoadAtDepth(rel)*.48+Math.sin(t*.44+o.seed)*p*4;let width=Math.max(3,halfRoadAtDepth(rel)*.52),img=cars[o.car],hei=img.naturalWidth?width*img.naturalHeight/img.naturalWidth:width*.8;ctx.save();ctx.globalAlpha=clamp(.82+p*.18,0,1);ctx.fillStyle='rgba(0,0,0,.42)';ctx.beginPath();ctx.ellipse(cx,y-1,width*.47,Math.max(2,width*.105),0,0,Math.PI*2);ctx.fill();if(img.complete&&img.naturalWidth)ctx.drawImage(img,cx-width/2,y-hei,width,hei);else{ctx.fillStyle='#393a39';ctx.beginPath();ctx.moveTo(cx-width/2,y);ctx.lineTo(cx-width*.42,y-hei*.58);ctx.lineTo(cx-width*.25,y-hei*.86);ctx.lineTo(cx+width*.25,y-hei*.86);ctx.lineTo(cx+width*.42,y-hei*.58);ctx.lineTo(cx+width/2,y);ctx.closePath();ctx.fill()}ctx.restore();o.screenX=cx;o.screenY=y;o.screenW=width}
+function drawRival(o){let rel=o.z-distance;if(rel<-28){o.z=distance+500+o.offset*45;rel=o.z-distance;o.lane=(rand(o.seed+Math.floor(distance/1100))-.5)*1.25;}if(rel>1200)return;let p=projection(rel),y=horizon+p*(H-horizon);if(y>H+40)return;let cx=trackCenterAtDepth(rel)+o.lane*halfRoadAtDepth(rel)*.52+Math.sin(t*.44+o.seed)*p*4;let width=Math.max(3,halfRoadAtDepth(rel)*.52),img=cars[o.car],hei=img.naturalWidth?width*img.naturalHeight/img.naturalWidth:width*.8;ctx.save();ctx.globalAlpha=clamp(.82+p*.18,0,1);ctx.fillStyle='rgba(0,0,0,.42)';ctx.beginPath();ctx.ellipse(cx,y-1,width*.47,Math.max(2,width*.105),0,0,Math.PI*2);ctx.fill();if(img.complete&&img.naturalWidth)ctx.drawImage(img,cx-width/2,y-hei,width,hei);else{ctx.fillStyle='#393a39';ctx.beginPath();ctx.moveTo(cx-width/2,y);ctx.lineTo(cx-width*.42,y-hei*.58);ctx.lineTo(cx-width*.25,y-hei*.86);ctx.lineTo(cx+width*.25,y-hei*.86);ctx.lineTo(cx+width*.42,y-hei*.58);ctx.lineTo(cx+width/2,y);ctx.closePath();ctx.fill()}ctx.restore();o.screenX=cx;o.screenY=y;o.screenW=width}
 let rivals=[{z:distance+135,lane:-.48,car:0,aspect:.71,seed:1,offset:1},{z:distance+350,lane:.45,car:1,aspect:.71,seed:5,offset:4},{z:distance+800,lane:-.08,car:2,aspect:.71,seed:9,offset:7}];
 function drawCockpit(){// transparent, detailed cockpit image layered over the road
 if(cockpit.complete&&cockpit.naturalWidth){ctx.drawImage(cockpit,0,H-318,W,318)}else{let g=ctx.createLinearGradient(0,430,0,H);g.addColorStop(0,'#6b6c67');g.addColorStop(.12,'#252a2b');g.addColorStop(1,'#090c0e');ctx.fillStyle=g;ctx.fillRect(0,436,W,H-436)}
