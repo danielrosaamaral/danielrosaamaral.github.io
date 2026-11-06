@@ -23,8 +23,8 @@ function update(dt){
 let horizon=245;
 function projection(rel){return 35/(Math.max(0,rel)+35)}
 function perspective(y){return clamp((y-horizon)/(H-horizon),0,1)}
-function halfRoadAtDepth(rel){return 8+1130*projection(rel)}
-function trackCenterAtDepth(rel){let p=projection(rel);return W/2-lateral*1130*p+(curve(distance+Math.max(0,rel))-curve(distance))*2600*p}
+function halfRoadAtDepth(rel){return 8+940*projection(rel)}
+function trackCenterAtDepth(rel){let p=projection(rel);return W/2-lateral*940*p+(curve(distance+Math.max(0,rel))-curve(distance))*2200*p}
 function depthAtY(y){let p=clamp(perspective(y),.002,.995);return 35*(1-p)/p}
 function halfRoad(y){return halfRoadAtDepth(depthAtY(y))}
 function trackCenter(y){return trackCenterAtDepth(depthAtY(y))}
@@ -45,7 +45,7 @@ function drawBackground(){
   // One continuous curved road surface, laid as near/far cross-sections.
   const band=2;for(let y=horizon;y<H;y+=band){let rel=depthAtY(y),p=perspective(y),cx=trackCenterAtDepth(rel),half=halfRoadAtDepth(rel),q=(y-horizon)/(H-horizon),stripe=(Math.floor((distance+rel)/42)%2);
     // ash shoulder to dark asphalt edge; the road widens from one common vanishing point
-    const shoulder=5+p*54, edge=1+p*.7;ctx.fillStyle=stripe?'#4d4e49':'#565750';ctx.fillRect(cx-half-shoulder,y,2*(half+shoulder),band);if(asphalt.complete&&asphalt.naturalWidth&&shoulder>5){let gy=Math.floor((distance+rel)*2.8+119)%asphalt.naturalHeight;ctx.globalAlpha=.22;ctx.drawImage(asphalt,0,gy,asphalt.naturalWidth,1,cx-half-shoulder,y,shoulder,band);ctx.drawImage(asphalt,0,gy,asphalt.naturalWidth,1,cx+half,y,shoulder,band);ctx.globalAlpha=1}ctx.fillStyle='rgba(150,148,135,.28)';ctx.fillRect(cx-half-edge,y,2*(half+edge),band);ctx.fillStyle='#37393a';ctx.fillRect(cx-half,y,2*half,band);if(asphalt.complete&&asphalt.naturalWidth){let sy=Math.floor((distance+rel)*6)%asphalt.naturalHeight;ctx.globalAlpha=.48;ctx.drawImage(asphalt,0,sy,asphalt.naturalWidth,1,cx-half,y,2*half,band);ctx.globalAlpha=1;}let fog=Math.max(0,.25-p*.9);if(fog){ctx.fillStyle='rgba(162,161,151,'+fog+')';ctx.fillRect(cx-half,y,2*half,band)}
+    const shoulder=5+p*54, edge=1+p*.7;ctx.fillStyle='#53544e';ctx.fillRect(cx-half-shoulder,y,2*(half+shoulder),band);if(asphalt.complete&&asphalt.naturalWidth&&shoulder>5){let gy=Math.floor((distance+rel)*2.8+119)%asphalt.naturalHeight;ctx.globalAlpha=.22;ctx.drawImage(asphalt,0,gy,asphalt.naturalWidth,1,cx-half-shoulder,y,shoulder,band);ctx.drawImage(asphalt,0,gy,asphalt.naturalWidth,1,cx+half,y,shoulder,band);ctx.globalAlpha=1}ctx.fillStyle='rgba(150,148,135,.28)';ctx.fillRect(cx-half-edge,y,2*(half+edge),band);ctx.fillStyle='#37393a';ctx.fillRect(cx-half,y,2*half,band);if(asphalt.complete&&asphalt.naturalWidth){let sy=Math.floor((distance+rel)*6)%asphalt.naturalHeight;ctx.globalAlpha=.48;ctx.drawImage(asphalt,0,sy,asphalt.naturalWidth,1,cx-half,y,2*half,band);ctx.globalAlpha=1;}let fog=Math.max(0,.25-p*.9);if(fog){ctx.fillStyle='rgba(162,161,151,'+fog+')';ctx.fillRect(cx-half,y,2*half,band)}
     // fine world-space asphalt grain, subtly moving toward camera
     for(let k=0;k<Math.min(10,Math.ceil(half/45));k++){let seed=Math.floor((distance+rel)*.4)+k*19,xx=cx-half+rand(seed+7)*2*half;if(xx<cx-half+5||xx>cx+half-5)continue;ctx.fillStyle=k%2?'rgba(170,168,157,.2)':'rgba(7,9,10,.17)';ctx.fillRect(xx,y,Math.max(1,p*2),1)}
   }
