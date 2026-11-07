@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <title>A abrir o portefólio — Daniel Amaral</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4X7D309RVX');
+    (function () {
+      var pdf = '/portfolio-2026-sumario-daniel-amaral.pdf';
+      var done = false;
+      function openPdf() {
+        if (done) return;
+        done = true;
+        window.location.replace(pdf);
+      }
+      gtag('event', 'portfolio_email_open', {
+        file_name: pdf,
+        event_category: 'portfolio',
+        event_callback: openPdf,
+        event_timeout: 1800
+      });
+      window.setTimeout(openPdf, 2200);
+    })();
+  </script>
+  <style>
+    :root { color-scheme: dark; font-family: Arial, sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #111; color: #eee; }
+    main { padding: 2rem; text-align: center; }
+    p { color: #bbb; }
+    a { color: #f0ce37; }
+  </style>
+</head>
+<body>
+  <main>
+    <p>A abrir o portefólio de Daniel Amaral…</p>
+    <p><a href="/portfolio-2026-sumario-daniel-amaral.pdf">Se o PDF não abrir automaticamente, clica aqui.</a></p>
+  </main>
+</body>
+</html>
