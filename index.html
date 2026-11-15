@@ -176,21 +176,41 @@
             transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
+        /* Botão do portefólio: só o símbolo animado, sem caixa nem legenda. */
         #portfolio-pdf-link {
-            gap: 0.55rem;
+            width: 76px;
+            height: 76px;
+            min-height: 0;
+            padding: 6px;
+            gap: 0;
+            color: var(--electric-blue-pure);
+            background: transparent;
+            border: 0;
+            border-radius: 0;
         }
 
         #portfolio-pdf-link .portfolio-animated-icon {
             display: block;
-            width: 2rem;
-            height: 2rem;
-            flex: 0 0 2rem;
+            width: 64px;
+            height: 64px;
+            flex: 0 0 64px;
             object-fit: contain;
         }
 
-        #portfolio-pdf-link:hover .portfolio-animated-icon,
-        #portfolio-pdf-link:active .portfolio-animated-icon {
-            filter: brightness(0) invert(1);
+        #portfolio-pdf-link:hover,
+        #portfolio-pdf-link:active {
+            color: var(--electric-blue-pure);
+            background: transparent;
+            border-color: transparent;
+        }
+
+        #portfolio-pdf-link:hover .portfolio-animated-icon { transform: scale(1.05); }
+        #portfolio-pdf-link:active .portfolio-animated-icon { transform: scale(0.97); }
+        #portfolio-pdf-link:focus-visible {
+            color: var(--electric-blue-pure);
+            background: transparent;
+            outline: 2px solid var(--electric-blue-pure);
+            outline-offset: 3px;
         }
 
         #portfolio-pdf-link:hover,
@@ -257,10 +277,9 @@
            href="portfolio-2026-sumario-daniel-amaral.pdf"
            target="_blank"
            rel="noopener noreferrer"
-           aria-label="Veja o meu portfólio em PDF"
-           title="Ver o meu portfólio">
-            <img class="portfolio-animated-icon" src="portfolio-animated-button.gif?v=1" alt="" aria-hidden="true" width="32" height="32">
-            <span>Veja o meu portfólio</span>
+           aria-label="Portfólio"
+           title="Portfólio">
+            <img class="portfolio-animated-icon" src="portfolio-animated-button.gif?v=1" alt="" aria-hidden="true" width="64" height="64">
         </a>
 
         <!-- ZONA CLICÁVEL INVISÍVEL EXACTAMENTE SOBREPOSTA AO CÍRCULO AMARELO -->
