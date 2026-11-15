@@ -1058,8 +1058,10 @@
             sprite.onload = function () {
                 const startTime = performance.now();
                 let lastFrame = -1;
+                let lastUpdate = -Infinity;
 
                 function renderFrame(now) {
+                    if (now - lastUpdate < 200) return;
                     const elapsed = (now - startTime) % cycleDuration;
                     const frame = Math.floor(elapsed / frameDuration);
                     if (frame !== lastFrame) {
@@ -1070,6 +1072,7 @@
                                       0, 0, frameSize, frameSize);
                         favicon.href = canvas.toDataURL('image/png');
                         lastFrame = frame;
+                        lastUpdate = now;
                     }
                 }
 
@@ -1095,7 +1098,7 @@
                 }
 
                 try {
-                    worker = new Worker('favicon-morph-worker.js?v=1');
+                    worker = new Worker('favicon-morph-worker-5fps.js?v=1');
                     worker.onmessage = () => { if (document.hidden) renderFrame(performance.now()); };
                     worker.onerror = () => {
                         worker.terminate();
