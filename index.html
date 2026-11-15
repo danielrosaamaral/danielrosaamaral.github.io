@@ -1037,30 +1037,36 @@
             }
         }
 
-        /* FAVICON DINÂMICO */
+        /* FAVICON DINÂMICO — formas azuis da animação */
         (function initAnimatedFavicon() {
+            const favicon = document.querySelector('link[rel="icon"]');
+            if (!favicon) return;
             const canvas = document.createElement('canvas');
-            canvas.width = 32;
-            canvas.height = 32;
+            canvas.width = canvas.height = 64;
             const ctx = canvas.getContext('2d');
-            let favicon = document.querySelector("link[rel*='icon']");
-            if (!favicon) {
-                favicon = document.createElement('link');
-                favicon.rel = 'shortcut icon';
-                document.head.appendChild(favicon);
-            }
-            let angle = 0;
-            function renderFrame() {
-                ctx.clearRect(0, 0, 32, 32);
-                const radius = 10 + Math.sin(angle) * 4;
-                ctx.beginPath();
-                ctx.arc(16, 16, Math.max(1, radius), 0, Math.PI * 2);
-                ctx.fillStyle = 'rgb(0, 17, 255)';
-                ctx.fill();
-                favicon.href = canvas.toDataURL('image/png');
-                angle += 0.12;
-            }
-            setInterval(renderFrame, 66);
+            const sprite = new Image();
+            const durations = [300,20,20,20,20,20,20,60,20,20,20,20,20,20,20,80,20,20,400,20,20,20,20,60,20,20,20,20,20,20,20,20,20,40,20,20,20,340,20,20,20,20,20,20,60,20,20,20,20,20,20,20,20,20,20,20,20,20,20,360,20,20,20,20,20,60,20,20,20,20,20,20,20,20,20,40,20,20,20,340];
+            const total = durations.reduce((sum, ms) => sum + ms, 0);
+            sprite.onload = function () {
+                const start = performance.now();
+                let last = -1;
+                function renderFrame(now) {
+                    let t = (now - start) % total;
+                    let frame = 0;
+                    while (frame < durations.length - 1 && t >= durations[frame]) {
+                        t -= durations[frame++];
+                    }
+                    if (frame !== last) {
+                        ctx.clearRect(0, 0, 64, 64);
+                        ctx.drawImage(sprite, (frame % 10) * 64, Math.floor(frame / 10) * 64, 64, 64, 0, 0, 64, 64);
+                        favicon.href = canvas.toDataURL('image/png');
+                        last = frame;
+                    }
+                    requestAnimationFrame(renderFrame);
+                }
+                requestAnimationFrame(renderFrame);
+            };
+            sprite.src = 'favicon-morph-sprite.png';
         })();
 
         const keys = {};
