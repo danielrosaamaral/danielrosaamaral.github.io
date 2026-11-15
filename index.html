@@ -153,6 +153,49 @@
             color: #6b7280;
         }
 
+        /* Micro-interacções apenas no smile do controlo de áudio. */
+        #video-audio-icon #video-audio-muted-icon,
+        #video-audio-icon #video-audio-unmuted-icon {
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+        #video-audio-icon.is-dancing #video-audio-unmuted-icon {
+            animation: audio-smile-dance 620ms cubic-bezier(.3,.75,.35,1) both;
+        }
+        #video-audio-icon #mute-zip-animation { opacity: 0; }
+        #video-audio-icon.zip-play #mute-zip-animation {
+            opacity: 1;
+        }
+        #video-audio-icon.zip-play #mute-zip-track {
+            stroke-dasharray: 16;
+            stroke-dashoffset: 16;
+            animation: audio-zip-close 360ms cubic-bezier(.2,.8,.3,1) both;
+        }
+        #video-audio-icon.zip-play #mute-zip-puller {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: audio-zip-pull 360ms cubic-bezier(.2,.8,.3,1) both;
+        }
+        @keyframes audio-smile-dance {
+            0% { transform: rotate(0) translateY(0) scale(1); }
+            22% { transform: rotate(-8deg) translateY(-1px) scale(1.03); }
+            48% { transform: rotate(7deg) translateY(-2px) scale(1.04); }
+            72% { transform: rotate(-4deg) translateY(0) scale(1.02); }
+            100% { transform: rotate(0) translateY(0) scale(1); }
+        }
+        @keyframes audio-zip-close {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes audio-zip-pull {
+            from { transform: translateX(-7px); }
+            to { transform: translateX(7px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #video-audio-icon.is-dancing #video-audio-unmuted-icon,
+            #video-audio-icon.zip-play #mute-zip-track,
+            #video-audio-icon.zip-play #mute-zip-puller { animation: none; }
+        }
+
         #portfolio-pdf-link {
             position: absolute;
             top: 20px;
@@ -301,6 +344,11 @@
                     <circle cx="20" cy="12.5" r="1.25" fill="currentColor" stroke="none"></circle>
                     <path d="m11 17 10 5"></path>
                     <path d="m21 17-10 5"></path>
+                    <g id="mute-zip-animation" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round">
+                        <path id="mute-zip-track" d="M8 20h16"></path>
+                        <path d="M10 18.5v3M14 18.5v3M18 18.5v3M22 18.5v3"></path>
+                        <rect id="mute-zip-puller" x="7.2" y="18.1" width="3" height="3.8" rx="0.7" fill="#0A0A0A" stroke="currentColor"></rect>
+                    </g>
                 </g>
                 <g id="video-audio-unmuted-icon" style="display: none;">
                     <circle cx="16" cy="16" r="14"></circle>
@@ -671,17 +719,40 @@
 
             const mutedIcon = document.getElementById('video-audio-muted-icon');
             const unmutedIcon = document.getElementById('video-audio-unmuted-icon');
+            const svgIcon = document.getElementById('video-audio-icon');
             if (mutedIcon) mutedIcon.style.display = video.muted ? 'inline' : 'none';
             if (unmutedIcon) unmutedIcon.style.display = video.muted ? 'none' : 'inline';
+            if (svgIcon) svgIcon.classList.toggle('is-muted', video.muted);
         }
 
         function setVideoMuted(muted) {
             const video = document.getElementById('bg-video');
             if (!video) return;
 
+            const wasMuted = video.muted;
             video.muted = muted;
             video.volume = muted ? 0 : 1;
             updateButtonUI();
+
+            // One short dance when audio turns on; a tiny zipper-close when it turns off.
+            if (wasMuted !== muted) {
+                const icon = document.getElementById('video-audio-icon');
+                if (icon) {
+                    if (!muted) {
+                        icon.classList.remove('zip-play');
+                        icon.classList.remove('is-dancing');
+                        void icon.getBoundingClientRect();
+                        icon.classList.add('is-dancing');
+                        window.setTimeout(() => icon.classList.remove('is-dancing'), 700);
+                    } else {
+                        icon.classList.remove('is-dancing');
+                        icon.classList.remove('zip-play');
+                        void icon.getBoundingClientRect();
+                        icon.classList.add('zip-play');
+                        window.setTimeout(() => icon.classList.remove('zip-play'), 420);
+                    }
+                }
+            }
         }
 
         const audioToggleEl = document.getElementById('video-audio-toggle');
