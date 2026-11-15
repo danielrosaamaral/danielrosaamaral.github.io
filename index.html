@@ -1042,10 +1042,10 @@
             const favicon = document.querySelector('link[rel="icon"]');
             if (!favicon) return;
             const canvas = document.createElement('canvas');
-            canvas.width = canvas.height = 64;
+            canvas.width = canvas.height = 128;
             const ctx = canvas.getContext('2d');
             const sprite = new Image();
-            const durations = [160,20,20,20,20,20,20,60,20,20,20,20,20,20,20,40,40,20,20,20,160,20,20,20,20,20,60,20,20,20,20,20,20,20,20,20,20,20,20,20,20,160,20,20,20,20,20,20,60,20,20,20,20,20,20,20,20,20,20,20,20,20,20,160,20,20,20,20,20,20,60,20,20,20,20,20,20,20,20,20,20,20,20,20,20,160];
+            const durations = [40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,40,40,20,20,20,40,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40];
             const total = durations.reduce((sum, ms) => sum + ms, 0);
             sprite.onload = function () {
                 const start = performance.now();
@@ -1057,8 +1057,8 @@
                         t -= durations[frame++];
                     }
                     if (frame !== last) {
-                        ctx.clearRect(0, 0, 64, 64);
-                        ctx.drawImage(sprite, (frame % 10) * 64, Math.floor(frame / 10) * 64, 64, 64, 0, 0, 64, 64);
+                        ctx.clearRect(0, 0, 128, 128);
+                        ctx.drawImage(sprite, (frame % 10) * 128, Math.floor(frame / 10) * 128, 128, 128, 0, 0, 128, 128);
                         favicon.href = canvas.toDataURL('image/png');
                         last = frame;
                     }
@@ -1066,7 +1066,7 @@
                 }
                 requestAnimationFrame(renderFrame);
             };
-            sprite.src = 'favicon-morph-grande-v2.png';
+            sprite.src = 'favicon-morph-128-fast.png';
         })();
 
         const keys = {};
