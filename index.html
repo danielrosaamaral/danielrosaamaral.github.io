@@ -222,8 +222,8 @@
     
         /* Rodapé-marquee: mensagem contínua de apresentação e áreas de trabalho */
         #daniel-marquee {
-            position: absolute;
-            z-index: 20;
+            position: fixed !important;
+            z-index: 100000 !important;
             left: 0;
             right: 0;
             bottom: 0;
@@ -249,7 +249,8 @@
             display: flex;
             width: max-content;
             will-change: transform;
-            animation: daniel-marquee-right 48s linear infinite;
+            animation: daniel-marquee-right 48s linear infinite !important;
+            animation-play-state: running;
         }
         #daniel-marquee .marquee-group {
             display: flex;
