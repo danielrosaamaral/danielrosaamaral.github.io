@@ -500,17 +500,17 @@
                 <canvas id="chuckieCanvas" class="w-full h-full object-contain block bg-transparent rounded-lg"></canvas>
             </div>
 
-            <!-- Interface Mobile Arcade ZX Spectrum (Reposicionada à esquerda para não sobrepor o widget ElevenAgents) -->
-            <div id="mobile-controls" class="w-full md:hidden flex items-center justify-start pl-4 sm:pl-8 pb-3 select-none touch-none shrink-0">
+            <!-- Comandos mobile: reserva espaço acima do direccional para o salto, longe do widget ElevenLabs. -->
+            <div id="mobile-controls" class="relative w-full md:hidden flex items-center justify-start pl-4 sm:pl-8 pt-16 pb-3 select-none touch-none shrink-0">
                 <div id="control-ring" class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-[#00FFFF] bg-black flex items-center justify-center shadow-[0_0_12px_rgba(0,255,255,0.3)]">
-                    <button id="btn-jump" class="touch-btn absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-[10px] sm:text-xs tracking-wider flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_8px_rgba(255,0,255,0.4)] transition-all active:scale-95">
-                        JUMP
-                    </button>
                     <span id="arrow-up" class="absolute top-1 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">▲</span>
                     <span id="arrow-down" class="absolute bottom-1 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">▼</span>
                     <span id="arrow-left" class="absolute left-1.5 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">◄</span>
                     <span id="arrow-right" class="absolute right-1.5 text-[#FFFF00] text-sm sm:text-base font-bold font-mono pointer-events-none transition-all">►</span>
                 </div>
+                <button id="btn-jump" aria-label="Saltar" class="touch-btn absolute left-[152px] top-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black text-[#FF00FF] font-mono font-bold text-[10px] sm:text-xs tracking-wider flex items-center justify-center z-20 border-2 border-[#FF00FF] shadow-[0_0_8px_rgba(255,0,255,0.4)] transition-all active:scale-95">
+                    JUMP
+                </button>
             </div>
         </div>
     </div>
@@ -1157,6 +1157,7 @@
             jumpBtn.addEventListener('mouseup', releaseJump);
             jumpBtn.addEventListener('mouseleave', releaseJump);
 
+            let activeRingTouchId = null;
             const handleRingTouch = (clientX, clientY) => {
                 initAudio();
                 const rect = ring.getBoundingClientRect();
@@ -1195,18 +1196,25 @@
 
             ring.addEventListener('touchstart', (e) => {
                 if(e.cancelable) e.preventDefault();
-                const touch = e.touches[0];
+                const touch = e.changedTouches[0];
+                activeRingTouchId = touch.identifier;
                 handleRingTouch(touch.clientX, touch.clientY);
             }, { passive: false });
 
             ring.addEventListener('touchmove', (e) => {
                 if(e.cancelable) e.preventDefault();
-                const touch = e.touches[0];
-                handleRingTouch(touch.clientX, touch.clientY);
+                const touch = Array.from(e.changedTouches).find(t => t.identifier === activeRingTouchId);
+                if (touch) handleRingTouch(touch.clientX, touch.clientY);
             }, { passive: false });
 
-            ring.addEventListener('touchend', resetRing);
-            ring.addEventListener('touchcancel', resetRing);
+            const endRingTouch = (e) => {
+                if (Array.from(e.changedTouches).some(t => t.identifier === activeRingTouchId)) {
+                    activeRingTouchId = null;
+                    resetRing();
+                }
+            };
+            ring.addEventListener('touchend', endRingTouch);
+            ring.addEventListener('touchcancel', endRingTouch);
 
             ring.addEventListener('mousemove', (e) => {
                 if (e.buttons === 1) {
