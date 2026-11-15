@@ -1037,36 +1037,76 @@
             }
         }
 
-        /* FAVICON DINÂMICO — formas azuis da animação */
+        /* FAVICON DINÂMICO — morph contínuo das quatro formas */
         (function initAnimatedFavicon() {
             const favicon = document.querySelector('link[rel="icon"]');
             if (!favicon) return;
+
             const canvas = document.createElement('canvas');
-            canvas.width = canvas.height = 128;
             const ctx = canvas.getContext('2d');
             const sprite = new Image();
-            const durations = [40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,40,40,20,20,20,40,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40,20,20,20,20,20,20,40,20,20,20,20,20,20,20,20,20,20,20,20,20,20,40];
-            const total = durations.reduce((sum, ms) => sum + ms, 0);
+            const frameSize = 128;
+            const columns = 10;
+            const frameCount = 175;
+            const frameDuration = 20; // sprite criada a 50 fps; mantém a cadência original
+            const cycleDuration = frameCount * frameDuration;
+            let worker = null;
+            let rafId = null;
+            let fallbackTimer = null;
+            canvas.width = canvas.height = frameSize;
+
             sprite.onload = function () {
-                const start = performance.now();
-                let last = -1;
+                const startTime = performance.now();
+                let lastFrame = -1;
+
                 function renderFrame(now) {
-                    let t = (now - start) % total;
-                    let frame = 0;
-                    while (frame < durations.length - 1 && t >= durations[frame]) {
-                        t -= durations[frame++];
-                    }
-                    if (frame !== last) {
-                        ctx.clearRect(0, 0, 128, 128);
-                        ctx.drawImage(sprite, (frame % 10) * 128, Math.floor(frame / 10) * 128, 128, 128, 0, 0, 128, 128);
+                    const elapsed = (now - startTime) % cycleDuration;
+                    const frame = Math.floor(elapsed / frameDuration);
+                    if (frame !== lastFrame) {
+                        const sourceX = (frame % columns) * frameSize;
+                        const sourceY = Math.floor(frame / columns) * frameSize;
+                        ctx.clearRect(0, 0, frameSize, frameSize);
+                        ctx.drawImage(sprite, sourceX, sourceY, frameSize, frameSize,
+                                      0, 0, frameSize, frameSize);
                         favicon.href = canvas.toDataURL('image/png');
-                        last = frame;
+                        lastFrame = frame;
                     }
-                    requestAnimationFrame(renderFrame);
                 }
-                requestAnimationFrame(renderFrame);
+
+                function animateVisible(now) {
+                    if (document.hidden) { rafId = null; return; }
+                    renderFrame(now);
+                    rafId = requestAnimationFrame(animateVisible);
+                }
+
+                function updateVisibility() {
+                    if (document.hidden) {
+                        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+                        if (worker) worker.postMessage('start');
+                        else if (fallbackTimer === null) {
+                            fallbackTimer = setInterval(() => renderFrame(performance.now()), frameDuration);
+                        }
+                    } else {
+                        if (worker) worker.postMessage('stop');
+                        if (fallbackTimer !== null) { clearInterval(fallbackTimer); fallbackTimer = null; }
+                        renderFrame(performance.now());
+                        if (rafId === null) rafId = requestAnimationFrame(animateVisible);
+                    }
+                }
+
+                try {
+                    worker = new Worker('favicon-morph-worker.js?v=1');
+                    worker.onmessage = () => { if (document.hidden) renderFrame(performance.now()); };
+                    worker.onerror = () => {
+                        worker.terminate();
+                        worker = null;
+                        updateVisibility();
+                    };
+                } catch (error) { worker = null; }
+                document.addEventListener('visibilitychange', updateVisibility);
+                updateVisibility();
             };
-            sprite.src = 'favicon-morph-128-fast.png';
+            sprite.src = 'favicon-morph-smooth-175.png?v=2';
         })();
 
         const keys = {};
