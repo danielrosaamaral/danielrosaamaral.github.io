@@ -1046,9 +1046,9 @@
             const ctx = canvas.getContext('2d');
             const sprite = new Image();
             const frameSize = 128;
-            const columns = 10;
-            const frameCount = 175;
-            const frameDuration = 20; // sprite criada a 50 fps; mantém a cadência original
+            const columns = 4;
+            const frameCount = 4;
+            const frameDuration = 1000; // uma forma estável por segundo; passagem directa
             const cycleDuration = frameCount * frameDuration;
             let worker = null;
             let rafId = null;
@@ -1109,7 +1109,7 @@
                 document.addEventListener('visibilitychange', updateVisibility);
                 updateVisibility();
             };
-            sprite.src = 'favicon-morph-maxfill-175-plus2.png?v=1';
+            sprite.src = 'favicon-shapes-discrete-4.png?v=1';
         })();
 
         const keys = {};
