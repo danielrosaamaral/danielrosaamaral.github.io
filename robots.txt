@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://danielrosaamaral.github.io/sitemap.xml
