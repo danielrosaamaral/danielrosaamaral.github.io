@@ -2232,25 +2232,46 @@
     <script id="tab-title-rotation">
     (() => {
       const baseTitle = document.title;
-      const topics = [
-        baseTitle,
-        'Daniel Amaral | Branding e Identidade Visual',
-        'Daniel Amaral | Design Editorial',
-        'Daniel Amaral | Comunicação Corporativa'
+      const messages = [
+        'Daniel Amaral',
+        'Designer de Comunicação',
+        'Branding e Identidade Visual',
+        'Design Editorial',
+        'Comunicação Corporativa'
       ];
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const stepMs = 220;
+      const travelSteps = 28;
+      const spacer = '\u00a0';
       let timer = null;
-      let index = 0;
-      const stop = () => { if (timer !== null) { clearInterval(timer); timer = null; } };
+      let item = 0;
+      let offset = 0;
+
+      const stop = () => {
+        if (timer !== null) { clearInterval(timer); timer = null; }
+        document.title = baseTitle;
+      };
+      const tick = () => {
+        document.title = spacer.repeat(offset) + messages[item];
+        offset += 1;
+        if (offset > travelSteps) {
+          offset = 0;
+          item = (item + 1) % messages.length;
+        }
+      };
       const update = () => {
-        stop();
-        if (!document.hidden || reducedMotion.matches) { document.title = baseTitle; index = 0; return; }
-        timer = setInterval(() => { index = (index + 1) % topics.length; document.title = topics[index]; }, 5000);
+        if (timer !== null) { clearInterval(timer); timer = null; }
+        if (!document.hidden || reducedMotion.matches) {
+          item = 0; offset = 0; document.title = baseTitle; return;
+        }
+        item = 0; offset = 0; tick();
+        timer = setInterval(tick, stepMs);
       };
       document.addEventListener('visibilitychange', update);
       window.addEventListener('focus', update);
       window.addEventListener('blur', update);
-      reducedMotion.addEventListener?.('change', update);
+      if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', update);
+      else if (reducedMotion.addListener) reducedMotion.addListener(update);
       update();
     })();
     </script>
