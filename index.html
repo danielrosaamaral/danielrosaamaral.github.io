@@ -220,80 +220,6 @@
             border-width: 0;
         }
     
-        /* Rodapé-marquee: mensagem contínua de apresentação e áreas de trabalho */
-        #daniel-marquee {
-            position: fixed !important;
-            z-index: 100000 !important;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 46px;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            background: rgba(8, 8, 8, .91);
-            border-top: 2px solid #0011FF;
-            color: #f4f4f4;
-            font-family: 'Outfit', Arial, sans-serif;
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-        }
-        #daniel-marquee .marquee-viewport {
-            flex: 1 1 auto;
-            min-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        #daniel-marquee .marquee-track {
-            display: flex;
-            width: max-content;
-            will-change: transform;
-            animation: daniel-marquee-right 48s linear infinite !important;
-            animation-play-state: running;
-        }
-        #daniel-marquee .marquee-group {
-            display: flex;
-            align-items: center;
-            flex: 0 0 auto;
-            gap: 2.4rem;
-            padding-right: 2.4rem;
-            font-size: 15px;
-            letter-spacing: .025em;
-        }
-        #daniel-marquee .marquee-group strong {
-            color: #fff;
-            font-weight: 700;
-        }
-        #daniel-marquee .marquee-separator {
-            color: #6673ff;
-            font-size: 18px;
-        }
-        #daniel-marquee .marquee-pause {
-            flex: 0 0 46px;
-            height: 44px;
-            border: 0;
-            border-left: 1px solid rgba(255,255,255,.16);
-            background: transparent;
-            color: #c7c7c7;
-            font: 16px Arial, sans-serif;
-            cursor: pointer;
-        }
-        #daniel-marquee .marquee-pause:hover,
-        #daniel-marquee .marquee-pause:focus-visible { color: #fff; background: rgba(0,17,255,.24); }
-        #daniel-marquee .marquee-pause:focus-visible { outline: 2px solid #6673ff; outline-offset: -3px; }
-        @keyframes daniel-marquee-right {
-            from { transform: translateX(-50%); }
-            to { transform: translateX(0); }
-        }
-        @media (max-width: 600px) {
-            #daniel-marquee { height: 42px; }
-            #daniel-marquee .marquee-group { gap: 1.5rem; padding-right: 1.5rem; font-size: 13px; }
-            #daniel-marquee .marquee-pause { flex-basis: 42px; height: 40px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            #daniel-marquee .marquee-track { animation-duration: 90s; }
-        }
     </style>
 </head>
 <body class="bg-[#000000] text-[#e5e5e5] font-sans antialiased overflow-hidden w-screen h-[100dvh] m-0 p-0 selection:bg-[rgb(0,17,255)] selection:text-white">
@@ -346,33 +272,6 @@
             </svg>
         </button>
     </div>
-
-        <footer id="daniel-marquee" aria-label="Apresentação de Daniel Amaral e áreas de trabalho">
-            <span class="sr-only">Olá, eu sou o Daniel e sou Designer de Comunicação. Trabalho em design gráfico, branding e identidade visual, design editorial, comunicação corporativa, direcção de arte e embalagem alimentar.</span>
-            <div class="marquee-viewport" aria-hidden="true">
-                <div class="marquee-track" id="daniel-marquee-track">
-                    <div class="marquee-group">
-                        <strong>Olá, eu sou o Daniel e sou Designer de Comunicação.</strong><span class="marquee-separator">✳</span>
-                        <span>Design gráfico</span><span class="marquee-separator">✳</span>
-                        <span>Branding e identidade visual</span><span class="marquee-separator">✳</span>
-                        <span>Design editorial</span><span class="marquee-separator">✳</span>
-                        <span>Comunicação corporativa</span><span class="marquee-separator">✳</span>
-                        <span>Direcção de arte</span><span class="marquee-separator">✳</span>
-                        <span>Embalagem alimentar</span><span class="marquee-separator">✳</span>
-                    </div>
-                    <div class="marquee-group" aria-hidden="true">
-                        <strong>Olá, eu sou o Daniel e sou Designer de Comunicação.</strong><span class="marquee-separator">✳</span>
-                        <span>Design gráfico</span><span class="marquee-separator">✳</span>
-                        <span>Branding e identidade visual</span><span class="marquee-separator">✳</span>
-                        <span>Design editorial</span><span class="marquee-separator">✳</span>
-                        <span>Comunicação corporativa</span><span class="marquee-separator">✳</span>
-                        <span>Direcção de arte</span><span class="marquee-separator">✳</span>
-                        <span>Embalagem alimentar</span><span class="marquee-separator">✳</span>
-                    </div>
-                </div>
-            </div>
-            <button class="marquee-pause" id="daniel-marquee-toggle" type="button" aria-label="Pausar faixa em movimento" aria-pressed="false" title="Pausar movimento">Ⅱ</button>
-        </footer>
 
     <!-- CONTEÚDO SEMÂNTICO E INDEXÁVEL (SEO & AEO) -->
     <section class="sr-only" aria-hidden="false">
@@ -2333,20 +2232,32 @@
 
     <script id="tab-title-rotation">
     (() => {
-      // Search/browser title remains stable. The visible footer carries the moving message.
-      const baseTitle = 'Daniel Amaral | Designer de Comunicação';
-      document.title = baseTitle;
-      const track = document.getElementById('daniel-marquee-track');
-      const button = document.getElementById('daniel-marquee-toggle');
-      if (!track || !button) return;
-      button.addEventListener('click', () => {
-        const paused = track.style.animationPlayState === 'paused';
-        track.style.animationPlayState = paused ? 'running' : 'paused';
-        button.setAttribute('aria-pressed', String(!paused));
-        button.setAttribute('aria-label', paused ? 'Pausar faixa em movimento' : 'Retomar faixa em movimento');
-        button.title = paused ? 'Pausar movimento' : 'Retomar movimento';
-        button.textContent = paused ? 'Ⅱ' : '▶';
-      });
+      const messages = [
+        'Olá, eu sou o Daniel e sou Designer de Comunicação',
+        'Branding e identidade visual',
+        'Design gráfico e comunicação corporativa',
+        'Design editorial',
+        'Direcção de arte',
+        'Embalagem alimentar'
+      ];
+      const spacer = '\u00a0';
+      const travelSteps = 18;
+      const stepMs = 260;
+      let messageIndex = 0;
+      let offset = 0;
+
+      const updateTitle = () => {
+        document.title = spacer.repeat(offset) + messages[messageIndex];
+        offset += 1;
+        if (offset > travelSteps) {
+          offset = 0;
+          messageIndex = (messageIndex + 1) % messages.length;
+        }
+      };
+
+      // Update continuously in both active and background tabs; browser throttling may apply.
+      updateTitle();
+      window.setInterval(updateTitle, stepMs);
     })();
     </script>
 </body>
