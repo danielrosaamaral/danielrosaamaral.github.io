@@ -2283,10 +2283,10 @@
       };
 
       window.__updateTabTitleAt = updateTitleAt;
-      // Keep the tab text moving even if the favicon sprite takes time to load.
+      // The favicon renderer calls this with the same clock before every frame update.
+      // This keeps phrase transitions and favicon-shape transitions on one timeline.
       const syncStart = window.__danielVisualSyncStart ?? performance.now();
       updateTitleAt(Math.max(0, performance.now() - syncStart));
-      window.setInterval(() => updateTitleAt(Math.max(0, performance.now() - syncStart)), 100);
     })();
     </script>
 </body>
