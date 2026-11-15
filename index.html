@@ -176,6 +176,23 @@
             transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
+        #portfolio-pdf-link {
+            gap: 0.55rem;
+        }
+
+        #portfolio-pdf-link .portfolio-animated-icon {
+            display: block;
+            width: 2rem;
+            height: 2rem;
+            flex: 0 0 2rem;
+            object-fit: contain;
+        }
+
+        #portfolio-pdf-link:hover .portfolio-animated-icon,
+        #portfolio-pdf-link:active .portfolio-animated-icon {
+            filter: brightness(0) invert(1);
+        }
+
         #portfolio-pdf-link:hover,
         #portfolio-pdf-link:active {
             color: white;
@@ -242,6 +259,7 @@
            rel="noopener noreferrer"
            aria-label="Veja o meu portfólio em PDF"
            title="Ver o meu portfólio">
+            <img class="portfolio-animated-icon" src="portfolio-animated-button.gif?v=1" alt="" aria-hidden="true" width="32" height="32">
             <span>Veja o meu portfólio</span>
         </a>
 
@@ -969,6 +987,9 @@
             }
         }
 
+        /* Relógio único para sincronizar a forma do favicon e a frase da tab. */
+        window.__danielVisualSyncStart = performance.now();
+
         /* FAVICON DINÂMICO — morph contínuo das quatro formas */
         (function initAnimatedFavicon() {
             const favicon = document.querySelector('link[rel="icon"]');
@@ -988,14 +1009,17 @@
             canvas.width = canvas.height = frameSize;
 
             sprite.onload = function () {
-                const startTime = performance.now();
+                const startTime = window.__danielVisualSyncStart;
                 let lastFrame = -1;
-                let lastUpdate = -Infinity;
 
                 function renderFrame(now) {
-                    if (now - lastUpdate < 200) return;
-                    const elapsed = (now - startTime) % cycleDuration;
+                    const elapsedTotal = Math.max(0, now - startTime);
+                    if (typeof window.__updateTabTitleAt === 'function') {
+                        window.__updateTabTitleAt(elapsedTotal);
+                    }
+                    const elapsed = elapsedTotal % cycleDuration;
                     const frame = Math.floor(elapsed / frameDuration);
+                    if (frame === lastFrame) return;
                     if (frame !== lastFrame) {
                         const sourceX = (frame % columns) * frameSize;
                         const sourceY = Math.floor(frame / columns) * frameSize;
@@ -1004,7 +1028,6 @@
                                       0, 0, frameSize, frameSize);
                         favicon.href = canvas.toDataURL('image/png');
                         lastFrame = frame;
-                        lastUpdate = now;
                     }
                 }
 
@@ -2242,24 +2265,28 @@
         'Identidade Visual',
         'Design Editorial'
       ];
+      const frameDuration = 1000;
+      const stepDuration = 200;
+      const travelSteps = 4;
       const spacer = '\u00a0';
-      const travelSteps = 8;
-      const stepMs = 260;
-      let messageIndex = 0;
-      let offset = 0;
+      let lastTitle = '';
 
-      const updateTitle = () => {
-        document.title = spacer.repeat(offset) + messages[messageIndex];
-        offset += 1;
-        if (offset > travelSteps) {
-          offset = 0;
-          messageIndex = (messageIndex + 1) % messages.length;
+      const updateTitleAt = (elapsed) => {
+        const phraseIndex = Math.floor(elapsed / frameDuration) % messages.length;
+        const withinPhrase = elapsed % frameDuration;
+        const offset = Math.min(travelSteps, Math.floor(withinPhrase / stepDuration));
+        const nextTitle = spacer.repeat(offset) + messages[phraseIndex];
+        if (nextTitle !== lastTitle) {
+          document.title = nextTitle;
+          lastTitle = nextTitle;
         }
       };
 
-      // Update continuously in both active and background tabs; browser throttling may apply.
-      updateTitle();
-      window.setInterval(updateTitle, stepMs);
+      window.__updateTabTitleAt = updateTitleAt;
+      // Keep the tab text moving even if the favicon sprite takes time to load.
+      const syncStart = window.__danielVisualSyncStart ?? performance.now();
+      updateTitleAt(Math.max(0, performance.now() - syncStart));
+      window.setInterval(() => updateTitleAt(Math.max(0, performance.now() - syncStart)), 100);
     })();
     </script>
 </body>
