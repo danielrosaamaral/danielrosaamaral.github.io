@@ -12,21 +12,22 @@
     gtag('js', new Date());
     gtag('config', 'G-4X7D309RVX');
     (function () {
-      var pdf = '/portfolio-2026-sumario-daniel-amaral.pdf';
+      var params = new URLSearchParams(window.location.search);
+      var target = '/portfolio-teste.html' + (window.location.search || '');
       var done = false;
-      function openPdf() {
+      function go() {
         if (done) return;
         done = true;
-        window.location.replace(pdf);
+        window.location.replace(target);
       }
       gtag('event', 'portfolio_email_open', {
-        file_name: pdf,
+        file_name: '/portfolio-2026-sumario-daniel-amaral.pdf',
         event_category: 'portfolio',
-        event_label: 'email_link',
-        event_callback: openPdf,
+        event_label: params.get('utm_content') || 'email_link',
+        event_callback: go,
         event_timeout: 1800
       });
-      window.setTimeout(openPdf, 2200);
+      window.setTimeout(go, 2200);
     })();
   </script>
   <style>
@@ -40,7 +41,7 @@
 <body>
   <main>
     <p>A abrir o portefólio de Daniel Amaral…</p>
-    <p><a href="/portfolio-2026-sumario-daniel-amaral.pdf">Se o PDF não abrir automaticamente, clica aqui.</a></p>
+    <p><a href="/portfolio-teste.html">Se o portefólio não abrir automaticamente, clica aqui.</a></p>
   </main>
 </body>
 </html>
