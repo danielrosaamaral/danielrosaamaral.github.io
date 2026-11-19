@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Portefólio (teste) — Daniel Amaral</title>
+  <title>Portefólio — Daniel Amaral</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X7D309RVX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -16,8 +16,8 @@
       var params = new URLSearchParams(window.location.search);
       gtag('event', 'portfolio_view', {
         event_category: 'portfolio',
-        event_label: params.get('utm_content') || params.get('origem') || 'teste',
-        page_type: 'portfolio_teste',
+        event_label: params.get('utm_content') || params.get('origem') || 'portfolio',
+        page_type: 'portfolio',
         utm_source: params.get('utm_source') || '',
         utm_medium: params.get('utm_medium') || '',
         utm_campaign: params.get('utm_campaign') || '',
@@ -46,8 +46,7 @@
 <body>
   <header>
     <div>
-      <div class="title">Portefólio — Daniel Amaral (página de teste)</div>
-      <div class="meta">Regista visita, dispositivo, localização e origem no Google Analytics enquanto esta página estiver aberta.</div>
+      <div class="title">Portefólio — Daniel Amaral</div>
     </div>
     <div>
       <a id="open-pdf" href="/portfolio-2026-sumario-daniel-amaral.pdf" target="_blank" rel="noopener">Abrir/Descarregar PDF</a>
@@ -68,8 +67,8 @@
           var params = new URLSearchParams(window.location.search);
           gtag('event', 'portfolio_pdf_click', {
             event_category: 'portfolio',
-            event_label: params.get('utm_content') || params.get('origem') || 'teste',
-            page_type: 'portfolio_teste'
+            event_label: params.get('utm_content') || params.get('origem') || 'portfolio',
+            page_type: 'portfolio'
           });
         }
       });
